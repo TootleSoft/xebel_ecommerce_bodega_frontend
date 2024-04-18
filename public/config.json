@@ -1,0 +1,6 @@
+{
+    "api_route": "https://localhost:50149/api/",
+    "image_server_route": "https://localhost:50149/api/general",
+    "file_server_invoice_xml": "",
+    "port_printer": "7215"
+}
