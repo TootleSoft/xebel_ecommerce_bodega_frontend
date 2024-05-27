@@ -31,8 +31,7 @@ import { useRouter } from 'vue-router';
     })
     
     const imgroute = (id) => {
-
-        return import.meta.env.VITE_API_ROUTE+'Inventory/Brand/image/'+id;
+        return import.meta.env.VITE_API_ROUTE+'Inventory/Brand/image/'+id+"/"+new Date();
     }
 
     const first  = ref<number>(0);

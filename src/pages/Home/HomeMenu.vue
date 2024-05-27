@@ -1,11 +1,11 @@
 <template>
     <div class="card">
-        <div class="text-900 font-medium text-4xl mb-4">Popular Products</div>
-        <p class="mt-0 p-0 mb-5 text-700 text-2xl">Exclusive Selection</p>
+        <div class="text-900 font-medium text-4xl mb-4">Marcas</div>
         <BasicProductCarusell/>
     </div>
 
     <div class="card">
+        <div class="text-900 font-medium text-4xl mb-4">Marcas</div>
         <BasicProductCarusell/>
     </div>
 </template>
@@ -20,13 +20,13 @@ const products = ref<any[]>([]);
 
 const refresh = async () => {
     try{
-        let response = await axios.get('Inventory/EComerce/articles_ecomerce', {
-            headers: {
-                customer_id: "",
-            }
-        })
-        products.value = response.data; 
-        console.log(JSON.stringify(products.value.length))
+        // let response = await axios.get('Inventory/EComerce/articles_ecomerce', {
+        //     headers: {
+        //         customer_id: "",
+        //     }
+        // })
+        // products.value = response.data; 
+        // console.log(JSON.stringify(products.value.length))
     }catch {
         console.log("No se cargaron los datos")
     }

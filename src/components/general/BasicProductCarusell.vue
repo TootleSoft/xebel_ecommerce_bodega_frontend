@@ -5,7 +5,7 @@
                 <div class="border-1 surface-border border-round m-2  p-3">
                     <div class="mb-3">
                         <div class="relative mx-auto">
-                            <img :src="imgroute(slotProps.data.id)" class="w-full h-19rem"/>
+                            <img :src="imgroute(slotProps.data.id)" class="w-full h-19rem"  @click="router.push(slotProps.data.path)"/>
                         </div>
                     </div>
                     <!-- <div class="mb-3 font-medium">{{ slotProps.data.name }}</div>
@@ -16,7 +16,7 @@
                             <Button icon="pi pi-shopping-cart" class="ml-2"/>
                         </span>
                     </div> -->
-                    <div class="mb-3 font-medium">{{ slotProps.data.name }}</div>
+                    <div class="flex align-items-center cursor-pointer px-3 py-2 overflow-hidden relative font-semibold text-lg uppercase">{{ slotProps.data.name }}</div>
                 </div>
             </template>
         </Carousel>
@@ -25,8 +25,11 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
+import { useRouter } from 'vue-router';
 import axios from "axios";
 
+
+const router = useRouter();
 const products = ref<any[]>([]);
 const responsiveOptions = ref([
     {
@@ -59,7 +62,7 @@ const refresh = async () =>{
 
 const imgroute = (id) => {
 
-        return import.meta.env.VITE_API_ROUTE+'Inventory/Brand/image/'+id;
+        return import.meta.env.VITE_API_ROUTE+'Inventory/Brand/image/'+id+"/"+new Date();
     }
 
 onMounted(async () => {

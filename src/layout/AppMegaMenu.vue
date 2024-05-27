@@ -34,7 +34,7 @@
                                 <a v-if="item.root" class="flex align-items-center cursor-pointer px-3 py-2 overflow-hidden relative font-semibold text-lg uppercase"  style="border-radius: 2rem" @click="router.push(item.to)">
                                     <span class="MegaMenuText">{{ item.label }}</span>
                                 </a>
-                                <a v-else class="flex align-items-center p-3 cursor-pointer mb-2 gap-2" @click="router.push(item.to)">
+                                <a v-else class="flex align-items-center p-3 cursor-pointer mb-2 gap-3" @click="router.push(item.to)">
                                     <span>{{ item.label }}</span>
                                 </a>
                             </template>
@@ -78,7 +78,7 @@ const refresh = async () => {
     try{
         let response = await axios.get('Inventory/EComerce/articles_names', {
             headers: {
-                customer_id: "",
+                customer_id: "0",
             }
         })
         article_names.value = response.data; 
@@ -97,7 +97,8 @@ const selectSuggestion = (payload) =>{
 
 
 const search = (event) => {
-    filteredArticles.value =  article_names.value.filter(x => { return x.name.toLowerCase().includes(event.query.toLowerCase())})
+    console.log(JSON.stringify(article_names.value))
+    filteredArticles.value =  article_names.value.filter(x => { return (x.name || '').toLowerCase().includes((event.query || '').toLowerCase())})
 }
 
 //Arreglos para el menu

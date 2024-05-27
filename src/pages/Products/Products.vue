@@ -43,6 +43,7 @@ interface subgrupos{
 
 const route = useRoute();
 const router = useRouter();
+const customer_id = ref<string>("0");
 const pagetitle = ref<string>("");
 const products = ref<any[]>([]);
 const allproducts = ref<any[]>([]);
@@ -63,7 +64,7 @@ const refresh = async () => {
         //La consulta maestra, trae todos los productos que se pueden mostrar en vase a los paramtros que se le mande
         let response = await axios.get('Inventory/EComerce/articles_ecomerce', {
             headers: {
-                customer_id: "",
+                customer_id: customer_id.value,
                 family: route.params.family != undefined ? route.params.family.toString().replace(/ñ/g, "nnn").replace(/Ñ/g, "nnn") : "",
                 group: route.params.group != undefined ? route.params.group.toString().replace(/ñ/g, "nnn").replace(/Ñ/g, "nnn") : "",
                 type: route.params.type != undefined ? route.params.type.toString().replace(/ñ/g, "nnn").replace(/Ñ/g, "nnn") : "",
@@ -89,7 +90,6 @@ const refresh = async () => {
                 pagetitle.value = route.params.param.toString().replace(/--/g, " ");
                 break;
         }
-        console.log(route.name)
         //Desactiva los esqueletos de carga del sistema
         productsKey.value = productsKey.value+1;
         componentKey.value = componentKey.value+1;

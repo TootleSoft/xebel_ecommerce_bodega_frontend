@@ -9437,7 +9437,7 @@
     color: #44486D;
   }
   .p-toast .p-toast-message.p-toast-message-warn {
-    background: rgba(68, 72, 109, 0.07);
+    background: rgb(254,254,255);
     border: solid #EEE500;
     border-width: 0 0 0 20px;
     color: #44486D;
@@ -9447,7 +9447,7 @@
     color: #44486D;
   }
   .p-toast .p-toast-message.p-toast-message-error {
-    background: rgba(68, 72, 109, 0.07);
+    background: rgb(254,254,255);
     border: solid #FC6161;
     border-width: 0 0 0 20px;
     color: #44486D;

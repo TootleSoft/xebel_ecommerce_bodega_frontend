@@ -17,7 +17,7 @@
             <div v-for="(product, i) in products.slice(first/10*pagesize,first/10*pagesize+pagesize)" :key="i" class="col-12 md:col-5 lg:col-3 mb-5 lg:mb-0">
                 <div class="mb-3 relative">
                     <!-- <img :src="'/demo/images/ecommerce/product-list/product-list-4-1.png'" class="w-full" :alt="String(i)" @click="router.push('/product/'+product.id+'/'+product.id_subarticle)"/> -->
-                    <img :src="imgroute(product.id, product.barcode, product.id_brand)" class="w-full h-19rem border-3 border-500" :alt="String(i)" @click="router.push('/product/'+product.id+'/'+product.id_subarticle)"/>
+                    <img :src="imgroute(product.id, product.barcode, product.id_brand)" class="w-full h-auto border-3 border-500" :alt="String(i)" @click="router.push('/product/'+product.id+'/'+product.id_subarticle)"/>
                     <span v-if="product.existence == 'DISPONIBLE'" class="surface-card text-900 shadow-2 px-3 py-2 absolute border-round-3xl text-green-500 font-bold" :style="{ left: '1rem', top: '1rem' }"> {{ product.existence }} </span>
                     <span v-if="product.existence == 'SIN EXISTENCIA'" class="surface-card text-900 shadow-2 px-3 py-2 absolute border-round-3xl text-red-500 font-bold" :style="{ left: '1rem', top: '1rem' }"> {{ product.existence }} </span>
                     <Button
@@ -66,11 +66,12 @@ import { useRouter } from 'vue-router';
     const suggest = ref<any[]>([]);
 
     const search = (event) => {
-        suggest.value = products.value.filter(x => {return x.description.toLowerCase().includes(event.query.toLowerCase())});
+        suggest.value = products.value.filter(x => {return (x.description || '').toLowerCase().includes((event.query || '').toLowerCase())});
     }
 
     const imgroute = (id, sku, brand) => {
-        console.log(import.meta.env.VITE_API_ROUTE+'Inventory/InventoryArticle/image/1_3M012_1')
+        console.log(brand)
+        sku= sku.replace(/\//g, "--").replace(/ñ/g, "nnn").replace(/Ñ/g, "nnn").replace(/#/g, '----')
         return import.meta.env.VITE_API_ROUTE+'Inventory/Ecomerce/image/'+id+'_'+sku+'_1/'+brand;
     }
     const filteredserch = (newValue) => {

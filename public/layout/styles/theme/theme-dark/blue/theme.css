@@ -9405,7 +9405,7 @@
     width: 1.286rem;
     height: 1.286rem;
     border-radius: 50%;
-    background: transparent;
+    background: rgb(254,254,255);
     transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
     outline-color: transparent;
   }
@@ -9438,7 +9438,7 @@
     color: #FFFFFF;
   }
   .p-toast .p-toast-message.p-toast-message-warn {
-    background: rgba(255, 255, 255, 0.05);
+    background: rgb(254,254,255);
     border: solid #EEE500;
     border-width: 0 0 0 20px;
     color: #FFFFFF;
@@ -9448,7 +9448,7 @@
     color: #FFFFFF;
   }
   .p-toast .p-toast-message.p-toast-message-error {
-    background: rgba(255, 255, 255, 0.05);
+    background: rgb(254,254,255);
     border: solid #FC6161;
     border-width: 0 0 0 20px;
     color: #FFFFFF;
