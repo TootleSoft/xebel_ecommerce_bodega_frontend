@@ -28,8 +28,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue';
-import { useRoute } from 'vue-router';
-import { useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import BasicProductGrid from '../../components/general/BasicProductGrid.vue';
 import BasicFilterSelection from '../../components/general/BasicFilterSelection.vue';
 import ProductSkeleton from '../../components/general/ProductSkeleton.vue'
@@ -37,8 +36,8 @@ import ProductSkeleton from '../../components/general/ProductSkeleton.vue'
 import axios from 'axios';
 
 interface subgrupos{
-    id_subgrupo: number | null;
-    subgrupo: string | null;
+    id_subgrupo: number | undefined;
+    subgrupo: string | undefined;
 }
 
 const route = useRoute();
@@ -55,6 +54,7 @@ const productsKey = ref<number>(0);
 const categoryselection = ref<number[]>([]);
 const filterpriceselection = ref<number[]>([]);
 const priceorder = ref<any[]>([{"id": 1, "name": "Menor a Mayor"},{"id": 2, "name": "Mayor a Menor"}]);
+const subgroup = ref<subgrupos[]>([])
 
 const refresh = async () => {
     loading.value=true;

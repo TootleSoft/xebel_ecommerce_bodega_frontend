@@ -96,23 +96,7 @@
                     <label v-if="stock != undefined && stock > 0" class="w-full text-lg text-green-500">{{ stock }} Disponible</label>
                     <label v-if="stock != undefined && stock <= 0" class="w-full text-lg text-red-500">{{ stock }} Disponible</label>  
                 </div>
-                <div class="font-bold text-900 mb-3">Cantidad  <div class="flex flex-column sm:flex-row sm:align-items-center sm:justify-content-between">
-                    <InputNumber
-                        showButtons
-                        buttonLayout="horizontal"
-                        :min="0"
-                        inputClass="w-2rem text-center py-2 px-1 border-transparent outline-none shadow-none"
-                        v-model="quantity"
-                        class="border-1 surface-border border-round"
-                        decrementButtonClass="p-button-text text-600 hover:text-primary py-1 px-1"
-                        incrementButtonClass="p-button-text text-600 hover:text-primary py-1 px-1"
-                        incrementButtonIcon="pi pi-plus"
-                        decrementButtonIcon="pi pi-minus"
-                    ></InputNumber>
-                    <!-- <div class="flex align-items-center flex-1 mt-3 sm:mt-0 ml-0 sm:ml-5">
-                        <Button label="Add to Cart" class="flex-1"></Button>
-                    </div> -->
-                </div></div>
+                <div class="font-bold text-900 mb-3">Cantidad</div>
                 <div class="flex flex-column sm:flex-row sm:align-items-center sm:justify-content-between">
                     <InputNumber
                         showButtons
@@ -130,6 +114,7 @@
                         <Button label="Add to Cart" class="flex-1"></Button>
                     </div> -->
                 </div>
+                <br>
                 <div class="col-12">
                     <Button label="Añadir al carrito" class="w-full"></Button>
                 </div>
@@ -303,7 +288,7 @@ const changeSubarticle = async () => {
     }
     let response = await axios.get('Inventory/EComerce/ChekExistence/'+id_subarticle)
     if(response.data == false){
-        toast.add({ severity: 'warn', summary: 'Combinacion invalida', detail: 'La combinacion de atributos no existe', life: 3000 });
+        toast.add({ severity: 'warn', summary: 'Combinacion invalida', detail: 'No existe productos con dicha combinacion', life: 3000 });
         let i = -1;
         let subarticle = product.value[0].subarticle.split(",");
         for (const sub of subarticle) {
@@ -315,8 +300,6 @@ const changeSubarticle = async () => {
     }else if(response.data == true){
         router.push('/product/'+product.value[0].id+'/'+id_subarticle)
     }
-    
-    console.log(JSON.stringify(item_attributes.value));
 };
 
 watch(selectedBranch, (newvalue)=>{
