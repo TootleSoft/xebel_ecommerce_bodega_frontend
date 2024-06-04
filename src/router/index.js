@@ -33,7 +33,12 @@ const routes = [
                 name: 'Producto',
                 path: '/product/:id_article/:id_subarticle',
                 component: () => import ('@/pages/Products/Product.vue'),
-            }
+            },
+            {
+                name: 'Paquetes',
+                path: '/bundles',
+                component: () => import ('@/pages/Bundles/Bundles.vue'),
+            },
         ]
     },
     {
