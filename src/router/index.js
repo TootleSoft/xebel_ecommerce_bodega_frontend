@@ -37,6 +37,16 @@ const routes = [
         ]
     },
     {
+        path: '/auth/singin',
+        name: 'register',
+        component: () => import('@/pages/Auth/SingIn.vue')
+    },
+    {
+        path: '/auth/login',
+        name: 'login',
+        component: () => import('@/pages/Auth/login.vue')
+    },
+    {
         path: '/landing',
         name: 'landing',
         component: () => import('@/views/pages/Landing.vue')
@@ -45,12 +55,6 @@ const routes = [
         path: '/pages/notfound',
         name: 'notfound',
         component: () => import('@/views/pages/NotFound.vue')
-    },
-
-    {
-        path: '/auth/login',
-        name: 'login',
-        component: () => import('@/views/pages/auth/Login.vue')
     },
     {
         path: '/auth/access',
@@ -61,11 +65,6 @@ const routes = [
         path: '/auth/error',
         name: 'error',
         component: () => import('@/views/pages/auth/Error.vue')
-    },
-    {
-        path: '/auth/register',
-        name: 'register',
-        component: () => import('@/views/pages/auth/Register.vue')
     },
     {
         path: '/auth/forgotpassword',

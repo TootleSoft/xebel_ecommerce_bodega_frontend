@@ -112,8 +112,15 @@ import BlockViewer from '@/components/BlockViewer.vue';
 import '@/assets/styles.scss';
 import axios from "axios";
 
+import Vue3Storage, { StorageType } from 'vue3-storage';
+
+import { createPinia } from 'pinia';
+const pinia = createPinia()
+
 const app = createApp(App);
 
+app.use(pinia)
+app.use(Vue3Storage, { namespace: "pro_", storage: StorageType.Local })
 app.use(router);
 app.use(PrimeVue, { ripple: true });
 app.use(ToastService);

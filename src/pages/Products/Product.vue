@@ -1,4 +1,5 @@
 <template>
+    {{ cartStore.cart }}
     <div class="card">
         <div class="grid mb-7">
             <div class="col-12 lg:col-5">
@@ -116,7 +117,7 @@
                 </div>
                 <br>
                 <div class="col-12">
-                    <Button label="Añadir al carrito" class="w-full"></Button>
+                    <Button @click="addToCart" label="Añadir al carrito" class="w-full"></Button>
                 </div>
                 <div class="col-12">
                     <Button label="Pagar Ahora" class="w-full"></Button>
@@ -182,6 +183,8 @@ import { useRoute } from 'vue-router';
 import { useRouter } from 'vue-router';
 import axios from 'axios';
 import { useToast } from "primevue/usetoast";
+import { useCartStore } from '../../stores/cart';
+const cartStore = useCartStore();
 const toast = useToast();
 
 
@@ -213,6 +216,7 @@ const refresh = async () => {
     try{
         let response = await axios.get('Inventory/EComerce/GetArticleInfo/'+route.params.id_article+'/'+route.params.id_subarticle+'/'+id_user.value)
         product.value = response.data; 
+        console.log(JSON.stringify(product.value))
         let existence_resposnse = await axios.get('Inventory/EComerce/GetProductExistences/'+route.params.id_article+'/'+route.params.id_subarticle)
         existence.value = existence_resposnse.data;
         console.log(JSON.stringify(existence.value.sort((a, b) => b.stock - a.stock)[0].stock))
@@ -265,6 +269,10 @@ const refresh = async () => {
 const GetName = (sa) =>{
     let name = atributes.value.filter(x => x.id == sa.id_attribute);
     return name[0].name;
+}
+
+const addToCart = () => {
+    cartStore.updateCart(product.value[0], quantity.value, selectedBranch.value);
 }
 
 const forceUpdateBranch = (branch) =>{

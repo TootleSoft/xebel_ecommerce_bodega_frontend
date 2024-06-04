@@ -15,19 +15,21 @@
                         </FloatLabel>
                     </div>
                     <div class="field col-12 sm:col-12 md:col-1 xl:col-1">
+                    </div>
+                    <div v-if="authStore.id_usuario != undefined" class="field col-12 sm:col-12 md:col-1 xl:col-1">
                         <Button icon="pi pi-user" label="Cuenta" severity="contrast" outlined @click="tuser"/>
                         <TieredMenu ref="muser" id="overlay_tmenu" :model="user" popup />
                     </div>
-                    <!-- <div class="field col-12 sm:col-12 md:col-1 xl:col-1">
+                    <div v-if="authStore.id_usuario == undefined" class="field col-12 sm:col-12 md:col-1 xl:col-1">
                         <Button icon="pi pi-user" label="Ingresar" severity="contrast" outlined @click="tlogin"/>
                         <TieredMenu ref="mlogin" id="overlay_tmenu" :model="login" popup />
-                    </div> -->
+                    </div>
                     <div class="field col-12 sm:col-12 md:col-1 xl:col-1">
                         <Button icon="pi pi-shopping-cart" label="Carrito" severity="contrast" outlined/>
                     </div>
-                    <div class="field col-12 sm:col-12 md:col-1 xl:col-1">
+                    <!-- <div class="field col-12 sm:col-12 md:col-1 xl:col-1">
                         <Button icon="pi pi-bell" label='Alertas' severity="contrast" outlined/>
-                    </div>
+                    </div> -->
                     <div class="field col-12 sm:col-12 md:col-12 xl:col-12">
                         <Menubar :model="items" class="MegaMenuBar">
                             <template #item="{item}">
@@ -48,6 +50,10 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
+import { useAuthStore } from '../stores/auth';
+const authStore = useAuthStore();
+
+
 import { useLayout } from '../layout/composables/layout.js';
 //import { useLayout } from '@/layout/composables/layout';
 import axios from 'axios';
@@ -105,11 +111,17 @@ const search = (event) => {
 const login = ref<any[]>([
     {
         label: 'Iniciar Sesion',
-        icon: 'pi pi-users'
+        icon: 'pi pi-users',
+        command: () => {
+            router.push('/auth/login');
+        }
     },
     {
         label: 'Crear Cuenta',
-        icon: 'pi pi-user-plus'
+        icon: 'pi pi-user-plus',
+        command: () => {
+            router.push('/auth/singin');
+        }
     },
 ]);
 const user = ref<any[]>([
@@ -117,17 +129,24 @@ const user = ref<any[]>([
         label: 'Mis Pedidos',
         icon: 'pi pi-inbox',
     },
-    {
-        label: 'Lista de deseos',
-        icon: 'pi pi-heart'
-    },
-    {
-        label: 'Configuracion',
-        icon: 'pi pi-cog'
-    },
+    // {
+    //     label: 'Lista de deseos',
+    //     icon: 'pi pi-heart'
+    // },
+    // {
+    //     label: 'Configuracion',
+    //     icon: 'pi pi-cog'
+    // },
     {
         label: 'Cerrar Sesion',
-        icon: 'pi pi-sign-in'
+        icon: 'pi pi-sign-in',
+        command: () => {
+            authStore.logout();
+            router.push('/');
+            setTimeout((): void =>{
+                window.location.reload();
+            }, 200)
+        }
     },
 ]);
 </script>
