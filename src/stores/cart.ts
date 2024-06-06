@@ -18,6 +18,7 @@ export interface CartState {
     iva_detained?: number;
     ieps_transferred?: number;
     ieps_detained?: number;
+    ecomerce_offer_price?: number,
     original_price?: number;
     price_tax?: number;
     id_brand?: number;
@@ -42,7 +43,7 @@ export const useCartStore = defineStore({
         cart: storage.getStorageSync<CartState[]>('cart') ?? [],
     }),
     actions: {
-        updateCart(product: CartState, quantity: number, id_branch: number){
+        addCart(product: CartState, quantity: number, id_branch: number){
             console.log(JSON.stringify(product))
             console.log(JSON.stringify(quantity))
             console.log(JSON.stringify(id_branch))
@@ -62,6 +63,9 @@ export const useCartStore = defineStore({
             storage.setStorageSync('cart', this.cart);
             console.log(JSON.stringify(this.cart));
             console.log(JSON.stringify(article))
+        },
+        updateCart(){
+            storage.setStorageSync('cart', this.cart);
         },
         setSession(id_usuario: number, usuario: string, company: number | undefined, branch: number | undefined, branch_name: string | undefined) {
             // const sessionLength = parseInt(import.meta.env.VITE_SESSION_HOURS_DURATION) * 60 * 60000;

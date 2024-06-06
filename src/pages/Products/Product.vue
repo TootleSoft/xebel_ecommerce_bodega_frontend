@@ -1,5 +1,4 @@
 <template>
-    {{ cartStore.cart }}
     <div class="card">
         <div class="grid mb-7">
             <div class="col-12 lg:col-5">
@@ -102,7 +101,7 @@
                     <InputNumber
                         showButtons
                         buttonLayout="horizontal"
-                        :min="0"
+                        :min="1"
                         inputClass="w-2rem text-center py-2 px-1 border-transparent outline-none shadow-none"
                         v-model="quantity"
                         class="border-1 surface-border border-round"
@@ -272,7 +271,9 @@ const GetName = (sa) =>{
 }
 
 const addToCart = () => {
-    cartStore.updateCart(product.value[0], quantity.value, selectedBranch.value);
+    cartStore.addCart(product.value[0], quantity.value, selectedBranch.value);
+    toast.add({ severity: 'success', summary: 'Agregado', detail: 'Articulo Agregado al carrito', life: 3000 });
+    quantity.value = 1
 }
 
 const forceUpdateBranch = (branch) =>{

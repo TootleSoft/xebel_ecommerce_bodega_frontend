@@ -9427,7 +9427,7 @@
     color: #44486D;
   }
   .p-toast .p-toast-message.p-toast-message-success {
-    background: rgba(68, 72, 109, 0.07);
+    background: rgb(254,254,255);
     border: solid #0BD18A;
     border-width: 0 0 0 20px;
     color: #44486D;

@@ -25,7 +25,7 @@
                         <TieredMenu ref="mlogin" id="overlay_tmenu" :model="login" popup />
                     </div>
                     <div class="field col-12 sm:col-12 md:col-1 xl:col-1">
-                        <Button icon="pi pi-shopping-cart" label="Carrito" severity="contrast" outlined/>
+                        <Button @click="shoppingCart" icon="pi pi-shopping-cart" label="Carrito" severity="contrast" outlined/>
                     </div>
                     <!-- <div class="field col-12 sm:col-12 md:col-1 xl:col-1">
                         <Button icon="pi pi-bell" label='Alertas' severity="contrast" outlined/>
@@ -77,6 +77,15 @@ const tlogin = (event) => {
 const tuser = (event) => {
     muser.value.toggle(event);
 };
+
+const shoppingCart = () => {
+    if(authStore.id_usuario){
+        router.push('/shoppingcart')
+    }else{
+        router.push('/auth/login')
+    }
+}
+
 onMounted(async () => {
     await refresh();
 });
