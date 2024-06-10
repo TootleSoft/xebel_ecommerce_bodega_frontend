@@ -113,7 +113,7 @@ const submit = async () => {
         console.log(JSON.stringify(entity.value))
         let response = await axios.post('Comercial/EComerceUser/CreateUser',entity.value)
         toast.add({ severity: 'success', summary: 'Registrado', detail: "Usuario Registrado con Exito", life: 7500 });
-        authStore.setSession(response.data.id,response.data.name, undefined, undefined, undefined);
+        authStore.setSession(response.data.id_user,response.data.user, response.data.company, response.data.branch, response.data.branch_name);
         router.push('/');
         setTimeout((): void =>{
             window.location.reload();

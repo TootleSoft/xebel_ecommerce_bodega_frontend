@@ -40,17 +40,16 @@
                     <Dropdown v-model="product.id_branch" :options="productExistence[i]" optionValue="id_branch" :optionLabel="'branch_name'" class="align-items-center mb-3"></Dropdown>
                 </div>
                 <span class="inline-flex align-items-center mb-3">
-                    <i class="pi pi-envelope text-700 mr-2"></i>
-                    <span class="text-700 mr-2">{{  }}</span>
+                    <span class="text-700 mr-2">Existencia: {{ getExistence(i, product.id_branch) }}</span>
                 </span>
-                <span class="inline-flex align-items-center mb-3">
+                <!-- <span class="inline-flex align-items-center mb-3">
                     <i class="pi pi-send text-700 mr-2"></i>
                     <span class="text-700 mr-2"> Delivery by <span class="font-bold">Dec 23.</span> </span>
                 </span>
                 <span class="flex align-items-center">
                     <i class="pi pi-exclamation-triangle text-700 mr-2"></i>
                     <span class="text-700">Only 8 Available.</span>
-                </span>
+                </span> -->
             </div>
         </div>
     </li>
@@ -60,6 +59,8 @@ import { ref, onMounted, watch, computed } from 'vue';
 import { useCartStore } from '../../stores/cart';
 import axios from 'axios';
 const cartStore = useCartStore();
+import { useToast } from "primevue/usetoast";
+const toast = useToast();
 
 const productExistence = ref<any[]>([]);
 const cartproduct = ref<any[]>([]);
@@ -84,9 +85,25 @@ const removeProduct = (id, subarticle, id_branch) => {
     cartStore.updateCart()
 }
 
+const getExistence = (i, id_branch) => computed(() => {
+    if (productExistence.value[i]) {
+        const filteredBranch = productExistence.value[i].filter(branch => branch.id_branch === id_branch);
+        if (filteredBranch.length > 0) {
+            return filteredBranch[0].stock;
+        } else {
+            return 'Stock no encontrado';
+        }
+    } else {
+        return 'Existencia no cargada';
+    }
+});
+
 watch(cartStore.cart, ()=>{
     console.log(JSON.stringify(cartStore.cart))
-    cartStore.updateCart()
+    let is_duplicate = cartStore.updateCart()
+    if(is_duplicate == true){
+        toast.add({ severity: 'error', summary: 'Sucursal Duplicada', detail: 'El mismo producto ya se esta pidiendo en la sucursal seleccionada', life: 7500 });
+    }
 })
 
 onMounted(async () => {
