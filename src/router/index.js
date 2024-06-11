@@ -44,6 +44,11 @@ const routes = [
                 path: '/shoppingcart',
                 component: () => import ('@/pages/Cart/ShoppingCart.vue'),
             },
+            {
+                name: 'Paquete',
+                path: '/bundle/:id',
+                component: () => import ('@/pages/Bundles/Bundle.vue')
+            }
         ]
     },
     {
