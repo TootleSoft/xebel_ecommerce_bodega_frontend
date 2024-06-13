@@ -4,18 +4,15 @@
             <div class="col-12 lg:col-5">
                 <div class="flex">
                     <div class="flex flex-column w-2 justify-content-between" :style="{ rowGap: '1rem' }">
-                        <img
-                            v-for="(image, i) in images"
-                            :alt="String(i)"
-                            :key="i"
+                        <img v-for="(image, i) in images" :alt="String(i)" :key="i"
                             :src="`/demo/images/ecommerce/productoverview/${image}`"
-                            class="w-full cursor-pointer border-2 border-transparent transition-colors transition-duration-150 border-round'"
-                            :class="{ 'border-primary': selectedImageIndex === i }"
-                            @click="setSelectedImageIndex(i)"
-                        />
+                            class="w-full cursor-pointer border-2 border-transparent transition-colors transition-duration-150 border-round"
+                            :class="{ 'border-primary': selectedImageIndex === i }" @click="setSelectedImageIndex(i)" />
                     </div>
                     <div class="pl-3 w-10 flex">
-                        <img :alt="images[selectedImageIndex]" :src="`/demo/images/ecommerce/productoverview/${images[selectedImageIndex]}`" class="w-full border-2 border-transparent border-round" />
+                        <img :alt="images[selectedImageIndex]"
+                            :src="`/demo/images/ecommerce/productoverview/${images[selectedImageIndex]}`"
+                            class="w-full border-2 border-transparent border-round" />
                     </div>
                 </div>
             </div>
@@ -25,19 +22,20 @@
                 <div class="font-bold text-900">Existencia</div>
                 <div class="flex">
                     <div class="field col-12 h-3rem">
-                        <Dropdown v-model="selectedBranch" :options="existence" optionValue="id_branch" optionLabel="branch_name" placeholder="Seleccione una Sucursal" class="w-full"/>
+                        <Dropdown v-model="selectedBranch" :options="existence" optionValue="id_branch"
+                            optionLabel="branch_name" placeholder="Seleccione una Sucursal" class="w-full" />
                     </div>
                 </div>
-                
-                
+
+
 
                 <div v-if="!loading && product[0].is_attributable" class="font-bold text-900">Atributos</div>
                 <div v-if="!loading && product[0].is_attributable" class="flex">
                     <div v-for="sa in save_atributes" :key="sa.id_attribute" class="field col-6 h-2rem">
                         <label class=" h-2rem">{{ GetName(sa) }}</label>
                         <br>
-                        <Dropdown
-                        v-model="item_attributes[sa.id_attribute - 1]" :options="atts[sa.id_attribute - 1]" optionValue="id_serie" optionLabel="name"  class=" w-full" @change="changeSubarticle">
+                        <Dropdown v-model="item_attributes[sa.id_attribute - 1]" :options="atts[sa.id_attribute - 1]"
+                            optionValue="id_serie" optionLabel="name" class=" w-full" @change="changeSubarticle">
                         </Dropdown>
                     </div>
                 </div>
@@ -47,7 +45,7 @@
                 <TabView>
                     <TabPanel header="Descripcion">
                         <div class="text-900 font-bold text-3xl mb-4 mt-2">Descripcion del producto</div>
-                        <p class="line-height-3 text-600 p-0 mx-0 mt-0 mb-4"  v-if="!loading">
+                        <p class="line-height-3 text-600 p-0 mx-0 mt-0 mb-4" v-if="!loading">
                             {{ product[0].key_name }}
                         </p>
                     </TabPanel>
@@ -56,27 +54,28 @@
                             <div class="col-12 lg:col-6">
                                 <span class="text-900 block font-medium mb-3 font-bold">SKU</span>
                                 <ul class="py-0 pl-3 m-0 text-600 mb-3">
-                                    <li class="mb-2"  v-if="!loading">{{product[0].barcode}}</li>
+                                    <li class="mb-2" v-if="!loading">{{product[0].barcode}}</li>
                                 </ul>
                             </div>
                             <div class="col-12 lg:col-6">
                                 <span class="text-900 block font-medium mb-3 font-bold">Peso</span>
                                 <ul class="py-0 pl-3 m-0 text-600 mb-3">
-                                    <li class="mb-2"  v-if="!loading">{{product[0].weight}} KG</li>
+                                    <li class="mb-2" v-if="!loading">{{product[0].weight}} KG</li>
                                 </ul>
                             </div>
                             <div class="col-12 lg:col-6">
                                 <span class="text-900 block font-medium mb-3 font-bold">Marca</span>
                                 <ul class="py-0 pl-3 m-0 text-600 mb-3">
-                                    <li class="mb-2"  v-if="!loading">{{product[0].brand}}</li>
+                                    <li class="mb-2" v-if="!loading">{{product[0].brand}}</li>
                                 </ul>
                             </div>
                             <div class="col-12 lg:col-6">
-                                <span class="text-900 block font-medium mb-3 font-bold">Categorias y Subcategorias</span>
+                                <span class="text-900 block font-medium mb-3 font-bold">Categorias y
+                                    Subcategorias</span>
                                 <ul class="py-0 pl-3 m-0 text-600 mb-3">
-                                    <li class="mb-2"  v-if="!loading">{{product[0].fam}}</li>
-                                    <li class="mb-2"  v-if="!loading">{{product[0].gro}}</li>
-                                    <li class="mb-2"  v-if="!loading">{{product[0].sgro}}</li>
+                                    <li class="mb-2" v-if="!loading">{{product[0].fam}}</li>
+                                    <li class="mb-2" v-if="!loading">{{product[0].gro}}</li>
+                                    <li class="mb-2" v-if="!loading">{{product[0].sgro}}</li>
                                 </ul>
                             </div>
                         </div>
@@ -84,17 +83,25 @@
                 </TabView>
             </div>
             <div class="col-12 lg:col-2 py-3 lg:pl-6">
-                <div v-if="!loading" class="flex align-items-center text-2xl font-medium text-900 mb-4">{{product[0].name}} &nbsp &nbsp <i class="pi text-2xl cursor-pointer" :class="{ 'pi-heart text-600': !liked, 'pi-heart-fill text-orange-500': liked }" @click="liked = !liked"></i></div>
+                <div v-if="!loading" class="flex align-items-center text-2xl font-medium text-900 mb-4">
+                    {{product[0].name}} &nbsp &nbsp <i class="pi text-2xl cursor-pointer"
+                        :class="{ 'pi-heart text-600': !liked, 'pi-heart-fill text-orange-500': liked }"
+                        @click="liked = !liked"></i></div>
                 <div class="flex align-items-center mb-5">
-                    <span v-if="!loading && !product[0].original_price" class="text-900 font-medium text-lg block">${{product[0].price_tax.toFixed(2)}}</span>
-                    <span v-if="!loading && product[0].original_price" class="text-900 font-medium text-lg block line-through">${{product[0].original_price.toFixed(2)}}</span>
+                    <span v-if="!loading && !product[0].original_price"
+                        class="text-900 font-medium text-lg block">${{product[0].price_tax.toFixed(2)}}</span>
+                    <span v-if="!loading && product[0].original_price"
+                        class="text-900 font-medium text-lg block line-through">${{product[0].original_price.toFixed(2)}}</span>
                     &nbsp &nbsp
-                    <span v-if="!loading && product[0].original_price" class="text-900 font-medium text-lg block text-red-500">${{product[0].price_tax.toFixed(2)}}</span>
+                    <span v-if="!loading && product[0].original_price"
+                        class="text-900 font-medium text-lg block text-red-500">${{product[0].price_tax.toFixed(2)}}</span>
                 </div>
                 <div class="font-bold text-900 mb-3">Stock</div>
                 <div class="flex align-items-center mb-5">
-                    <label v-if="stock != undefined && stock > 0" class="w-full text-lg text-green-500">{{ stock }} Disponible</label>
-                    <label v-if="stock != undefined && stock <= 0" class="w-full text-lg text-red-500">{{ stock }} Disponible</label>  
+                    <label v-if="stock != undefined && stock > 0" class="w-full text-lg text-green-500">{{ stock }}
+                        Disponible</label>
+                    <label v-if="stock != undefined && stock <= 0" class="w-full text-lg text-red-500">{{ stock }}
+                        Disponible</label>
                 </div>
                 <div class="font-bold text-900 mb-3">Cantidad</div>
                 <div class="flex flex-column sm:flex-row sm:align-items-center sm:justify-content-between">
@@ -103,13 +110,10 @@
                         buttonLayout="horizontal"
                         :min="1"
                         inputClass="w-2rem text-center py-2 px-1 border-transparent outline-none shadow-none"
-                        v-model="quantity"
-                        class="border-1 surface-border border-round"
+                        v-model="quantity" class="border-1 surface-border border-round"
                         decrementButtonClass="p-button-text text-600 hover:text-primary py-1 px-1"
                         incrementButtonClass="p-button-text text-600 hover:text-primary py-1 px-1"
-                        incrementButtonIcon="pi pi-plus"
-                        decrementButtonIcon="pi pi-minus"
-                    ></InputNumber>
+                        incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus"></InputNumber>
                     <!-- <div class="flex align-items-center flex-1 mt-3 sm:mt-0 ml-0 sm:ml-5">
                         <Button label="Add to Cart" class="flex-1"></Button>
                     </div> -->
@@ -126,51 +130,8 @@
 
         <TabView>
             <TabPanel header="Details">
-                <div class="text-900 font-bold text-3xl mb-4 mt-2">Product Details</div>
-                <p class="line-height-3 text-600 p-0 mx-0 mt-0 mb-4">
-                    Volutpat maecenas volutpat blandit aliquam etiam erat velit scelerisque in. Duis ultricies lacus sed turpis tincidunt id. Sed tempus urna et pharetra. Metus vulputate eu scelerisque felis imperdiet proin fermentum. Venenatis urna
-                    cursus eget nunc scelerisque viverra mauris in. Viverra justo nec ultrices dui sapien eget mi proin. Laoreet suspendisse interdum consectetur libero id faucibus.
-                </p>
-
-                <div class="grid">
-                    <div class="col-12 lg:col-4">
-                        <span class="text-900 block font-medium mb-3 font-bold">Highlights</span>
-                        <ul class="py-0 pl-3 m-0 text-600 mb-3">
-                            <li class="mb-2">Vulputate sapien nec.</li>
-                            <li class="mb-2">Purus gravida quis blandit.</li>
-                            <li class="mb-2">Nisi quis eleifend quam adipiscing.</li>
-                            <li>Imperdiet proin fermentum.</li>
-                        </ul>
-                    </div>
-                    <div class="col-12 lg:col-4">
-                        <span class="text-900 block mb-3 font-bold">Size and Fit</span>
-                        <ul class="list-none p-0 m-0 text-600 mb-4 text-600">
-                            <li class="mb-3"><span class="font-semibold">Leo vel:</span> Egestas congue.</li>
-                            <li class="mb-3"><span class="font-semibold">Sociis natoque:</span> Parturient montes nascetur.</li>
-                            <li><span class="font-semibold">Suspendisse in:</span> Purus sit amet volutpat.</li>
-                        </ul>
-                    </div>
-                    <div class="col-12 lg:col-4">
-                        <span class="text-900 block mb-3 font-bold">Material & Care</span>
-                        <ul class="p-0 m-0 flex flex-wrap flex-column xl:flex-row text-600">
-                            <li class="flex align-items-center white-space-nowrap w-10rem block mr-2 mb-3">
-                                <i class="pi pi-sun mr-2 text-900"></i>
-                                <span>Not dryer safe</span>
-                            </li>
-                            <li class="flex align-items-center white-space-nowrap w-10rem block mb-3">
-                                <i class="pi pi-times-circle mr-2 text-900"></i>
-                                <span>No chemical wash</span>
-                            </li>
-                            <li class="flex align-items-center white-space-nowrap w-10rem block mb-3 mr-2">
-                                <i class="pi pi-sliders-h mr-2 text-900"></i>
-                                <span>Iron medium heat</span>
-                            </li>
-                            <li class="flex align-items-center white-space-nowrap w-10rem block mb-3">
-                                <i class="pi pi-minus-circle mr-2 text-900"></i>
-                                <span>Dry flat</span>
-                            </li>
-                        </ul>
-                    </div>
+                <div class="card">
+                    <RelatedProductCarusell :value="relateds" />
                 </div>
             </TabPanel>
         </TabView>
@@ -185,6 +146,7 @@ import { useToast } from "primevue/usetoast";
 import { useCartStore } from '../../stores/cart';
 const cartStore = useCartStore();
 const toast = useToast();
+import RelatedProductCarusell from '../../components/general/RelatedProductCarusell.vue'
 
 
 const route = useRoute();
@@ -200,6 +162,7 @@ const item_attributes = ref<any[]>([]);
 const atts = ref<any[]>([]);
 const save_atributes = ref<any[]>([]);
 const atributes = ref<any[]>([]);
+const relateds = ref<any[]>([]);
 
 
 
@@ -208,41 +171,59 @@ const liked = ref(false);
 const quantity = ref(1);
 const color = ref('bluegray');
 const size = ref('M');
-const images = ref(['product-overview-3-1.png', 'product-overview-3-2.png', 'product-overview-3-3.png', 'product-overview-3-4.png']);
+const images = ref<string[]>([]);
 
 const refresh = async () => {
     loading.value = true;
-    try{
-        let response = await axios.get('Inventory/EComerce/GetArticleInfo/'+route.params.id_article+'/'+route.params.id_subarticle+'/'+id_user.value)
-        product.value = response.data; 
+    try {
+        let response = await axios.get('Inventory/EComerce/GetArticleInfo/' + route.params.id_article + '/' + route.params.id_subarticle + '/' + id_user.value)
+        product.value = response.data;
         console.log(JSON.stringify(product.value))
-        let existence_resposnse = await axios.get('Inventory/EComerce/GetProductExistences/'+route.params.id_article+'/'+route.params.id_subarticle)
+
+        //Extraemos solo las imagenes que pertenecen a ese articulo
+        const responseImg = await axios.get(`Inventory/EComerce/GetImages/${product.value[0].id}`);
+
+        // images.value = [];
+        // Transformar los datos recibidos a una lista de URLs de imágenes
+        images.value = responseImg.data.map(imgObj => [
+            imgObj.image_name_1 || 'default-image-1.png',
+            imgObj.image_name_2 || 'default-image-2.png',
+            imgObj.image_name_3 || 'default-image-3.png',
+            imgObj.image_name_4 || 'default-image-4.png'
+        ]).flat(); // 'flat()' para aplanar el array de arrays
+        console.log('images', images.value);
+
+        let existence_resposnse = await axios.get('Inventory/EComerce/GetProductExistences/' + route.params.id_article + '/' + route.params.id_subarticle)
         existence.value = existence_resposnse.data;
-        console.log(JSON.stringify(existence.value.sort((a, b) => b.stock - a.stock)[0].stock))
+
+        let article_related = await axios.get('Inventory/EComerce/GetArticleRelated/' + route.params.id_article + '/' + route.params.id_subarticle + '/' + id_user.value)
+        relateds.value = article_related.data;
+        // console.log(JSON.stringify(existence.value.sort((a, b) => b.stock - a.stock)[0].stock))
+
         //Por el momento es asi, pero si el cliente ya asigno una sucursal a su cuenta, se pondra siempre el stock en esa sucursal
         let branch = existence.value.sort((a, b) => b.stock - a.stock)[0].id_branch
-        selectedBranch.value=branch;
+        selectedBranch.value = branch;
         console.log(selectedBranch.value)
         forceUpdateBranch(selectedBranch.value)
-        if(product.value[0].is_attributable == true){
+        if (product.value[0].is_attributable == true) {
             let response = await axios.get('Inventory/EComerce/GetAttributes');
             atributes.value = response.data;
             item_attributes.value = new Array(atributes.value.length);
             atts.value = new Array(atributes.value.length);
             response = await axios.get('Inventory/EComerce/GetAttributeNames');
             atribute_name.value = response.data;
-            response = await axios.get('Inventory/EComerce/GetAtributes/'+product.value[0].id)
+            response = await axios.get('Inventory/EComerce/GetAtributes/' + product.value[0].id)
             save_atributes.value = response.data;
-            save_atributes.value = save_atributes.value.sort((a,b) => a.id_attribute - b.id_attribute)
+            save_atributes.value = save_atributes.value.sort((a, b) => a.id_attribute - b.id_attribute)
             if (save_atributes.value.length > 0) {
                 for (const attributes of save_atributes.value) {
-                    response = await axios.get('Inventory/EComerce/GetOptions/'+attributes.id)
+                    response = await axios.get('Inventory/EComerce/GetOptions/' + attributes.id)
                     let att = response.data
                     att = att.map(x => +x);
                     let att_attributes = atribute_name.value.filter(x => x.id_attribute == attributes.id_attribute);
                     att_attributes = att_attributes.filter(x => att.includes(x.id_serie));
-                    if(att_attributes != null){
-                        let newRecord = {"id":0,"id_attribute":attributes.id_attribute,"id_serie":0,"name":"N/A","prop":null};
+                    if (att_attributes != null) {
+                        let newRecord = { "id": 0, "id_attribute": attributes.id_attribute, "id_serie": 0, "name": "N/A", "prop": null };
                         att_attributes.unshift(newRecord);
                     }
                     atts.value[attributes.id_attribute - 1] = att_attributes;
@@ -257,10 +238,10 @@ const refresh = async () => {
                 }
             }
         }
-    }catch{
+    } catch {
         console.log("No se cargaron los datos")
     }
-    finally{
+    finally {
         loading.value = false;
     }
 }
