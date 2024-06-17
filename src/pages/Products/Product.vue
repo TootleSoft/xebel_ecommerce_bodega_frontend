@@ -19,7 +19,7 @@
             <div class="col-12 lg:col-4 py-3 lg:pl-6">
                 <!-- Se utilizaba en el codigo para atributos pero se cambiara -->
 
-                <div class="font-bold text-900">Existencia</div>
+                <div class="font-bold text-900">Sucursal</div>
                 <div class="flex">
                     <div class="field col-12 h-3rem">
                         <Dropdown v-model="selectedBranch" :options="existence" optionValue="id_branch"
@@ -43,9 +43,9 @@
                 <br>
                 <br>
                 <TabView>
-                    <TabPanel header="Descripcion">
-                        <div class="text-900 font-bold text-3xl mb-4 mt-2">Descripcion del producto</div>
-                        <p class="line-height-3 text-600 p-0 mx-0 mt-0 mb-4" v-if="!loading">
+                    <TabPanel header="Descripción">
+                        <div class="text-900 font-bold text-3xl mb-4 mt-2">Descripción del producto</div>
+                        <p class="line-height-3 text-600 p-0 mx-0 mt-0 mb-4"  v-if="!loading">
                             {{ product[0].key_name }}
                         </p>
                     </TabPanel>

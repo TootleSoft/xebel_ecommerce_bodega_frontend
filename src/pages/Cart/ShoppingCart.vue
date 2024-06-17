@@ -1,8 +1,7 @@
 <template>
-    {{ cartStore.cart }}
     <div class="card">
         <div class="flex flex-column align-items-center mb-6">
-            <div class="text-900 text-4xl mb-4 font-medium">Tu total en el carrito es {{total.toFixed(2)}}</div>
+            <div class="text-900 text-4xl mb-4 font-medium">Tu total en el carrito es ${{total.toFixed(2)}}</div>
             <Button label="Pagar" />
         </div>
         <ul class="list-none p-0 m-0">
@@ -55,8 +54,11 @@ const total = computed(()=>{
 const subtotal = computed(()=>{
     let i = 0;
     for(const product of cartStore.cart){
-        console.log(product.ecomerce_offer_price)
-        i = i + ((product.ecomerce_offer_price ?? product.unit_price)*product.quantity)
+        if(product.is_bundle){
+            i = i + ((product.price_tax)*product.quantity / 1.16)
+        }else{
+            i = i + ((product.ecomerce_offer_price ?? product.unit_price)*product.quantity)
+        }
     }
     return i
 })
@@ -64,7 +66,7 @@ const subtotal = computed(()=>{
 const taxes = computed(()=>{
     let i = 0;
     for(const product of cartStore.cart){
-        i = i + ((product.ecomerce_offer_price ?? product.unit_price)*((product.iva_transferred+product.ieps_transferred)*.01)*product.quantity)
+        i = i + ((product.ecomerce_offer_price ?? product.unit_price ?? product.price_tax)*((product.iva_transferred+product.ieps_transferred)*.01)*product.quantity)
     }
     return i
 })

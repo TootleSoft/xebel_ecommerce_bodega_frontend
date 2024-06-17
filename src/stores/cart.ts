@@ -34,6 +34,7 @@ export interface CartState {
     is_attributable?: true;
     quantity?: number;
     id_branch?: number;
+    is_bundle?: boolean;
 }
 
 
