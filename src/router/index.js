@@ -48,7 +48,12 @@ const routes = [
                 name: 'Paquete',
                 path: '/bundle/:id',
                 component: () => import ('@/pages/Bundles/Bundle.vue')
-            }
+            },
+            {
+                name: 'DatosPedido',
+                path: '/orderdata',
+                component: () => import ('@/pages/Cart/OrderData.vue')
+            },
         ]
     },
     {

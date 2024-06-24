@@ -31,11 +31,16 @@
                                     <InputIcon class="pi pi-key" />
                                     <InputText v-model="entity.password" type="password" autocomplete="off" placeholder="Contraseña" class="block mb-3" style="max-width: 320px; min-width: 270px" />
                                 </IconField>
+                                <IconField iconPosition="left">
+                                    <InputIcon class="pi pi-phone" />
+                                    <InputText @keyup.enter="submit" v-model="phone" type="number" placeholder="Telefono" class="block mb-3" style="max-width: 320px; min-width: 270px" />
+                                </IconField>
+                                <Dropdown v-model="userBranch" :options="branches" optionValue="id" optionLabel="name" placeholder="Sucursal Prinicpal" style="max-width: 320px; min-width: 270px"></Dropdown>
                             </div>
                             <div class="button-container mt-4 text-left" style="max-width: 320px; min-width: 270px">
                                 <div class="buttons flex align-items-center gap-3">
                                     <Button type="button" @click="goHome" class="block" severity="danger" outlined style="max-width: 320px; margin-bottom: 32px">Cancelar</Button>
-                                    <Button @keyup.enter="submit" type="button" @click="submit" class="block" style="max-width: 320px; margin-bottom: 32px">Enviar</Button>
+                                    <Button type="button" @click="submit" class="block" style="max-width: 320px; margin-bottom: 32px">Enviar</Button>
                                 </div>
                                 <span class="font-medium text-600">¿Ya tienes cuenta? <a class="font-semibold cursor-pointer text-900 hover:text-primary transition-colors transition-duration-300" @click="goLogin">Inicia Sesion</a></span>
                             </div>
@@ -54,7 +59,7 @@
 <script setup lang="ts">
 import { useLayout } from '../../layout/composables/layout.js';
 import { useRouter } from 'vue-router';
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import axios from 'axios';
 import Password from 'primevue/password';
 import { useToast } from "primevue/usetoast";
@@ -89,10 +94,14 @@ const entity = ref<ecomerce_user>({
     modified_by: null
 });
 
+const phone = ref<string>(null)
+
 const { layoutConfig } = useLayout();
 const router = useRouter();
 
-const confirmed = ref(false);
+const branches = ref<any[]>([])
+
+const userBranch = ref<number>(null)
 
 const goHome = () => {
     router.push('/');
@@ -102,18 +111,27 @@ const goLogin = () => {
     router.push('/auth/login');
 };
 
+const refresh = async () => {
+    try{
+        let response = await axios.get('Comercial/EComerceUser/GetBranches/'+1)
+        branches.value = response.data;
+    }catch{
+        console.log("Error al cargar sucursales")
+    }
+};
+
+
 const submit = async () => {
     try{
-        if(entity.value.name == null || entity.value.email == null || entity.value.password == null)
+        if(entity.value.name == null || entity.value.email == null || entity.value.password == null || phone.value == null || userBranch.value == null)
             throw "Favor de llenar todos los campos"
         if(entity.value.email != null ? !entity.value.email.includes('@') : true)
             throw "Favor de ingresar un correo valido"
         if(!/[A-Z]/.test(entity.value.password ?? '') || !/[0-9]/.test(entity.value.password ?? '') || !/[a-z]/.test(entity.value.password ?? ''))
             throw "La contraseña debe de contener un numero, una mayuscula y una minuscula"
-        console.log(JSON.stringify(entity.value))
-        let response = await axios.post('Comercial/EComerceUser/CreateUser',entity.value)
+        let response = await axios.post('Comercial/EComerceUser/CreateUser/'+phone.value+'/'+userBranch.value,entity.value)
         toast.add({ severity: 'success', summary: 'Registrado', detail: "Usuario Registrado con Exito", life: 7500 });
-        authStore.setSession(response.data.id_user,response.data.user, response.data.company, response.data.branch, response.data.branch_name);
+        authStore.setSession(response.data.id_user,response.data.id_customer,response.data.user, response.data.company, response.data.branch, response.data.branch_name);
         router.push('/');
         setTimeout((): void =>{
             window.location.reload();
@@ -124,7 +142,10 @@ const submit = async () => {
         }catch{
             toast.add({ severity: 'error', summary: 'Error al crear usuario', detail: error, life: 7500 });
         }
-    }
-    
+    }   
 };
+
+onMounted(async () => {
+    await refresh();
+});
 </script>

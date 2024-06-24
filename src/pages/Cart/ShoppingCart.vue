@@ -1,8 +1,8 @@
 <template>
     <div class="card">
         <div class="flex flex-column align-items-center mb-6">
-            <div class="text-900 text-4xl mb-4 font-medium">Tu total en el carrito es ${{total.toFixed(2)}}</div>
-            <Button label="Pagar" />
+            <div class="text-900 text-4xl mb-4 font-medium">Tu total en el carrito es {{total.toFixed(2)}}</div>
+            <Button label="Pagar" @click="router.push('/orderdata')"/>
         </div>
         <ul class="list-none p-0 m-0">
             <ShoppingCartProduct></ShoppingCartProduct>
@@ -23,7 +23,7 @@
                     <span class="text-xl text-900 font-bold text-3xl">${{ total.toFixed(2) }}</span>
                 </li>
                 <li class="flex justify-content-end">
-                    <Button label="Check Out"></Button>
+                    <Button label="Pagar" @click="router.push('/orderdata')"></Button>
                 </li>
             </ul>
         </div>
@@ -34,7 +34,9 @@
 import { ref, computed } from 'vue';
 import ShoppingCartProduct from './ShoppingCartProduct.vue';
 import { useCartStore } from '../../stores/cart';
+import { useRouter } from 'vue-router';
 const cartStore = useCartStore();
+const router = useRouter();
 
 const quantityOptions = [
     { label: '1', value: 1 },
