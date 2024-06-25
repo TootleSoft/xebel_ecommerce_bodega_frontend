@@ -4,14 +4,12 @@
             <div class="col-12 lg:col-5">
                 <div class="flex">
                     <div class="flex flex-column w-2 justify-content-between" :style="{ rowGap: '1rem' }">
-                        <img v-for="(image, i) in images" :alt="String(i)" :key="i"
-                            :src="`/demo/images/ecommerce/productoverview/${image}`"
+                        <img v-for="(image, i) in images" :alt="`Image ${i}`" :key="i" :src="image"
                             class="w-full cursor-pointer border-2 border-transparent transition-colors transition-duration-150 border-round"
                             :class="{ 'border-primary': selectedImageIndex === i }" @click="setSelectedImageIndex(i)" />
                     </div>
                     <div class="pl-3 w-10 flex">
-                        <img :alt="images[selectedImageIndex]"
-                            :src="`/demo/images/ecommerce/productoverview/${images[selectedImageIndex]}`"
+                        <img :alt="`Selected Image ${selectedImageIndex}`" :src="images[selectedImageIndex]"
                             class="w-full border-2 border-transparent border-round" />
                     </div>
                 </div>
@@ -45,7 +43,7 @@
                 <TabView>
                     <TabPanel header="Descripción">
                         <div class="text-900 font-bold text-3xl mb-4 mt-2">Descripción del producto</div>
-                        <p class="line-height-3 text-600 p-0 mx-0 mt-0 mb-4"  v-if="!loading">
+                        <p class="line-height-3 text-600 p-0 mx-0 mt-0 mb-4" v-if="!loading">
                             {{ product[0].key_name }}
                         </p>
                     </TabPanel>
@@ -105,10 +103,7 @@
                 </div>
                 <div class="font-bold text-900 mb-3">Cantidad</div>
                 <div class="flex flex-column sm:flex-row sm:align-items-center sm:justify-content-between">
-                    <InputNumber
-                        showButtons
-                        buttonLayout="horizontal"
-                        :min="1"
+                    <InputNumber showButtons buttonLayout="horizontal" :min="1"
                         inputClass="w-2rem text-center py-2 px-1 border-transparent outline-none shadow-none"
                         v-model="quantity" class="border-1 surface-border border-round"
                         decrementButtonClass="p-button-text text-600 hover:text-primary py-1 px-1"
@@ -129,7 +124,7 @@
         </div>
 
         <TabView>
-            <TabPanel header="Details">
+            <TabPanel header="Productos relacionados">
                 <div class="card">
                     <RelatedProductCarusell :value="relateds" />
                 </div>
@@ -172,6 +167,8 @@ const quantity = ref(1);
 const color = ref('bluegray');
 const size = ref('M');
 const images = ref<string[]>([]);
+// Obtener la ruta base de la API desde las variables de entorno
+const apiRoute = import.meta.env.VITE_API_ROUTE;
 
 const refresh = async () => {
     loading.value = true;
@@ -182,14 +179,15 @@ const refresh = async () => {
 
         //Extraemos solo las imagenes que pertenecen a ese articulo
         const responseImg = await axios.get(`Inventory/EComerce/GetImages/${product.value[0].id}`);
+        console.log('responseImg.data:', responseImg.data);
 
         // images.value = [];
-        // Transformar los datos recibidos a una lista de URLs de imágenes
-        images.value = responseImg.data.map(imgObj => [
-            imgObj.image_name_1 || 'default-image-1.png',
-            imgObj.image_name_2 || 'default-image-2.png',
-            imgObj.image_name_3 || 'default-image-3.png',
-            imgObj.image_name_4 || 'default-image-4.png'
+            // Transformar los datos recibidos a una lista de URLs de imágenes
+            images.value = responseImg.data.map(imgObj => [
+            getImageUrl(imgObj.image_name_1.replace('.jpeg', '') || 'default-image-1.jpeg'),
+            getImageUrl(imgObj.image_name_2.replace('.jpeg', '') || 'default-image-2.jpeg'),
+            getImageUrl(imgObj.image_name_3.replace('.jpeg', '') || 'default-image-3.jpeg'),
+            getImageUrl(imgObj.image_name_4.replace('.jpeg', '') || '1133_METABIO32_4')
         ]).flat(); // 'flat()' para aplanar el array de arrays
         console.log('images', images.value);
 
@@ -267,9 +265,15 @@ const forceUpdateBranch = (branch) =>{
         stock.value = undefined;
     }
 }
-const setSelectedImageIndex = (index) => {
+const setSelectedImageIndex = (index: number) => {
     selectedImageIndex.value = index;
 };
+
+// Función para construir la URL de la imagen
+const getImageUrl = (imageName: string) => {
+    return `${apiRoute}Inventory/EComerce/image/${imageName}`+"/"+ new Date();
+};
+
 const changeSubarticle = async () => {
 
     let id_subarticle = String(product.value[0].id)

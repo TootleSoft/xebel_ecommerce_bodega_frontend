@@ -1,12 +1,32 @@
 <template>
     <div class="card">
-        <div class="text-900 font-medium text-4xl mb-4">Marcas</div>
-        <BasicProductCarusell/>
+        <div class="container">
+            <div class="left-block">
+                <p class="cyan-text">Descubre nuestros increibles productos</p>
+                <span class="bold-text">Descubre la unica variedad de marcas y productos que Villa de Cortes Monterrey
+                    tiene
+                    para ti</span>
+                <div class="col-8">
+                    <Button @click="" label="Registrate para comprar" class="button" rounded></Button>
+                </div>
+            </div>
+            <div class="right-block">
+                <img src="" alt="" srcset="">
+                <BasicProductCarusell />
+            </div>
+        </div>
+
+        <div class="centered-text">
+            <div class="text-900 font-medium text-4xl mb-4">
+                <p class="bold-text">Nuestras</p><span class="bold-text">Marcas</span>
+            </div>
+        </div>
+        <BasicProductCarusell />
     </div>
 
     <div class="card">
         <div class="text-900 font-medium text-4xl mb-4">Marcas</div>
-        <BasicProductCarusell/>
+        <BasicProductCarusell />
     </div>
 </template>
 
@@ -89,3 +109,60 @@ const products2 = ref([
 
 
 </script>
+<style lang="scss" scoped>
+    p {
+  color: rgb(19, 224, 228);
+  font-size: xx-large;
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+.container {
+    display: flex;
+    justify-content: space-between; /* Espacio entre los dos bloques */
+    align-items: center; /* Alinea verticalmente al centro */
+}
+
+.left-block {
+    text-align: left;
+    width: 40%; /* Ajusta el ancho según sea necesario */
+}
+
+.right-block {
+    text-align: right;
+    width: 60%; /* Ajusta el ancho según sea necesario */
+}
+
+.bold-text {
+    font-weight: bold;
+    font-size: xx-large;
+    color: #061171;
+    text-align: justify; /* Justifica el texto */
+}
+
+
+
+.centered-text {
+  display: flex;
+  justify-content: center;
+}
+.button {
+	background:linear-gradient(to bottom, #1a17a6 5%, #2c68bd 100%);
+	background-color:#1a17a6;
+	border-radius:28px;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Arial;
+	font-size:17px;
+	padding:16px 31px;
+	text-decoration:none;
+	text-shadow:0px 1px 16px #2f6627;
+}
+.button:hover {
+	background:linear-gradient(to bottom, #2c68bd 5%, #1a17a6 100%);
+	background-color:#2c68bd;
+}
+.button:active {
+	position:relative;
+	top:1px;
+}
+</style>
