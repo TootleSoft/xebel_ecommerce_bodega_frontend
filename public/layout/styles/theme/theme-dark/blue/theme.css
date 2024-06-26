@@ -175,12 +175,13 @@
 }
 
 .MegaMenuBar{
-  background-color: #326fd1;
+  background-color: #326fd100;
   border-width: 0px;
+  border: none;
 }
 
 .MegaMenuBackground{
-  background-color: #2E323F;
+  background-color: #2e323f00;
   z-index:99 !important;
 }
 
@@ -193,7 +194,7 @@
 }
 
 .MegaMenuText{
-  color: white;
+  color: rgb(77, 77, 77);
 }
 
 .p-editor-container .p-editor-toolbar {

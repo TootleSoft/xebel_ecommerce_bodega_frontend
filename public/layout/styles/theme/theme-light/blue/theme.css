@@ -175,16 +175,28 @@
 }
 
 .MegaMenuBar{
-  background-color: #326fd1;
+  background-color: #326fd100;
+  border: none;
 }
 
 .MegaMenuBackground{
-  background-color: #F6F9FC;
+  background-color: #1d0eea00;
   z-index:99 !important;
 }
 
 .MegaMenuText{
-  color: white;
+  color: rgb(77, 77, 77);
+}
+.full-width {
+  width: 100vw; /* Viewport width, ensuring it spans the entire width of the screen */
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  box-sizing: border-box;
+  background-color: #0f7e8d;
+  color: #ffffff;
 }
 
 .loading-overlay {

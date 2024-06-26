@@ -12,6 +12,7 @@
     transition-property: all;
     transition-timing-function: ease;
     line-height: 1;
+    border-color: #ff0000 !important; /* Cambia #ff0000 por el color de tu preferencia */
 }
 
 .p-float-label:has(textarea) label {
