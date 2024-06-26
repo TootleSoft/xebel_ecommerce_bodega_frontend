@@ -250,7 +250,7 @@ const GetName = (sa) =>{
 }
 
 const addToCart = () => {
-    cartStore.addCart(product.value[0], quantity.value, selectedBranch.value);
+    cartStore.addCart(product.value[0], quantity.value, selectedBranch.value, false);
     toast.add({ severity: 'success', summary: 'Agregado', detail: 'Articulo Agregado al carrito', life: 3000 });
     quantity.value = 1
 }

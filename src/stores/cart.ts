@@ -35,6 +35,8 @@ export interface CartState {
     quantity?: number;
     id_branch?: number;
     is_bundle?: boolean;
+    id_numberItem?: number;
+    id_numberBundle?: number;
 }
 
 
@@ -42,12 +44,11 @@ export const useCartStore = defineStore({
     id: 'cart',
     state: () => ({
         cart: storage.getStorageSync<CartState[]>('cart') ?? [],
+        id_numberBundle: storage.getStorageSync<number[]>('id_numberBundle') ?? 0,
+        id_numberItem: storage.getStorageSync<number[]>('id_numberItem') ?? 0,
     }),
     actions: {
-        addCart(product: CartState, quantity: number, id_branch: number){
-            console.log(JSON.stringify(product))
-            console.log(JSON.stringify(quantity))
-            console.log(JSON.stringify(id_branch))
+        addCart(product: CartState, quantity: number, id_branch: number, is_bundle: boolean){
             let article: CartState = { ...product };
             article.quantity = quantity;
             article.id_branch = id_branch;
@@ -58,12 +59,29 @@ export const useCartStore = defineStore({
                 this.cart[index].quantity = (this.cart[index].quantity || 0) + quantity;
             } else {
                 // Agregar el nuevo producto al carrito
+                if(article.is_bundle == true){
+                    article.id_numberBundle = 0;
+                }else{
+                    article.id_numberItem = 0;
+                }
                 this.cart.push(article);
+                for(let i = 0; i < this.cart.length; i++){
+                    if(this.cart[i].is_bundle == true && this.cart[i].id_numberBundle == 0){
+                        this.id_numberBundle = this.id_numberBundle + 1;
+                        this.cart[i].id_numberBundle = this.id_numberBundle;
+                    }else if(this.cart[i].id_numberItem == 0){
+                        this.id_numberItem = this.id_numberItem + 1;
+                        this.cart[i].id_numberItem = this.id_numberItem;
+                    }
+                }
             }
+            console.log("carrito", this.cart)
+
             // Guardar el estado actualizado en el almacenamiento
             storage.setStorageSync('cart', this.cart);
-            console.log(JSON.stringify(this.cart));
-            console.log(JSON.stringify(article))
+            storage.setStorageSync('id_numberBundle', this.id_numberBundle);
+            storage.setStorageSync('id_numberItem', this.id_numberItem);
+            
         },
         updateCart(){
             let is_duplicate = false;

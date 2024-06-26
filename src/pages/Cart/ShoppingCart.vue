@@ -1,7 +1,7 @@
 <template>
     <div class="card">
         <div class="flex flex-column align-items-center mb-6">
-            <div class="text-900 text-4xl mb-4 font-medium">Tu total en el carrito es {{total.toFixed(2)}}</div>
+            <div class="text-900 text-4xl mb-4 font-medium">Tu total en el carrito es ${{total.toFixed(2)}}</div>
             <Button label="Pagar" @click="router.push('/orderdata')"/>
         </div>
         <ul class="list-none p-0 m-0">
@@ -61,6 +61,8 @@ const subtotal = computed(()=>{
         }else{
             i = i + ((product.ecomerce_offer_price ?? product.unit_price)*product.quantity)
         }
+        console.log("subtotal", i)
+        console.log("producto "+product.key_name+" precio oferta: "+product.ecomerce_offer_price+" precio normal: " +product.unit_price +" precio con iva: "+product.price_tax)
     }
     return i
 })
@@ -68,7 +70,11 @@ const subtotal = computed(()=>{
 const taxes = computed(()=>{
     let i = 0;
     for(const product of cartStore.cart){
-        i = i + ((product.ecomerce_offer_price ?? product.unit_price ?? product.price_tax)*((product.iva_transferred+product.ieps_transferred)*.01)*product.quantity)
+        if(product.is_bundle){
+            i = i + ((product.ecomerce_offer_price ?? product.unit_price)*((product.iva_transferred+product.ieps_transferred)*.01)*product.quantity)
+        }else{
+            i = i + ((product.ecomerce_offer_price ?? product.unit_price)*((product.iva_transferred+product.ieps_transferred)*.01)*product.quantity)
+        }
     }
     return i
 })

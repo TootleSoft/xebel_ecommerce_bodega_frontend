@@ -159,7 +159,7 @@ const imgRoute = (id) => {
 
 const addToCart = async () => {
     try {
-        cartStore.addCart(products.value[0], quantity.value, selectedBranch.value);
+        cartStore.addCart(products.value[0], quantity.value, selectedBranch.value, true);
         toast.add({ severity: 'success', summary: 'Añadido al carrito', detail: 'El paquete ' + products.value[0].name + ' se ha añadido al carrito', life: 3000 });
         quantity.value = 1
     } catch {

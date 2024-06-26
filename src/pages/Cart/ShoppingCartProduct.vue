@@ -15,14 +15,14 @@
                     <span v-if="!product.is_bundle || product.is_bundle == undefined"
                         class="text-700 text-sm">{{ product.barcode }}</span>
                     <div  class="grid">
-                        <div v-if="product.is_bundle" class="col-12 lg:col-1">
+                        <div class="col-12 lg:col-1">
                             <ul v-if="product.is_bundle" class="py-0 pl-3 m-0 text-600 mb-3">
-                                <li class="mb-2" v-for="(item, j) in products[i]" :key="j">{{ products[i][j].quantity }}</li>
+                                <li class="mb-2" v-for="(item, j) in products[product.id_numberBundle-1]" :key="j">{{ products[product.id_numberBundle-1][j].quantity }}</li>
                             </ul>
                         </div>
                         <div class="col-12 lg:col-1">
                             <ul v-if="product.is_bundle" class="py-0 pl-3 m-0 text-600 mb-3">
-                                <li class="mb-2" v-for="(item, j) in products[i]" :key="j">{{ products[i][j].barcode }}</li>
+                                <li class="mb-2" v-for="(item, j) in products[product.id_numberBundle-1]" :key="j">{{ products[product.id_numberBundle-1][j].barcode }}</li>
                             </ul>
                         </div>
                     </div>
@@ -62,11 +62,12 @@
                         :options="branches" optionValue="id_branch" :optionLabel="'branch_name'"
                         class="align-items-center mb-3"></Dropdown>
                     <Dropdown v-if="product.is_bundle" v-model="product.id_branch" :options="branches"
-                        optionValue="id_branch" :optionLabel="'branch_name'" class="align-items-center mb-3"></Dropdown>
+                        optionValue="id_branch" :optionLabel="'branch_name'" class="align-items-center mb-3" :disabled=true ></Dropdown>
                 </div>
                 <span class="inline-flex align-items-center mb-3">
-                    <span v-if="!product.is_bundle || product.is_bundle == undefined" class="text-700 mr-2">Existencia: {{ getExistence(product.id_branch) }}</span>
-                    <span v-if="product.is_bundle" class="text-700 mr-2" >Existencia: {{ stock }}</span>
+                    <span v-if="!product.is_bundle || product.is_bundle == undefined" class="text-700 mr-2">Existencia: {{ getExistence(product.id_numberItem,product.id_branch) }}</span>
+                    <span v-if="product.is_bundle && products.length % 2 === 0 || products.length == 1" class="text-700 mr-2" >Existencia: {{ array[(product.id_numberBundle-1)+(products.length-1)]}}</span>
+                    <span v-if="product.is_bundle && products.length % 2 !== 0 && products.length > 1" class="text-700 mr-2" >Existencia: {{ array[(product.id_numberBundle-1)+(products.length)]}}</span>
                 </span>
             </div>
         </div>
@@ -78,7 +79,6 @@ import { useCartStore } from '../../stores/cart';
 import axios from 'axios';
 const cartStore = useCartStore();
 import { useToast } from "primevue/usetoast";
-import { isArrayTypeNode } from 'typescript';
 const toast = useToast();
 
 const productExistence = ref<any[]>([]);
@@ -86,10 +86,12 @@ const cartproduct = ref<any[]>([]);
 const branches = ref<any[]>([]);
 const stock = ref<any>();
 const bundles = ref<any[]>([]);
-const bundles2 = ref<any[]>([]);
+const items = ref<any[]>([]);
 const array = ref<any[]>([]);
 const products = ref<any[]>([]);
-const loading = ref<boolean>(false)
+const loading = ref<boolean>(false);
+const branchItem = ref<number>(1);
+const branchBundle = ref<number>(1);
 
 const imgroute = (id, sku, brand) => {
     sku = sku.replace(/\//g, "--").replace(/ñ/g, "nnn").replace(/Ñ/g, "nnn").replace(/#/g, '----')
@@ -112,9 +114,13 @@ const refresh = async () => {
             })
             branches.value = branch.data;
             if (!product.is_bundle || product.is_bundle == undefined) {
-                let resposnse = await axios.get('Inventory/EComerce/GetProductExistences/' + product.id + '/' + product.id_subarticle)
-                //productExistence.value.push(resposnse.data)
-                productExistence.value = resposnse.data;
+                let resposnse = await axios.get('Inventory/EComerce/GetProductExistences/' + product.id + '/' + product.id_subarticle, {
+                    headers:{
+                        company: 1
+                    }
+                })
+                productExistence.value.push(resposnse.data)
+                console.log("existencia",productExistence.value)
             } else if (product.is_bundle) {
                 let bundle = await axios.get('Inventory/EComerce/getBundleInfo', {
                     headers: {
@@ -132,25 +138,14 @@ const refresh = async () => {
                         const pack = Math.floor(b.stock / b.quantity); //obtiene el número de paquetes que se completan dependiendo del stock disponible
                         bundles.value.push(pack); //se agrega a otro arreglo bundles para ir guardando cuantos paquetes se completan de cada artículo
                     }
-                    bundles2.value.push(bundles.value);
-                    //return;
-                }
-                console.log("paquetes", bundles2.value.slice(-products.value.length).length)
-                
-                //se valida que todos los artículos completen el mismo número de paquetes, si no se completan los mismos, se toma como stock el que complete menos paquetes
-                if(bundles2.value.slice(-products.value.length).length == products.value.length){
-                    for (let k = 0; k < bundles2.value.slice(-products.value.length).length; k++) {
-                    let menorValor = bundles2.value.slice(-products.value.length)[k][0];
-                    // console.log("menor valor", menorValor)
-                    // for(let l = 0; l < bundles2.value[k].slice(-products.value.length).length; l++){
-                    //     if (bundles2.value[k][l] < menorValor) {
-                    //         menorValor = bundles2.value[k][l];
-                    //         stock.value = menorValor;
-                    //     }
-                    // }
+                    //se valida que todos los artículos completen el mismo número de paquetes, si no se completan los mismos, se toma como stock el que complete menos paquetes
+                    let menorValor = bundles.value[0];
+                    for (let k = 0; k < bundles.value.length; k++) {
+                        if (bundles.value[k] < menorValor) {
+                            menorValor = bundles.value[k];
+                        }
+                    }
                     array.value.push(menorValor);
-                    console.log("array", array.value)
-                }
                 }
             }
         }
@@ -167,48 +162,19 @@ const removeProduct = (id, subarticle, id_branch) => {
     cartStore.updateCart()
 }
 
-const getExistence = (id_branch) => computed(() => {
-    for (let i = 0; i < productExistence.value.length; i++) {
-        const filteredBranch = productExistence.value.filter(branch => branch.id_branch === id_branch);
+const getExistence = (id_numberItem,id_branch) => computed(() => {
+    console.log(productExistence.value[id_numberItem-1])
+    if (productExistence.value[id_numberItem-1]) {
+        const filteredBranch = productExistence.value[id_numberItem-1].filter(branch => branch.id_branch === id_branch);
         if (filteredBranch.length > 0) {
             return filteredBranch[0].stock;
         } else {
-            return 'Sin stock';
+            return 'Stock no encontrado';
         }
+    } else {
+        return 'Existencia no cargada';
     }
 });
-
-// const getStockBundle = (id, id_branch) => computed(() => {
-//     try{
-//         //getBundleInfo(id, id_branch);
-//         stock.value = undefined;
-//         bundles.value = [];
-//         for (let i = 0; i < products.value.length; i++) {
-//             const a = products.value[i];
-//             for(let j = 0; j < a.length; j++){
-//                 const b = a[j];
-//                 const pack = Math.floor(b.stock / b.quantity); //obtiene el número de paquetes que se completan dependiendo del stock disponible
-//                 bundles.value.push(pack); //se agrega a otro arreglo bundles para ir guardando cuantos paquetes se completan de cada artículo
-//             }
-//             //se valida que todos los artículos completen el mismo número de paquetes, si no se completan los mismos, se toma como stock el que complete menos paquetes
-//             let menorValor = bundles.value[0];
-//             for (let i = 0; i < bundles.value.length; i++) {
-//                 if (bundles.value[i] < menorValor) {
-//                     menorValor = bundles.value[i];
-//                 }
-//             }
-//             if(menorValor > 0){
-//                 stock.value = menorValor;
-//             }else{
-//                 stock.value = "Sin stock";
-//             }
-//         }
-//     }catch{
-
-//     }finally{
-//         loading.value = false;
-//     }  
-// });
 
 watch(cartStore.cart, () => {
     console.log(JSON.stringify(cartStore.cart))
