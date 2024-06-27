@@ -134,8 +134,8 @@
             </div>
         </div>
         <div class="col-12 flex flex-column lg:flex-row justify-content-center align-items-center lg:justify-content-end my-6">
-            <Button class="mt-3 lg:mt-0 w-full lg:w-auto flex-order-2 lg:flex-order-1 lg:mr-4" severity="secondary" label="Return to Cart" icon="pi pi-fw pi-arrow-left"></Button>
-            <Button class="w-full lg:w-auto flex-order-1 lg:flex-order-2" label="Continue to Shipping" icon="pi pi-fw pi-check"></Button>
+            <Button class="mt-3 lg:mt-0 w-full lg:w-auto flex-order-2 lg:flex-order-1 lg:mr-4" severity="secondary" label="Regresar al carrito" icon="pi pi-fw pi-arrow-left"></Button>
+            <Button class="w-full lg:w-auto flex-order-1 lg:flex-order-2" label="Pagar" icon="pi pi-fw pi-check" @click="processPayment"></Button>
         </div>
     </div>
 </template>
@@ -146,6 +146,59 @@ import ShippingData from './ShippingData.vue';
 import axios from 'axios';
 import { useAuthStore } from '../../stores/auth';
 import OrderDataProduct from './OrderDataProduct.vue';
+import cfdiData from '../Cart/useCFDI.json';
+import taxReg from '../Cart/taxRegime.json'
+import { ImportsNotUsedAsValues, isEntityName } from 'typescript';
+import {Buffer} from 'buffer'
+import { pointInsideRect } from '@fullcalendar/core/internal';
+
+export interface open_pay_data {
+    amount: string;
+    currency: string;
+    description: string;
+    order_id: string;
+    send_email: string;
+    capture: string;
+    customer:{
+        name: string;
+        last_name: string;
+        phone_number: string;
+        email: string;
+    };
+    redirect_url: string;
+}
+
+export interface open_pay_check{
+    amount: string;
+}
+
+const payment_info = ref<open_pay_data>({
+    amount: "100.00",
+    currency: "MXN",
+    description: "Botón de pago",
+    order_id: "ord-00011",
+    send_email: "true",
+    capture: "false",
+    customer:{
+        name: "Jorge",
+        last_name: "Aguilar",
+        phone_number: "8125714737",
+        email: "jeac1702@gmail.com",
+    },
+    redirect_url: import.meta.env.INDEX_URL,
+});
+
+const payment_check = ref<open_pay_check>({
+    amount: "100.00",
+})
+
+const openpayAxios = axios.create({
+  baseURL: import.meta.env.VITE_OPENPAY_BASE_URL,
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': `Basic ${Buffer.from(`${import.meta.env.VITE_OPENPAY_PRIVATE_API_KEY}:`).toString('base64')}`
+  }
+});
 
 const authStore = useAuthStore();
 const value = ref('');
@@ -159,270 +212,8 @@ const invoiceAddress = ref<string>(null)
 const rfc = ref<string>(null)
 const customerUseCfdi = ref<string>(null)
 const customerTaxRegime = ref<string>(null)
-
-const useCfdi = ref<any[]>([
-    {
-        "c_UsoCFDI": "G01",
-        "Descripcion": "Adquisición de mercancías.",
-        "Fisica": "Sí",
-        "Moral": "Sí"
-    },
-    {
-        "c_UsoCFDI": "G02",
-        "Descripcion": "Devoluciones, descuentos o bonificaciones.",
-        "Fisica": "Sí",
-        "Moral": "Sí"
-    },
-    {
-        "c_UsoCFDI": "G03",
-        "Descripcion": "Gastos en general.",
-        "Fisica": "Sí",
-        "Moral": "Sí"
-    },
-    {
-        "c_UsoCFDI": "I01",
-        "Descripcion": "Construcciones.",
-        "Fisica": "Sí",
-        "Moral": "Sí"
-    },
-    {
-        "c_UsoCFDI": "I02",
-        "Descripcion": "Mobiliario y equipo de oficina por inversiones.",
-        "Fisica": "Sí",
-        "Moral": "Sí"
-    },
-    {
-        "c_UsoCFDI": "I03",
-        "Descripcion": "Equipo de transporte.",
-        "Fisica": "Sí",
-        "Moral": "Sí"
-    },
-    {
-        "c_UsoCFDI": "I04",
-        "Descripcion": "Equipo de computo y accesorios.",
-        "Fisica": "Sí",
-        "Moral": "Sí"
-    },
-    {
-        "c_UsoCFDI": "I05",
-        "Descripcion": "Dados, troqueles, moldes, matrices y herramental.",
-        "Fisica": "Sí",
-        "Moral": "Sí"
-    },
-    {
-        "c_UsoCFDI": "I06",
-        "Descripcion": "Comunicaciones telefónicas.",
-        "Fisica": "Sí",
-        "Moral": "Sí"
-    },
-    {
-        "c_UsoCFDI": "I07",
-        "Descripcion": "Comunicaciones satelitales.",
-        "Fisica": "Sí",
-        "Moral": "Sí"
-    },
-    {
-        "c_UsoCFDI": "I08",
-        "Descripcion": "Otra maquinaria y equipo.",
-        "Fisica": "Sí",
-        "Moral": "Sí"
-    },
-    {
-        "c_UsoCFDI": "D01",
-        "Descripcion": "Honorarios médicos, dentales y gastos hospitalarios.",
-        "Fisica": "Sí",
-        "Moral": "No"
-    },
-    {
-        "c_UsoCFDI": "D02",
-        "Descripcion": "Gastos médicos por incapacidad o discapacidad.",
-        "Fisica": "Sí",
-        "Moral": "No"
-    },
-    {
-        "c_UsoCFDI": "D03",
-        "Descripcion": "Gastos funerales.",
-        "Fisica": "Sí",
-        "Moral": "No"
-    },
-    {
-        "c_UsoCFDI": "D04",
-        "Descripcion": "Donativos.",
-        "Fisica": "Sí",
-        "Moral": "No"
-    },
-    {
-        "c_UsoCFDI": "D05",
-        "Descripcion": "Intereses reales efectivamente pagados por créditos hipotecarios (casa habitación).",
-        "Fisica": "Sí",
-        "Moral": "No"
-    },
-    {
-        "c_UsoCFDI": "D06",
-        "Descripcion": "Aportaciones voluntarias al SAR.",
-        "Fisica": "Sí",
-        "Moral": "No"
-    },
-    {
-        "c_UsoCFDI": "D07",
-        "Descripcion": "Primas por seguros de gastos médicos.",
-        "Fisica": "Sí",
-        "Moral": "No"
-    },
-    {
-        "c_UsoCFDI": "D08",
-        "Descripcion": "Gastos de transportación escolar obligatoria.",
-        "Fisica": "Sí",
-        "Moral": "No"
-    },
-    {
-        "c_UsoCFDI": "D09",
-        "Descripcion": "Depósitos en cuentas para el ahorro, primas que tengan como base planes de pensiones.",
-        "Fisica": "Sí",
-        "Moral": "No"
-    },
-    {
-        "c_UsoCFDI": "D10",
-        "Descripcion": "Pagos por servicios educativos (colegiaturas).",
-        "Fisica": "Sí",
-        "Moral": "No"
-    },
-    {
-        "c_UsoCFDI": "S01",
-        "Descripcion": "Sin efectos fiscales.  ",
-        "Fisica": "Sí",
-        "Moral": "Sí"
-    },
-    {
-        "c_UsoCFDI": "CP01",
-        "Descripcion": "Pagos",
-        "Fisica": "Sí",
-        "Moral": "Sí"
-    },
-    {
-        "c_UsoCFDI": "CN01",
-        "Descripcion": "Nómina",
-        "Fisica": "Sí",
-        "Moral": "No"
-    }
-])
-
-const taxRegime = ref<any[]>([
-    {
-        "c_RegimenFiscal": "601",
-        "Descripcion": "General de Ley Personas Morales",
-        "Fisica": "No",
-        "Moral": "Sí"
-    },
-    {
-        "c_RegimenFiscal": "603",
-        "Descripcion": "Personas Morales con Fines no Lucrativos",
-        "Fisica": "No",
-        "Moral": "Sí"
-    },
-    {
-        "c_RegimenFiscal": "605",
-        "Descripcion": "Sueldos y Salarios e Ingresos Asimilados a Salarios",
-        "Fisica": "Sí",
-        "Moral": "No"
-    },
-    {
-        "c_RegimenFiscal": "606",
-        "Descripcion": "Arrendamiento",
-        "Fisica": "Sí",
-        "Moral": "No"
-    },
-    {
-        "c_RegimenFiscal": "607",
-        "Descripcion": "Régimen de Enajenación o Adquisición de Bienes",
-        "Fisica": "Sí",
-        "Moral": "No"
-    },
-    {
-        "c_RegimenFiscal": "608",
-        "Descripcion": "Demás ingresos",
-        "Fisica": "Sí",
-        "Moral": "No"
-    },
-    {
-        "c_RegimenFiscal": "610",
-        "Descripcion": "Residentes en el Extranjero sin Establecimiento Permanente en México",
-        "Fisica": "Sí",
-        "Moral": "Sí"
-    },
-    {
-        "c_RegimenFiscal": "611",
-        "Descripcion": "Ingresos por Dividendos (socios y accionistas)",
-        "Fisica": "Sí",
-        "Moral": "No"
-    },
-    {
-        "c_RegimenFiscal": "612",
-        "Descripcion": "Personas Físicas con Actividades Empresariales y Profesionales",
-        "Fisica": "Sí",
-        "Moral": "No"
-    },
-    {
-        "c_RegimenFiscal": "614",
-        "Descripcion": "Ingresos por intereses",
-        "Fisica": "Sí",
-        "Moral": "No"
-    },
-    {
-        "c_RegimenFiscal": "615",
-        "Descripcion": "Régimen de los ingresos por obtención de premios",
-        "Fisica": "Sí",
-        "Moral": "No"
-    },
-    {
-        "c_RegimenFiscal": "616",
-        "Descripcion": "Sin obligaciones fiscales",
-        "Fisica": "Sí",
-        "Moral": "No"
-    },
-    {
-        "c_RegimenFiscal": "620",
-        "Descripcion": "Sociedades Cooperativas de Producción que optan por diferir sus ingresos",
-        "Fisica": "No",
-        "Moral": "Sí"
-    },
-    {
-        "c_RegimenFiscal": "621",
-        "Descripcion": "Incorporación Fiscal",
-        "Fisica": "Sí",
-        "Moral": "No"
-    },
-    {
-        "c_RegimenFiscal": "622",
-        "Descripcion": "Actividades Agrícolas, Ganaderas, Silvícolas y Pesqueras",
-        "Fisica": "No",
-        "Moral": "Sí"
-    },
-    {
-        "c_RegimenFiscal": "623",
-        "Descripcion": "Opcional para Grupos de Sociedades",
-        "Fisica": "No",
-        "Moral": "Sí"
-    },
-    {
-        "c_RegimenFiscal": "624",
-        "Descripcion": "Coordinados",
-        "Fisica": "No",
-        "Moral": "Sí"
-    },
-    {
-        "c_RegimenFiscal": "625",
-        "Descripcion": "Régimen de las Actividades Empresariales con ingresos a través de Plataformas Tecnológicas",
-        "Fisica": "Sí",
-        "Moral": "No"
-    },
-    {
-        "c_RegimenFiscal": "626",
-        "Descripcion": "Régimen Simplificado de Confianza",
-        "Fisica": "Sí",
-        "Moral": "Sí"
-    }
-]) 
+const useCfdi = ref<any[]>(cfdiData)
+const taxRegime = ref<any[]>(taxReg) 
 
 const refresh = async () => {
     try{
@@ -449,8 +240,36 @@ const refreshReferences = async () => {
     }
 }
 
+const processPayment = async () => {
+    try {
+        let response = await openpayAxios.post('checkouts/', payment_info.value)
+        console.log('Respuesta de OpenPay:', response.data);
+        // Maneja la respuesta de OpenPay, por ejemplo, redirige al cliente a la URL de confirmación
+        // window.location.href = response.data.checkout_link;
+    } catch (error) {
+        console.log(JSON.stringify(error.response.data.request_id))
+        try{
+            let response = await openpayAxios.post('/charges/ckv5eod38kjhyecknuhw/capture')
+            console.log('Respuesta de OpenPay:', response.data);
+        }catch(error2){
+            if (axios.isAxiosError(error2)) {
+                console.error('Error procesando el pago:', error2.response?.data);
+            } else {
+                console.error('Error desconocido:', error2);
+            }
+        }
+        if (axios.isAxiosError(error)) {
+            console.error('Error procesando el pago:', error.response?.data);
+        } else {
+            console.error('Error desconocido:', error);
+        }
+    }
+};
+
 onMounted(async () => {
     deliveryType.value = 1
     await refresh();
 });
+
+
 </script>

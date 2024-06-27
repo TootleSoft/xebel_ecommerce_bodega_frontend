@@ -180,7 +180,7 @@ const refresh = async () => {
         //Extraemos solo las imagenes que pertenecen a ese articulo
         const responseImg = await axios.get(`Inventory/EComerce/GetImages/${product.value[0].id}`);
         console.log('responseImg.data:', responseImg.data);
-
+        
         // images.value = [];
             // Transformar los datos recibidos a una lista de URLs de imágenes
             images.value = responseImg.data.map(imgObj => [
@@ -190,10 +190,10 @@ const refresh = async () => {
             getImageUrl(imgObj.image_name_4.replace('.jpeg', '') || '1133_METABIO32_4')
         ]).flat(); // 'flat()' para aplanar el array de arrays
         console.log('images', images.value);
-
+        
         let existence_resposnse = await axios.get('Inventory/EComerce/GetProductExistences/' + route.params.id_article + '/' + route.params.id_subarticle)
         existence.value = existence_resposnse.data;
-
+        
         let article_related = await axios.get('Inventory/EComerce/GetArticleRelated/' + route.params.id_article + '/' + route.params.id_subarticle + '/' + id_user.value)
         relateds.value = article_related.data;
         // console.log(JSON.stringify(existence.value.sort((a, b) => b.stock - a.stock)[0].stock))

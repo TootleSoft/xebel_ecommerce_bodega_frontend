@@ -65,8 +65,8 @@ import axios from 'axios';
 const cartStore = useCartStore();
 import { useToast } from "primevue/usetoast";
 import { isArrayTypeNode } from 'typescript';
-const toast = useToast();
 
+const toast = useToast();
 const productExistence = ref<any[]>([]);
 const cartproduct = ref<any[]>([]);
 const branches = ref<any[]>([]);
