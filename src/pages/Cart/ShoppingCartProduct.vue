@@ -49,8 +49,10 @@
                                 class="text-red-500 text-900 font-bold">P.U. + IVA</label>&nbsp&nbsp&nbsp${{ product.price_tax.toFixed(2) }}</span>
                         <span class="text-900 text-xl font-medium mb-2 sm:mb-3"><label
                                 class="text-900 font-bold">TOTAL</label>&nbsp&nbsp&nbsp${{ product.quantity * Number(product.price_tax.toFixed(2)) }}</span>
-                        <a @click="removeProduct(product.id, product.subarticle, product.id_branch)"
+                        <a v-if="!product.is_bundle || product.is_bundle == undefined" @click="removeProduct(product.id, product.subarticle, product.id_branch, product.id_numberItem)"
                             class="cursor-pointer text-pink-500 font-medium text-sm hover:text-pink-600 transition-colors transition-duration-300"
+                            tabindex="0"> Remove </a>
+                        <a v-if="product.is_bundle" @click="removeBundle(product.id, product.id_numberBundle, product.id_branch)" class="cursor-pointer text-pink-500 font-medium text-sm hover:text-pink-600 transition-colors transition-duration-300"
                             tabindex="0"> Remove </a>
                     </div>
                 </div>
@@ -66,7 +68,7 @@
                 </div>
                 <span class="inline-flex align-items-center mb-3">
                     <span v-if="!product.is_bundle || product.is_bundle == undefined" class="text-700 mr-2">Existencia: {{ getExistence(product.id_numberItem,product.id_branch) }}</span>
-                    <span v-if="product.is_bundle && products.length % 2 === 0 || products.length == 1" class="text-700 mr-2" >Existencia: {{ array[(product.id_numberBundle-1)+(products.length-1)]}}</span>
+                    <span v-if="product.is_bundle && (products.length % 2 === 0 || products.length == 1)" class="text-700 mr-2" >Existencia: {{ array[(product.id_numberBundle-1)+(products.length-1)]}}</span>
                     <span v-if="product.is_bundle && products.length % 2 !== 0 && products.length > 1" class="text-700 mr-2" >Existencia: {{ array[(product.id_numberBundle-1)+(products.length)]}}</span>
                 </span>
             </div>
@@ -90,8 +92,9 @@ const items = ref<any[]>([]);
 const array = ref<any[]>([]);
 const products = ref<any[]>([]);
 const loading = ref<boolean>(false);
-const branchItem = ref<number>(1);
-const branchBundle = ref<number>(1);
+const is_deleted = ref<boolean>(false);
+const is_deletedBundle = ref<boolean>(false);
+
 
 const imgroute = (id, sku, brand) => {
     sku = sku.replace(/\//g, "--").replace(/ñ/g, "nnn").replace(/Ñ/g, "nnn").replace(/#/g, '----')
@@ -114,13 +117,8 @@ const refresh = async () => {
             })
             branches.value = branch.data;
             if (!product.is_bundle || product.is_bundle == undefined) {
-                let resposnse = await axios.get('Inventory/EComerce/GetProductExistences/' + product.id + '/' + product.id_subarticle, {
-                    headers:{
-                        company: 1
-                    }
-                })
+                let resposnse = await axios.get('Inventory/EComerce/GetProductExistences/' + product.id + '/' + product.id_subarticle)
                 productExistence.value.push(resposnse.data)
-                console.log("existencia",productExistence.value)
             } else if (product.is_bundle) {
                 let bundle = await axios.get('Inventory/EComerce/getBundleInfo', {
                     headers: {
@@ -156,10 +154,39 @@ const refresh = async () => {
     }
 }
 
-const removeProduct = (id, subarticle, id_branch) => {
-    // const index = cartStore.cart.findIndex(item => item.id === id && item.subarticle === subarticle && item.id_branch === id_branch);
-    cartStore.cart = cartStore.cart.filter(item => !(item.id === id && item.subarticle === subarticle && item.id_branch === id_branch));
-    cartStore.updateCart()
+const removeProduct = (id, subarticle, id_branch, id_numberItem) => {
+    try{
+        // const index = cartStore.cart.findIndex(item => item.id === id && item.subarticle === subarticle && item.id_branch === id_branch);
+        cartStore.cart.forEach((x) => {
+            x.id_numberItem = x.id_numberItem > id_numberItem ? x.id_numberItem - 1 : x.id_numberItem;
+        });
+        is_deleted.value = true;
+        cartStore.cart = cartStore.cart.filter(item => !(item.id === id && item.subarticle === subarticle && item.id_branch === id_branch));
+        cartStore.updateCart(is_deleted.value, is_deletedBundle.value)
+        refresh();
+    }catch{
+
+    }finally{
+        is_deleted.value = false;
+        is_deletedBundle.value = false;
+    }
+}
+
+const removeBundle = (id, id_numberBundle, id_branch) => {
+    try{
+        cartStore.cart.forEach((x) => {
+            x.id_numberBundle = x.id_numberBundle > id_numberBundle ? x.id_numberBundle - 1 : x.id_numberBundle;
+        });
+        is_deletedBundle.value = true;
+        cartStore.cart = cartStore.cart.filter(item => !(item.id === id && item.id_branch === id_branch));
+        cartStore.updateCart(is_deleted.value, is_deletedBundle.value);
+        refresh();
+    }catch{
+
+    }finally{
+        is_deleted.value = false;
+        is_deletedBundle.value = false;
+    }
 }
 
 const getExistence = (id_numberItem,id_branch) => computed(() => {
@@ -178,7 +205,7 @@ const getExistence = (id_numberItem,id_branch) => computed(() => {
 
 watch(cartStore.cart, () => {
     console.log(JSON.stringify(cartStore.cart))
-    let is_duplicate = cartStore.updateCart()
+    let is_duplicate = cartStore.updateCart(is_deleted.value, is_deletedBundle.value)
     if (is_duplicate == true) {
         toast.add({ severity: 'error', summary: 'Sucursal Duplicada', detail: 'El mismo producto ya se esta pidiendo en la sucursal seleccionada', life: 7500 });
     }

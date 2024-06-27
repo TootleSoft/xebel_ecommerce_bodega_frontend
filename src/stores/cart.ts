@@ -52,7 +52,7 @@ export const useCartStore = defineStore({
             let article: CartState = { ...product };
             article.quantity = quantity;
             article.id_branch = id_branch;
-            
+
             const index = this.cart.findIndex(item => item.id === article.id && item.subarticle === article.subarticle && item.id_branch === article.id_branch);
             if (index !== -1) {
                 // Actualizar la cantidad si el producto ya existe en el carrito
@@ -75,15 +75,13 @@ export const useCartStore = defineStore({
                     }
                 }
             }
-            console.log("carrito", this.cart)
-
             // Guardar el estado actualizado en el almacenamiento
             storage.setStorageSync('cart', this.cart);
             storage.setStorageSync('id_numberBundle', this.id_numberBundle);
             storage.setStorageSync('id_numberItem', this.id_numberItem);
-            
+
         },
-        updateCart(){
+        updateCart(is_deleted, is_deletedBundle){
             let is_duplicate = false;
             if(storage.getStorageSync<CartState[]>('cart').length == this.cart.length){
                 let arr1 = this.cart;
@@ -95,7 +93,6 @@ export const useCartStore = defineStore({
                         index_upd = index;
                     }
                 });
-                console.log(index_upd)
                 if(index_upd != null){
                     console.log(index_upd)
                     let update = this.cart[index_upd]
@@ -108,37 +105,18 @@ export const useCartStore = defineStore({
                     if(is_duplicate == true){
                         this.cart[index_upd].id_branch = storage.getStorageSync<CartState[]>('cart')[index_upd].id_branch;
                     }
-                    console.log(is_duplicate)
                 }
             }
+            if(is_deleted == true){
+                this.id_numberItem = this.id_numberItem > 1 ? this.id_numberItem - 1: this.id_numberItem == 1 && this.cart.length == 0 ? 0: this.id_numberItem == 1 ? 0 : this.id_numberItem;
+            }
+            if(is_deletedBundle == true){
+                this.id_numberBundle = this.id_numberBundle > 1 ? this.id_numberBundle - 1: this.id_numberBundle == 1 && this.cart.length == 0 ? 0 : this.id_numberBundle == 1 ? 0: this.id_numberBundle;
+            }
             storage.setStorageSync('cart', this.cart);
+            storage.setStorageSync('id_numberItem', this.id_numberItem);
+            storage.setStorageSync('id_numberBundle', this.id_numberBundle);
             return is_duplicate
-        },
-        // setSession(id_usuario: number, usuario: string, company: number | undefined, branch: number | undefined, branch_name: string | undefined) {
-        //     // const sessionLength = parseInt(import.meta.env.VITE_SESSION_HOURS_DURATION) * 60 * 60000;
-        //     storage.setStorageSync('id_usuario', id_usuario, undefined);
-        //     storage.setStorageSync('usuario', usuario, undefined);
-        //     storage.setStorageSync('company', company, undefined);
-        //     storage.setStorageSync('branch', branch, undefined);
-        //     storage.setStorageSync('branch_name', branch_name, undefined);
-        //     this.id_usuario = id_usuario
-        //     this.usuario = usuario;
-        //     this.company = company;
-        //     this.branch = branch;
-        //     this.branch_name = branch_name;
-        //     // EnvUtils.isDev() && console.log('Using pinia 🍍 [auth:setSession]', this.$state);
-        // },
-        // logout() {
-        //     console.log("entre aqui")
-        //     //TODO: Eliminar dexie
-        //     this.usuario = undefined;
-        //     this.company = undefined;
-        //     this.branch = undefined;
-        //     this.branch_name = undefined;
-        //     storage.clearStorageSync();
-        //     console.log("Cerre sesion")
-        //     // await db.menus.clear();
-        //     // EnvUtils.isDev() && console.log('Using pinia 🍍 [auth:logout]');
-        // },
+        }
     }
 })
