@@ -4,6 +4,7 @@
             <!-- Izquierda -->
             <div class="col-12 px-4 mt-4 md:mt-6 md:px-6">
                 <span class="text-900 block font-bold text-xl">Detalle del pedido</span>
+
             </div>
             <div class="col-12 lg:col-6 h-full px-4 py-4 md:px-6">
                 <div class="card flex justify-content-center">
@@ -153,18 +154,19 @@ import {Buffer} from 'buffer'
 import { pointInsideRect } from '@fullcalendar/core/internal';
 
 export interface open_pay_data {
+    method : string;
     amount: string;
     currency: string;
     description: string;
     order_id: string;
-    send_email: string;
-    capture: string;
     customer:{
         name: string;
         last_name: string;
         phone_number: string;
         email: string;
     };
+    confirm: string;
+    send_email: string;
     redirect_url: string;
 }
 
@@ -173,19 +175,20 @@ export interface open_pay_check{
 }
 
 const payment_info = ref<open_pay_data>({
+    method: "card",
     amount: "100.00",
     currency: "MXN",
     description: "Botón de pago",
-    order_id: "ord-00011",
-    send_email: "true",
-    capture: "false",
+    order_id: "ord-00014",
     customer:{
         name: "Jorge",
         last_name: "Aguilar",
         phone_number: "8125714737",
         email: "jeac1702@gmail.com",
     },
-    redirect_url: import.meta.env.INDEX_URL,
+    confirm: "false",
+    send_email: "true",
+    redirect_url: import.meta.env.VITE_INDEX_URL,
 });
 
 const payment_check = ref<open_pay_check>({
@@ -242,14 +245,14 @@ const refreshReferences = async () => {
 
 const processPayment = async () => {
     try {
-        let response = await openpayAxios.post('checkouts/', payment_info.value)
+        let response = await openpayAxios.post('charges/', payment_info.value)
         console.log('Respuesta de OpenPay:', response.data);
         // Maneja la respuesta de OpenPay, por ejemplo, redirige al cliente a la URL de confirmación
         // window.location.href = response.data.checkout_link;
     } catch (error) {
         console.log(JSON.stringify(error.response.data.request_id))
         try{
-            let response = await openpayAxios.post('/charges/ckv5eod38kjhyecknuhw/capture')
+            let response = await openpayAxios.get('/charges/trb0rdnmtp6tmdpykevw/')
             console.log('Respuesta de OpenPay:', response.data);
         }catch(error2){
             if (axios.isAxiosError(error2)) {
