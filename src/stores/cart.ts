@@ -11,6 +11,7 @@ export interface CartState {
     id?: number;
     key_name?: string;
     name?: string;
+    id_article: number;
     id_subarticle?: string;
     subarticle?: string;
     unit_price?: number;

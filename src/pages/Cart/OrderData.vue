@@ -21,22 +21,12 @@
                 </div>
                 <div v-if="deliveryType == 1" class="grid formgrid">
                     <div class="col-12 field mb-6">
-                        <span class="text-900 text-2xl block font-medium mb-5">Los productos se entregaran en la sucursar seleccionada en cada uno</span>
+                        <span class="text-900 text-2xl block font-medium mb-5">Los productos se entregarán en la sucursal seleccionada en cada uno.</span>
                     </div>
-                    <!-- <div class="col-12 lg:col-6 field mb-4">
-                        <div class="field-checkbox">
-                            <Checkbox name="checkbox-2" v-model="billable" binary inputId="checkbox-2"></Checkbox>
-                            <label for="checkbox-2">¿Deseas Facturar?</label>
-                        </div>
-                    </div> -->
                 </div>
                 <div v-if="deliveryType == 2" class="grid formgrid">
-                    <!-- <div class="col-12 field mb-6">
-                        <span class="text-900 text-2xl block font-medium mb-5">Contact Information</span>
-                        <input id="email" placeholder="Email" type="text" class="p-inputtext w-full mb-4" />
-                    </div> -->
                     <div class="col-12 field mb-4">
-                        <span class="text-900 text-2xl block font-medium mb-5">Direccion de entrega</span>
+                        <span class="text-900 text-2xl block font-medium mb-5">Dirección de entrega</span>
                         <Dropdown :options="customerReferences" v-model="selectedReference" placeholder="Selecciona una direccion de envio" optionLabel="name" optionValue="id" showClear class="w-full"></Dropdown>
                         <br>
                         <br>
@@ -48,12 +38,6 @@
                     <br>
                     <br>
                     <br>
-                    <!-- <div class="col-12 lg:col-6 field mb-4">
-                        <div class="field-checkbox">
-                            <Checkbox name="checkbox-2" v-model="billable" binary inputId="checkbox-2"></Checkbox>
-                            <label for="checkbox-2">¿Desea facturar?</label>
-                        </div>
-                    </div> -->
                 </div>
                 <div class="grid formgrid">
                     <div class="col-12 field mb-4">
@@ -64,7 +48,7 @@
                     </div>
                     <div v-if="billable" class="grid formgrid col-12">
                         <div class="col-12 field mb-4">
-                            <input v-model="invoiceAddress"  id="Direccion de Faturacion" placeholder="Direccion de Faturacion" type="text" class="p-inputtext w-full" />
+                            <input v-model="invoiceAddress"  id="Direccion de Faturacion" placeholder="Dirección de Faturación" type="text" class="p-inputtext w-full" />
                         </div>
                         <div class="col-12 lg:col-6 field mb-4">
                             <input v-model="rfc" id="rfc" placeholder="RFC" type="text" class="p-inputtext w-full" />
@@ -82,62 +66,14 @@
                 <div class="pb-3 surface-border">
                     <span class="text-900 font-medium text-xl">Tus Productos</span>
                 </div>
-                <OrderDataProduct></OrderDataProduct>
-                <div class="flex flex-column lg:flex-row flex-wrap lg:align-items-center py-2 mt-3 surface-border">
-                    <img src="/demo/images/ecommerce/shop/shop-1.png" class="w-8rem h-8rem flex-shrink-0 mb-3" alt="product" />
-                    <div class="flex-auto lg:ml-3">
-                        <div class="flex align-items-center justify-content-between mb-3">
-                            <span class="text-900 font-bold">Product Name</span>
-                            <span class="text-900 font-bold">$123.00</span>
-                        </div>
-                        <div class="text-600 text-sm mb-3">Black | Large</div>
-                        <div class="flex flex-auto justify-content-between align-items-center">
-                            <InputNumber
-                                showButtons
-                                buttonLayout="horizontal"
-                                :min="0"
-                                inputClass="w-2rem text-center py-2 px-1 border-transparent outline-none shadow-none"
-                                v-model="quantities[0]"
-                                class="border-1 surface-border border-round"
-                                decrementButtonClass="p-button-text text-600 hover:text-primary py-1 px-1"
-                                incrementButtonClass="p-button-text text-600 hover:text-primary py-1 px-1"
-                                incrementButtonIcon="pi pi-plus"
-                                decrementButtonIcon="pi pi-minus"
-                            ></InputNumber>
-                            <Button icon="pi pi-trash" text rounded></Button>
-                        </div>
-                    </div>
-                </div>
-                <div class="py-2 mt-3 surface-border">
-                    <InputGroup class="mt-3">
-                        <InputText type="text" v-model="value" placeholder="Promo code" class="w-full" />
-                        <Button type="button" label="Apply" :disabled="!value"></Button>
-                    </InputGroup>
-                </div>
-                <div class="py-2 mt-3">
-                    <div class="flex justify-content-between align-items-center mb-3">
-                        <span class="text-900 font-medium">Subtotal</span>
-                        <span class="text-900">$123.00</span>
-                    </div>
-                    <div class="flex justify-content-between align-items-center mb-3">
-                        <span class="text-900 font-medium">Shipping</span>
-                        <span class="text-primary font-bold">Free</span>
-                    </div>
-                    <div class="flex justify-content-between align-items-center mb-3">
-                        <span class="text-900 font-bold">Total</span>
-                        <span class="text-900 font-medium text-xl">$123.00</span>
-                    </div>
-                </div>
-                <div class="py-2 mt-3 bg-yellow-100 flex align-items-center justify-content-center border-round">
-                    <img src="/demo/images/ecommerce/shop/flag.png" class="mr-2" alt="Country Flag" />
-                    <span class="text-black-alpha-90 font-medium">No additional duties or taxes.</span>
-                </div>
-            </div>
-        </div>
+                <OrderDataProduct @update:flattenedArray="handleUpdate"></OrderDataProduct>
         <div class="col-12 flex flex-column lg:flex-row justify-content-center align-items-center lg:justify-content-end my-6">
             <Button class="mt-3 lg:mt-0 w-full lg:w-auto flex-order-2 lg:flex-order-1 lg:mr-4" severity="secondary" label="Regresar al carrito" icon="pi pi-fw pi-arrow-left"></Button>
             <Button class="w-full lg:w-auto flex-order-1 lg:flex-order-2" label="Pagar" icon="pi pi-fw pi-check" @click="processPayment"></Button>
+            <Button class="w-full lg:w-auto flex-order-1 lg:flex-order-2" label="Crear Pedido" icon="pi pi-fw pi-save" @click="createOrder"></Button>
         </div>
+    </div>
+    </div>
     </div>
 </template>
 
@@ -149,51 +85,43 @@ import { useAuthStore } from '../../stores/auth';
 import OrderDataProduct from './OrderDataProduct.vue';
 import cfdiData from '../Cart/useCFDI.json';
 import taxReg from '../Cart/taxRegime.json'
-import { ImportsNotUsedAsValues, isEntityName } from 'typescript';
 import {Buffer} from 'buffer'
-import { pointInsideRect } from '@fullcalendar/core/internal';
+import { useToast } from "primevue/usetoast";
 
-export interface open_pay_data {
-    method : string;
-    amount: string;
-    currency: string;
-    description: string;
-    order_id: string;
-    customer:{
-        name: string;
-        last_name: string;
-        phone_number: string;
-        email: string;
-    };
-    confirm: string;
-    send_email: string;
-    redirect_url: string;
-}
+// export interface open_pay_data {
+//     method : string;
+//     amount: string;
+//     currency: string;
+//     description: string;
+//     order_id: string;
+//     customer:{
+//         name: string;
+//         last_name: string;
+//         phone_number: string;
+//         email: string;
+//     };
+//     confirm: string;
+//     send_email: string;
+//     redirect_url: string;
+// }
 
-export interface open_pay_check{
-    amount: string;
-}
+// const payment_info = ref<open_pay_data>({
+//     method: "card",
+//     amount: "100.00",
+//     currency: "MXN",
+//     description: "Botón de pago",
+//     order_id: "aaa014",
+//     customer:{
+//         name: "Jorge",
+//         last_name: "Aguilar",
+//         phone_number: "8125714737",
+//         email: "jeac1702@gmail.com",
+//     },
+//     confirm: "false",
+//     send_email: "true",
+//     redirect_url: import.meta.env.VITE_INDEX_URL,
+// });
 
-const payment_info = ref<open_pay_data>({
-    method: "card",
-    amount: "100.00",
-    currency: "MXN",
-    description: "Botón de pago",
-    order_id: "ord-00014",
-    customer:{
-        name: "Jorge",
-        last_name: "Aguilar",
-        phone_number: "8125714737",
-        email: "jeac1702@gmail.com",
-    },
-    confirm: "false",
-    send_email: "true",
-    redirect_url: import.meta.env.VITE_INDEX_URL,
-});
-
-const payment_check = ref<open_pay_check>({
-    amount: "100.00",
-})
 
 const openpayAxios = axios.create({
   baseURL: import.meta.env.VITE_OPENPAY_BASE_URL,
@@ -203,9 +131,8 @@ const openpayAxios = axios.create({
   }
 });
 
+const toast = useToast();
 const authStore = useAuthStore();
-const value = ref('');
-const quantities = ref([1, 1, 1]);
 const billable = ref(false);
 const selectedReference = ref(null);
 const customerReferences = ref<any[]>([])
@@ -216,7 +143,13 @@ const rfc = ref<string>(null)
 const customerUseCfdi = ref<string>(null)
 const customerTaxRegime = ref<string>(null)
 const useCfdi = ref<any[]>(cfdiData)
-const taxRegime = ref<any[]>(taxReg) 
+const taxRegime = ref<any[]>(taxReg)
+const flattenedArray = ref<any[]>([]);
+
+function handleUpdate(value: any[]) {
+    flattenedArray.value = value;
+    console.log("flattened", flattenedArray.value)
+}
 
 const refresh = async () => {
     try{
@@ -245,10 +178,13 @@ const refreshReferences = async () => {
 
 const processPayment = async () => {
     try {
-        let response = await openpayAxios.post('charges/', payment_info.value)
+        let order = await createOrder(); //se crea el pedido y se guarda en la tabla 'ecommerce_order' y 'ecommerce_order_item'
+        let payment_info = await getPaymentInfo({id_order: order.id}); //se obtiene la información del cliente y del pedido
+        let response = await openpayAxios.post('charges/', payment_info[0]) //se envía al api de open pay la información obtenida
         console.log('Respuesta de OpenPay:', response.data);
         // Maneja la respuesta de OpenPay, por ejemplo, redirige al cliente a la URL de confirmación
         // window.location.href = response.data.checkout_link;
+        let update = await axios.post('Comercial/ECommerceOrder/updateOrder/' + response.data.order_id + '/' + response.data.id);
     } catch (error) {
         console.log(JSON.stringify(error.response.data.request_id))
         try{
@@ -269,10 +205,48 @@ const processPayment = async () => {
     }
 };
 
+const createOrder = async () => {
+    try{
+        const params = {items: flattenedArray.value}
+        let response = await axios.post('Inventory/Ecomerce/createOrder',params,{
+            headers:{
+                company: 1,
+                branch: 1,
+                user: authStore.id_usuario,
+            }
+        })
+        toast.add({ severity: 'success', summary: 'Pedido', detail: 'Pedido registrado con éxito.', life: 5000 });
+        return response.data;
+    }catch{
+        console.log("ERROR")
+    }finally{
+
+    }
+}
+
+const getPaymentInfo = async (params) => {
+    try {
+        let query = "?";
+        if (params) {
+            Object.keys(params).forEach(prop => {
+                if (params[prop] != null) {
+                    query = query + prop + "=" + params[prop] + "&";
+                }
+            });
+            query = query.substring(0, query.length - 1);
+        } else {
+            query = "";
+        }
+        const response = await axios.get('Comercial/EcommerceOrder/getPaymentInfo/'+ authStore.id_usuario +'/' + query);
+        return response.data;
+    } catch (error) {
+        
+    }
+}
+
 onMounted(async () => {
     deliveryType.value = 1
     await refresh();
 });
-
 
 </script>
