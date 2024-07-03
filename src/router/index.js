@@ -54,6 +54,11 @@ const routes = [
                 path: '/orderdata',
                 component: () => import ('@/pages/Cart/OrderData.vue')
             },
+            {
+                name: 'Pedidos',
+                path: '/userorders',
+                component: () => import ('@/pages/Orders/UserOrders.vue'),
+            },
         ]
     },
     {
@@ -65,6 +70,11 @@ const routes = [
         path: '/auth/login',
         name: 'login',
         component: () => import('@/pages/Auth/login.vue')
+    },
+    {
+        path: '/confirmation/:order',
+        name: 'confirmorder',
+        component: () => import('@/pages/Cart/ConfirmOrder.vue')
     },
     {
         path: '/landing',

@@ -122,7 +122,6 @@ import { useToast } from "primevue/usetoast";
 //     redirect_url: import.meta.env.VITE_INDEX_URL,
 // });
 
-
 const openpayAxios = axios.create({
   baseURL: import.meta.env.VITE_OPENPAY_BASE_URL,
   headers: {
@@ -185,6 +184,8 @@ const processPayment = async () => {
         // Maneja la respuesta de OpenPay, por ejemplo, redirige al cliente a la URL de confirmación
         // window.location.href = response.data.checkout_link;
         let update = await axios.post('Comercial/ECommerceOrder/updateOrder/' + response.data.order_id + '/' + response.data.id);
+        // Maneja la respuesta de OpenPay, por ejemplo, redirige al cliente a la URL de confirmación
+        window.location.href = response.data.payment_method.url;
     } catch (error) {
         console.log(JSON.stringify(error.response.data.request_id))
         try{

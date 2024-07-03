@@ -154,6 +154,12 @@ const user = ref<any[]>([
     {
         label: 'Mis Pedidos',
         icon: 'pi pi-inbox',
+        command: () => {
+            router.push('/userorders');
+            setTimeout((): void =>{
+                window.location.reload();
+            }, 200)
+        }
     },
     // {
     //     label: 'Lista de deseos',
