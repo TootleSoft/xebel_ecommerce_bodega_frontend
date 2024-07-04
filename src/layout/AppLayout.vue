@@ -1,5 +1,5 @@
 <script setup>
-import { computed, watch, ref, onBeforeUnmount } from 'vue';
+import { computed, watch, ref, onBeforeUnmount, onMounted } from 'vue';
 import { usePrimeVue } from 'primevue/config';
 import AppTopbar from './AppTopbar.vue';
 import AppConfig from './AppConfig.vue';
@@ -7,6 +7,9 @@ import AppProfileMenu from './AppProfileMenu.vue';
 import AppBreadCrumb from './AppBreadcrumb.vue';
 import { useLayout } from '@/layout/composables/layout';
 import AppMegaMenu from './AppMegaMenu.vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 
 const $primevue = usePrimeVue();
 const { layoutConfig, layoutState, isSidebarActive } = useLayout();
@@ -25,6 +28,14 @@ watch(isSidebarActive, (newVal) => {
 onBeforeUnmount(() => {
     unbindOutsideClickListener();
 });
+
+onMounted(()=>{
+
+})
+
+watch(router.currentRoute, async ()=>{
+    
+})
 
 const containerClass = computed(() => {
     return [
