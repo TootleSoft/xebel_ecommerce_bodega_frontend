@@ -1,5 +1,5 @@
 <template>
-    <li v-if="!loading" v-for="(product, i) in cartStore.cart" :key="i"
+    <li v-if="!loading" v-for="(product, i) in products" :key="i"
         class="flex flex-column md:flex-row border-top-1 border-bottom-1 surface-border md:align-items-center pl-2 pr-2">
         <img v-if="!product.is_bundle || product.is_bundle == undefined"
             :src="imgroute(product.id, product.barcode, product.id_brand)"
@@ -10,8 +10,7 @@
                 <div class="w-full sm:w-6 flex flex-column">
                     <span class="text-900 text-xl font-medium mb-3">{{ product.name }}</span>
                     <span class="text-900 text-md font-medium mb-3">{{ product.key_name }}</span>
-                    <span v-if="!product.is_bundle || product.is_bundle == undefined"
-                        class="text-700 text-sm">{{ product.barcode }}</span>
+                    <span class="text-700 text-sm">{{ product.barcode }}</span>
                 </div>
                 <div class="w-full sm:w-6 flex align-items-center justify-content-center mt-3 sm:mt-0">
                     <span class="text-900 text-xl font-medium mb-3">Cantidad: {{ product.quantity }}</span>
@@ -19,14 +18,16 @@
             </div>
         </div>
     </li>
+        <div v-if="allproducts.length > 3" class="flex align-items-center justify-content-center">
+            <br>
+            <br>
+            <Button v-if="!ViewMoreLess && allproducts.length > 3" label=" Ver Mas" link @click="viewmore"/>
+            <Button v-if="ViewMoreLess" label=" Ver Menos" link @click="viewless"/>
+        </div>
 </template>
 <script setup lang="ts">
-import { ref, onMounted, watch, computed } from 'vue';
-import { useCartStore } from '../../stores/cart';
+import { ref, onMounted } from 'vue';
 import axios from 'axios';
-const cartStore = useCartStore();
-import { useToast } from "primevue/usetoast";
-const toast = useToast();
 
 interface Props {
     id_order?: number;
@@ -35,17 +36,11 @@ const props = withDefaults(defineProps<Props>(),{
     id_order: undefined,
 })
 
-const productExistence = ref<any[]>([]);
-const cartproduct = ref<any[]>([]);
-const branches = ref<any[]>([]);
-const stock = ref<any>();
-const bundles = ref<any[]>([]);
-const items = ref<any[]>([]);
-const array = ref<any[]>([]);
+
+const allproducts = ref<any[]>([]);
 const products = ref<any[]>([]);
 const loading = ref<boolean>(false);
-const is_deleted = ref<boolean>(false);
-const is_deletedBundle = ref<boolean>(false);
+const ViewMoreLess = ref<boolean>(false);
 
 
 const imgroute = (id, sku, brand) => {
@@ -53,15 +48,17 @@ const imgroute = (id, sku, brand) => {
     return import.meta.env.VITE_API_ROUTE + 'Inventory/Ecomerce/image/' + id + '_' + sku + '_1/' + brand;
 }
 
-const imgBundle = (id) => {
-    return import.meta.env.VITE_API_ROUTE + 'Inventory/Promotions/image/' + id;
-}
-
 const refresh = async () => {
     loading.value = true
     try{
-        let resposnse = await axios.get('Comercial/ECommerceOrder/OrderDetail/' + props.id_order)
-        console.log(JSON.stringify(resposnse.data))
+        let response = await axios.get('Comercial/ECommerceOrder/OrderDetail/' + props.id_order)
+        allproducts.value = response.data;
+        products.value = response.data;
+        console.log(products.value.length > 3)
+        if(products.value.length > 3){
+            console.log(JSON.stringify(products.value.slice(0,2)))
+            products.value = allproducts.value.slice(0, 3);
+        }
     }catch(error){
         console.log("Error en detalle del pedido: ",error)
     }finally{
@@ -69,14 +66,14 @@ const refresh = async () => {
     }
 }
 
-
-watch(cartStore.cart, () => {
-    console.log(JSON.stringify(cartStore.cart))
-    let is_duplicate = cartStore.updateCart(is_deleted.value, is_deletedBundle.value)
-    if (is_duplicate == true) {
-        toast.add({ severity: 'error', summary: 'Sucursal Duplicada', detail: 'El mismo producto ya se esta pidiendo en la sucursal seleccionada', life: 7500 });
-    }
-})
+const viewmore = () => {
+    products.value = allproducts.value;
+    ViewMoreLess.value = true;
+}
+const viewless = () => {
+    products.value = allproducts.value.slice(0, 3);
+    ViewMoreLess.value = false;
+}
 
 onMounted(async () => {
     await refresh();

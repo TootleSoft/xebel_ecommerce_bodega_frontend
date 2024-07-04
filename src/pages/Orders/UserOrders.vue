@@ -3,16 +3,20 @@
         <div class="flex flex-column align-items-center mb-6">
             <div class="text-900 text-4xl mb-4 font-medium">Tus Pedidos</div>
         </div>
-        <div v-for="(order, i) in orders" :key="i" class="flex border-round border-1">
-            <ul class="list-none p-0 m-0 col-12">
+        <div>
+            
+        </div>
+        <div v-for="(order, i) in orders" :key="i">
+            <div class=" flex border-round border-1">
+                <ul class="list-none p-0 m-0 col-12">
                 <li style="background: #0F7E8D;">
                     <div class="w-full sm:w-6 flex align-items-start justify-content-between mt-3 sm:mt-0 col-12">
                         <div style="color: #FFFFFF;">
                             <span class="text-xl font-medium mb-3">Pedido: #{{ order.id }}</span>
                             &nbsp &nbsp
                             <span class="text-xl font-medium mb-3">Fecha del pedido: {{ formatDate(order.created) }}</span>
-                            &nbsp &nbsp
-                            <span class="text-xl font-medium mb-3">Total: ${{ order.total.toFixed(2) }}</span>
+                            <!-- &nbsp &nbsp -->
+                            <!-- <span class="text-xl font-medium mb-3">Total: ${{ order.total.toFixed(2) }}</span> -->
                             &nbsp &nbsp
                             <span class="text-xl font-medium mb-3">{{ order.status }}</span>
                             <br>
@@ -20,15 +24,12 @@
                     </div>
                 </li>
                 <UserOrdersItems :id_order="order.id"></UserOrdersItems>
-                <UserOrdersItems :id_order="order.id"></UserOrdersItems>
-                <UserOrdersItems :id_order="order.id"></UserOrdersItems>
-                <UserOrdersItems :id_order="order.id"></UserOrdersItems>
-                <UserOrdersItems :id_order="order.id"></UserOrdersItems>
-                <UserOrdersItems :id_order="order.id"></UserOrdersItems>
-                <br>
             </ul>
+            </div>
+            <br>
+            <br>
         </div>
-        <ul class="list-none p-0 m-0">
+        <!-- <ul class="list-none p-0 m-0">
         <li v-for="(order, i) in orders" :key="i" class="flex py-6 border-top-1 border-bottom-1 surface-border">
             <ul class="list-none p-0 m-0 col-12">
                 <li style="background: #8E9698;">
@@ -49,8 +50,8 @@
                 <br>
             </ul>
         </li>
-        </ul>
-        <div class="flex">
+        </ul> -->
+        <!-- <div class="flex">
             <div class="w-12rem hidden md:block"></div>
             <ul class="list-none py-0 pr-0 pl-0 md:pl-5 mt-6 mx-0 mb-0 flex-auto">
                 <li class="flex justify-content-between mb-4">
@@ -66,7 +67,7 @@
                     <Button label="Pagar" @click="router.push('/orderdata')"></Button>
                 </li>
             </ul>
-        </div>
+        </div> -->
     </div>
 </template>
 
