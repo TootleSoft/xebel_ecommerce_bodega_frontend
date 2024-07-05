@@ -29,6 +29,8 @@
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import {OrderData} from '../Cart/Function/OrderData';
+import { useCartStore } from '../../stores/cart';
 import BasicProductGrid from '../../components/general/BasicProductGrid.vue';
 import BasicFilterSelection from '../../components/general/BasicFilterSelection.vue';
 import ProductSkeleton from '../../components/general/ProductSkeleton.vue'
@@ -42,6 +44,8 @@ interface subgrupos{
 
 const route = useRoute();
 const router = useRouter();
+const entity = new OrderData();
+const cartStore = useCartStore();
 const customer_id = ref<string>("0");
 const pagetitle = ref<string>("");
 const products = ref<any[]>([]);
@@ -60,7 +64,8 @@ const refresh = async () => {
     loading.value=true;
     try{
         categoryselection.value = [];
-
+        if(cartStore.order.length == 1)
+            await entity.newOrder();
         //La consulta maestra, trae todos los productos que se pueden mostrar en vase a los paramtros que se le mande
         let response = await axios.get('Inventory/EComerce/articles_ecomerce', {
             headers: {

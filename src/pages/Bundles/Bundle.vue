@@ -108,6 +108,7 @@ import { useRouter, useRoute } from 'vue-router';
 import axios from 'axios';
 import { useToast } from "primevue/usetoast";
 import { useCartStore } from '../../stores/cart';
+import {OrderData} from '../Cart/Function/OrderData';
 
 
 const loading = ref<boolean>(true);
@@ -122,6 +123,7 @@ const stock = ref<number>();
 const bundles = ref<any[]>([]);
 const toast = useToast();
 const cartStore = useCartStore();
+const entity = new OrderData();
 
 
 onMounted(async () => {
@@ -146,6 +148,8 @@ const refresh = async () => {
         })
         branches.value = branch.data;
         await getBundleInfo();
+        if(cartStore.order.length == 1)
+            await entity.newOrder();
     } catch {
         console.log("No se cargaron los datos")
     } finally {

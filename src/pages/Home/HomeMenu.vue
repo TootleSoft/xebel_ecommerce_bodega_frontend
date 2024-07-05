@@ -35,8 +35,13 @@ import { ref, onMounted } from 'vue';
 import BasicProductGrid from '../../components/general/BasicProductGrid.vue';
 import BasicProductCarusell from '../../components/general/BasicProductCarusell.vue'
 import axios from 'axios';
+import {OrderData} from '../Cart/Function/OrderData';
+import { useCartStore } from '../../stores/cart';
 
 const products = ref<any[]>([]);
+const entity = new OrderData();
+const cartStore = useCartStore();
+
 
 const refresh = async () => {
     try{
@@ -47,6 +52,8 @@ const refresh = async () => {
         // })
         // products.value = response.data; 
         // console.log(JSON.stringify(products.value.length))
+        if(cartStore.order.length == 1)
+            await entity.newOrder();
     }catch {
         console.log("No se cargaron los datos")
     }

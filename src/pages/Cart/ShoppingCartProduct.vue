@@ -78,11 +78,12 @@
 <script setup lang="ts">
 import { ref, onMounted, watch, computed } from 'vue';
 import { useCartStore } from '../../stores/cart';
+import {OrderData} from '../Cart/Function/OrderData';
 import axios from 'axios';
 const cartStore = useCartStore();
 import { useToast } from "primevue/usetoast";
 const toast = useToast();
-
+const entity = new OrderData();
 const productExistence = ref<any[]>([]);
 const cartproduct = ref<any[]>([]);
 const branches = ref<any[]>([]);
@@ -109,6 +110,8 @@ const refresh = async () => {
     loading.value = true
     try{
         cartproduct.value = cartStore.cart
+        if(cartStore.order.length == 1)
+            await entity.newOrder();
         for (const product of cartStore.cart) {
             let branch = await axios.get('General/Branch/', {
                 headers: {

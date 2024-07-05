@@ -28,6 +28,8 @@
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import {OrderData} from '../Cart/Function/OrderData';
+import { useCartStore } from '../../stores/cart';
 import BasicFilterSelection from '../../components/general/BasicFilterSelection.vue';
 import ProductSkeleton from '../../components/general/ProductSkeleton.vue';
 import BasicBundleGrid from '../../components/general/BasicBundleGrid.vue';
@@ -43,6 +45,8 @@ const componentKey = ref<number>(0);
 const allproducts = ref<any[]>([]);
 const route = useRoute();
 const router = useRouter();
+const entity = new OrderData();
+const cartStore = useCartStore();
 
 onMounted(async () => {
     await refresh();
@@ -54,6 +58,8 @@ const refresh = async () => {
         let response = await axios.get('Inventory/EComerce/bundles');
         products.value = response.data;
         allproducts.value = products.value;
+        if(cartStore.order.length == 1)
+            await entity.newOrder();
     } catch{
         throw "No se cargaron los datos";
     } finally{

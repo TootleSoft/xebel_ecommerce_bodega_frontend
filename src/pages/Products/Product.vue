@@ -139,8 +139,10 @@ import { useRouter } from 'vue-router';
 import axios from 'axios';
 import { useToast } from "primevue/usetoast";
 import { useCartStore } from '../../stores/cart';
+import {OrderData} from '../Cart/Function/OrderData';
 const cartStore = useCartStore();
 const toast = useToast();
+const entity = new OrderData();
 import RelatedProductCarusell from '../../components/general/RelatedProductCarusell.vue'
 
 
@@ -173,6 +175,8 @@ const apiRoute = import.meta.env.VITE_API_ROUTE;
 const refresh = async () => {
     loading.value = true;
     try {
+        if(cartStore.order.length == 1)
+            await entity.newOrder();
         let response = await axios.get('Inventory/EComerce/GetArticleInfo/' + route.params.id_article + '/' + route.params.id_subarticle + '/' + id_user.value)
         product.value = response.data;
         console.log(JSON.stringify(product.value))

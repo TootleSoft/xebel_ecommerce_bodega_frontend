@@ -27,11 +27,11 @@
                 <div v-if="deliveryType == 2" class="grid formgrid">
                     <div class="col-12 field mb-4">
                         <span class="text-900 text-2xl block font-medium mb-5">Dirección de entrega</span>
-                        <Dropdown :options="customerReferences" v-model="selectedReference" placeholder="Selecciona una direccion de envio" optionLabel="name" optionValue="id" showClear class="w-full"></Dropdown>
+                        <Dropdown :options="customerReferences" v-model="selectedReference" placeholder="Selecciona una dirección de envío" optionLabel="name" optionValue="id" showClear class="w-full"></Dropdown>
                         <br>
                         <br>
                         <div class="col-12 flex align-items-center justify-content-center">
-                            <Button v-if="!showShippingData" @click="showShippingData=true" class="flex align-items-center justify-content-center" label="Agregar Nueva direccion" icon="pi pi-fw pi-check"></Button>
+                            <Button v-if="!showShippingData" @click="showShippingData=true" class="flex align-items-center justify-content-center" label="Agregar nueva dirección" icon="pi pi-fw pi-check"></Button>
                         </div>
                     </div>
                     <ShippingData v-if="showShippingData" @saveShippingData="refreshReferences" @close="showShippingData=false"></ShippingData>
@@ -68,9 +68,8 @@
                 </div>
                 <OrderDataProduct @update:flattenedArray="handleUpdate"></OrderDataProduct>
         <div class="col-12 flex flex-column lg:flex-row justify-content-center align-items-center lg:justify-content-end my-6">
-            <Button class="mt-3 lg:mt-0 w-full lg:w-auto flex-order-2 lg:flex-order-1 lg:mr-4" severity="secondary" label="Regresar al carrito" icon="pi pi-fw pi-arrow-left"></Button>
+            <Button class="mt-3 lg:mt-0 w-full lg:w-auto flex-order-2 lg:flex-order-1 lg:mr-4" severity="secondary" label="Regresar al carrito" icon="pi pi-fw pi-arrow-left" @click="router.push('/shoppingcart');"></Button>
             <Button class="w-full lg:w-auto flex-order-1 lg:flex-order-2" label="Pagar" icon="pi pi-fw pi-check" @click="processPayment"></Button>
-            <Button class="w-full lg:w-auto flex-order-1 lg:flex-order-2" label="Crear Pedido" icon="pi pi-fw pi-save" @click="createOrder"></Button>
         </div>
     </div>
     </div>
@@ -87,51 +86,15 @@ import cfdiData from '../Cart/useCFDI.json';
 import taxReg from '../Cart/taxRegime.json'
 import {Buffer} from 'buffer'
 import { useToast } from "primevue/usetoast";
-
-// export interface open_pay_data {
-//     method : string;
-//     amount: string;
-//     currency: string;
-//     description: string;
-//     order_id: string;
-//     customer:{
-//         name: string;
-//         last_name: string;
-//         phone_number: string;
-//         email: string;
-//     };
-//     confirm: string;
-//     send_email: string;
-//     redirect_url: string;
-// }
-
-// const payment_info = ref<open_pay_data>({
-//     method: "card",
-//     amount: "100.00",
-//     currency: "MXN",
-//     description: "Botón de pago",
-//     order_id: "aaa014",
-//     customer:{
-//         name: "Jorge",
-//         last_name: "Aguilar",
-//         phone_number: "8125714737",
-//         email: "jeac1702@gmail.com",
-//     },
-//     confirm: "false",
-//     send_email: "true",
-//     redirect_url: import.meta.env.VITE_INDEX_URL,
-// });
-
-const openpayAxios = axios.create({
-  baseURL: import.meta.env.VITE_OPENPAY_BASE_URL,
-  headers: {
-    'Content-Type': 'application/json',
-    'Authorization': `Basic ${Buffer.from(`${import.meta.env.VITE_OPENPAY_PRIVATE_API_KEY}:`).toString('base64')}`
-  }
-});
+import { useCartStore } from '../../stores/cart';
+import { useRouter } from 'vue-router';
+import {OrderData} from '../Cart/Function/OrderData';
 
 const toast = useToast();
+const entity = new OrderData();
 const authStore = useAuthStore();
+const cartStore = useCartStore();
+const router = useRouter();
 const billable = ref(false);
 const selectedReference = ref(null);
 const customerReferences = ref<any[]>([])
@@ -152,13 +115,16 @@ function handleUpdate(value: any[]) {
 
 const refresh = async () => {
     try{
+        if(cartStore.order.length == 1)
+            await entity.newOrder();
         let response = await axios.get('Comercial/EComerceUser/GetReferences/'+authStore.id_customer)
         customerReferences.value = response.data;
         response = await axios.get('Comercial/EComerceUser/GetInvoiceData/'+authStore.id_customer)
         invoiceAddress.value = response.data[0].address;
         rfc.value = response.data[0].rfc;
+        
     }catch(error){
-        console.log(JSON.stringify(error))
+        console.log(error)
     }
 }
 
@@ -171,25 +137,31 @@ const refreshReferences = async () => {
         rfc.value = response.data[0].rfc;
         showShippingData.value = false;
     }catch(error){
-        console.log(JSON.stringify(error))
+        console.log(error)
     }
 }
 
 const processPayment = async () => {
     try {
-        let order = await createOrder(); //se crea el pedido y se guarda en la tabla 'ecommerce_order' y 'ecommerce_order_item'
-        let payment_info = await getPaymentInfo({id_order: order.id}); //se obtiene la información del cliente y del pedido
-        let response = await openpayAxios.post('charges/', payment_info[0]) //se envía al api de open pay la información obtenida
-        console.log('Respuesta de OpenPay:', response.data);
-        // Maneja la respuesta de OpenPay, por ejemplo, redirige al cliente a la URL de confirmación
-        // window.location.href = response.data.checkout_link;
-        let update = await axios.post('Comercial/ECommerceOrder/updateOrder/' + response.data.order_id + '/' + response.data.id);
-        // Maneja la respuesta de OpenPay, por ejemplo, redirige al cliente a la URL de confirmación
-        window.location.href = response.data.payment_method.url;
+        if(cartStore.order.length == 1){
+            if(cartStore.order[0].status == 1){
+                let payment = await entity.getOpenPayOrder();
+                console.log("payment", payment)
+                window.location.href = payment.payment_method.url;
+            }
+        }else if(cartStore.order.length == 0){
+            let payment_info = []
+            let order = await createOrder(); //se crea el pedido y se guarda en la tabla 'ecommerce_order' y 'ecommerce_order_item'
+            payment_info = await entity.getPaymentInfo({id_order: order.id}); //se obtiene la información del cliente y del pedido
+            let response = await entity.openpayAxios.post('charges/', payment_info[0]) //se envía al api de open pay la información obtenida
+            let status = response.data.status;
+            let update = await axios.post('Comercial/ECommerceOrder/updateOrder/' + response.data.order_id + '/' + response.data.id + '/' + status); //guarda el id_tracking del pedido
+            window.location.href = response.data.payment_method.url; //redirige al cliente a la URL de confirmación
+            cartStore.saveOrder(order.id); //almacena temporalmente el id del pedido y el estatus
+        }
     } catch (error) {
-        console.log(JSON.stringify(error.response.data.request_id))
         try{
-            let response = await openpayAxios.get('/charges/trb0rdnmtp6tmdpykevw/')
+            let response = await entity.openpayAxios.get('/charges/trb0rdnmtp6tmdpykevw/')
             console.log('Respuesta de OpenPay:', response.data);
         }catch(error2){
             if (axios.isAxiosError(error2)) {
@@ -203,6 +175,7 @@ const processPayment = async () => {
         } else {
             console.error('Error desconocido:', error);
         }
+    } finally{
     }
 };
 
@@ -222,26 +195,6 @@ const createOrder = async () => {
         console.log("ERROR")
     }finally{
 
-    }
-}
-
-const getPaymentInfo = async (params) => {
-    try {
-        let query = "?";
-        if (params) {
-            Object.keys(params).forEach(prop => {
-                if (params[prop] != null) {
-                    query = query + prop + "=" + params[prop] + "&";
-                }
-            });
-            query = query.substring(0, query.length - 1);
-        } else {
-            query = "";
-        }
-        const response = await axios.get('Comercial/EcommerceOrder/getPaymentInfo/'+ authStore.id_usuario +'/' + query);
-        return response.data;
-    } catch (error) {
-        
     }
 }
 

@@ -28,6 +28,8 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
+import {OrderData} from '../Cart/Function/OrderData';
+import { useCartStore } from '../../stores/cart';
 
 interface Props {
     id_order?: number;
@@ -41,6 +43,9 @@ const allproducts = ref<any[]>([]);
 const products = ref<any[]>([]);
 const loading = ref<boolean>(false);
 const ViewMoreLess = ref<boolean>(false);
+const entity = new OrderData();
+const cartStore = useCartStore();
+
 
 
 const imgroute = (id, sku, brand) => {
@@ -51,6 +56,8 @@ const imgroute = (id, sku, brand) => {
 const refresh = async () => {
     loading.value = true
     try{
+        if(cartStore.order.length == 1)
+            await entity.newOrder();
         let response = await axios.get('Comercial/ECommerceOrder/OrderDetail/' + props.id_order)
         allproducts.value = response.data;
         products.value = response.data;

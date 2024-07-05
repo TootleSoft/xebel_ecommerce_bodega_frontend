@@ -28,16 +28,16 @@
                     </div>
                 </div>
                 <div class="w-full sm:w-6 flex align-items-start justify-content-between mt-3 sm:mt-0">
-                    <div>
+                    <!-- <div>
                         &nbsp
-                        <!-- <Dropdown :options="quantityOptions" v-model="selectedQuantity" optionLabel="label"></Dropdown> -->
+                        <Dropdown :options="quantityOptions" v-model="selectedQuantity" optionLabel="label"></Dropdown>
                         <InputNumber showButtons buttonLayout="horizontal" :min="1"
                             inputClass="w-2rem text-center py-2 px-1 border-transparent outline-none shadow-none"
                             v-model="product.quantity" class="border-1 surface-border border-round"
                             decrementButtonClass="p-button-text text-600 hover:text-primary py-1 px-1"
                             incrementButtonClass="p-button-text text-600 hover:text-primary py-1 px-1"
                             incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus"></InputNumber>
-                    </div>
+                    </div> -->
                     <div class="flex flex-column sm:align-items-end">
                         <span v-if="!product.original_price" class="text-900 text-xl font-medium mb-2 sm:mb-3"><label
                                 class="text-900 font-bold">P.U. + IVA</label>&nbsp&nbsp&nbsp${{ product.price_tax.toFixed(2) }}</span>

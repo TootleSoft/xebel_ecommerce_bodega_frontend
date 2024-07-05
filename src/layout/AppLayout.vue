@@ -7,9 +7,11 @@ import AppProfileMenu from './AppProfileMenu.vue';
 import AppBreadCrumb from './AppBreadcrumb.vue';
 import { useLayout } from '@/layout/composables/layout';
 import AppMegaMenu from './AppMegaMenu.vue';
-import { useRouter } from 'vue-router';
+// import { useRouter } from 'vue-router';
+// import {OrderData} from '../pages/Cart/Function/OrderData';
 
-const router = useRouter();
+// const router = useRouter();
+// const entity = new OrderData();
 
 const $primevue = usePrimeVue();
 const { layoutConfig, layoutState, isSidebarActive } = useLayout();
@@ -29,13 +31,15 @@ onBeforeUnmount(() => {
     unbindOutsideClickListener();
 });
 
-onMounted(()=>{
+// onMounted(()=>{
+//     console.log("inicio");
+//     entity.newOrder();
+// });
 
-})
-
-watch(router.currentRoute, async ()=>{
-    
-})
+// watch(router.currentRoute, async ()=>{
+//     console.log("cambio de ruta");
+//     await entity.newOrder();
+// });
 
 const containerClass = computed(() => {
     return [

@@ -77,10 +77,13 @@ import UserOrdersItems from './UserOrdersItems.vue';
 import { useCartStore } from '../../stores/cart';
 import { useAuthStore } from '../../stores/auth';
 import { useRouter } from 'vue-router';
+import {OrderData} from '../Cart/Function/OrderData';
 import axios from 'axios';
+
 const auth = useAuthStore();
 const cartStore = useCartStore();
 const router = useRouter();
+const entity = new OrderData();
 
 const orders = ref<any[]>([])
 
@@ -89,6 +92,8 @@ const refresh = async () => {
         let resposnse = await axios.get('Comercial/ECommerceOrder/GetUserOrders/' + auth.id_usuario)
         orders.value = resposnse.data
         console.log(JSON.stringify(resposnse.data))
+        if(cartStore.order.length == 1)
+            await entity.newOrder();
     }catch(error){
         console.log("Hubo un error:", error)
     }
