@@ -2,31 +2,55 @@
     <div class="card">
         <div class="container">
             <div class="left-block">
-                <p class="cyan-text">Descubre nuestros increibles productos</p>
-                <span class="bold-text">Descubre la unica variedad de marcas y productos que Villa de Cortes Monterrey
+                <p class="bold-text text-8xl">Descubre</p>
+                <p class="bold-text text-8xl">nuestros</p>
+                <p class="cyan-text">increibles</p>
+                <p class="cyan-text">productos</p>
+                <br>
+                <span class="cyan-text2">Descubre la unica variedad de marcas y productos que Villa de Cortes Monterrey
                     tiene
                     para ti</span>
                 <div class="col-8">
-                    <Button @click="" label="Registrate para comprar" class="button" rounded></Button>
+                    <Button ref="mlogin" @click="tlogin" label="Registrate para comprar" class="button"
+                        rounded></Button>
                 </div>
             </div>
             <div class="right-block">
-                <img src="" alt="" srcset="">
                 <BasicProductCarusell />
             </div>
         </div>
 
         <div class="centered-text">
-            <div class="text-900 font-medium text-4xl mb-4">
-                <p class="bold-text">Nuestras</p><span class="bold-text">Marcas</span>
-            </div>
+            <p class="cyan-text">Nuestras</p>
+            <p class="bold-text text-7xl">marcas</p>
         </div>
         <BasicProductCarusell />
     </div>
 
     <div class="card">
-        <div class="text-900 font-medium text-4xl mb-4">Marcas</div>
+        <div class="centered-text">
+            <p class="cyan-text">Promociones</p>
+            <p class="bold-text text-7xl">para ti</p>
+        </div>
         <BasicProductCarusell />
+    </div>
+    <div class="card">
+        <div class="centered-text">
+            <p class="cyan-text">¿Quienes</p>
+            <p class="bold-text text-7xl">somos?</p>
+        </div>
+        <div class="container">
+            <div class="left-block">
+                <BasicProductCarusell />
+            </div>
+            <div class="right-block">
+                <p class="bold-text text-7xl">Más de 30 años a tu</p>
+                <p class="cyan-text text-6xl">servicio</p>
+                <p class="cyan-text text-4xl"> De Ciudad de México a Monterrey, llevamos
+                    más de 30 años brindando soluciones a los
+                    profesionistas de la industria dental. </p>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -41,6 +65,8 @@ import { useCartStore } from '../../stores/cart';
 const products = ref<any[]>([]);
 const entity = new OrderData();
 const cartStore = useCartStore();
+const mlogin = ref();
+
 
 
 const refresh = async () => {
@@ -58,6 +84,10 @@ const refresh = async () => {
         console.log("No se cargaron los datos")
     }
 }
+
+const tlogin = (event) => {
+    mlogin.value.toggle(event);
+};
 
 onMounted(async () => {
     await refresh();
@@ -117,10 +147,20 @@ const products2 = ref([
 
 </script>
 <style lang="scss" scoped>
-    p {
+.cyan-text {
   color: rgb(19, 224, 228);
-  font-size: xx-large;
+  font-size:450%;
   font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  text-align: justify; /* Justifica el texto */
+  line-height: 1cm; /* Altura de línea específica */
+  font-weight:900;
+}
+.cyan-text2 {
+  color: rgb(19, 224, 228);
+  font-size:300%;
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  text-align: justify; /* Justifica el texto */
+  line-height: 100%; /* Altura de línea específica */
 }
 .container {
     display: flex;
@@ -130,25 +170,29 @@ const products2 = ref([
 
 .left-block {
     text-align: left;
-    width: 40%; /* Ajusta el ancho según sea necesario */
-}
-
-.right-block {
-    text-align: right;
     width: 60%; /* Ajusta el ancho según sea necesario */
 }
 
+.right-block {
+    text-align:right;
+    width: 40%; /* Ajusta el ancho según sea necesario */
+}
+.right-block2 {
+    text-align:right;
+    width: 30%; /* Ajusta el ancho según sea necesario */
+}
+
 .bold-text {
-    font-weight: bold;
-    font-size: xx-large;
+    font-weight:800;
+    font-size:1cm;
     color: #061171;
-    text-align: justify; /* Justifica el texto */
+    line-height: 2cm; /* Altura de línea específica */
 }
 
 
 
 .centered-text {
-  display: flex;
+  display:flex;
   justify-content: center;
 }
 .button {

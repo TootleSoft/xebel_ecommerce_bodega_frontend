@@ -34,11 +34,11 @@
                     <TieredMenu ref="muser" class="tiered-menu-class" id="overlay_tmenu" :model="user" popup />
                 </div>
                 <div v-if="authStore.id_usuario == undefined" class="field col-12 sm:col-12 md:col-1 xl:col-1">
-                    <Button icon="pi pi-user" label="Ingresar" severity="contrast" outlined @click="tlogin" />
+                    <Button class="label-button-user" icon="pi pi-user" label="Ingresar" severity="contrast" outlined @click="tlogin" />
                     <TieredMenu ref="mlogin" class="tiered-menu-class" id="overlay_tmenu" :model="login" popup />
                 </div>
                 <div class="field col-12 sm:col-12 md:col-1 xl:col-1">
-                    <Button @click="shoppingCart" icon="pi pi-shopping-cart" label="Carrito" severity="contrast"
+                    <Button class="label-button-user" @click="shoppingCart" icon="pi pi-shopping-cart" label="Carrito" severity="contrast"
                         outlined />
                 </div>
                 <!-- <div class="field col-12 sm:col-12 md:col-1 xl:col-1">

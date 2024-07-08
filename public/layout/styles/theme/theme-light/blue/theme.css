@@ -198,6 +198,9 @@
   background-color: #0f7e8d;
   color: #ffffff;
 }
+.custom-border .p-inputtext {
+  border-color:  rgb(19, 224, 228); /* Cambia #ff0000 por el color de tu preferencia */
+}
 
 .loading-overlay {
   position: fixed;
@@ -3654,7 +3657,7 @@
   .p-button.p-button-contrast.p-button-outlined, .p-button-group.p-button-contrast > .p-button.p-button-outlined, .p-splitbutton.p-button-contrast > .p-button.p-button-outlined {
     background-color: transparent;
     color: #0f1012;
-    border: 1px solid;
+    border: 0px solid;
   }
   .p-button.p-button-contrast.p-button-outlined:not(:disabled):hover, .p-button-group.p-button-contrast > .p-button.p-button-outlined:not(:disabled):hover, .p-splitbutton.p-button-contrast > .p-button.p-button-outlined:not(:disabled):hover {
     background: rgba(15, 16, 18, 0.04);
@@ -3946,6 +3949,7 @@
   .p-carousel-items-container {
     display: flex;
     flex-direction: row;
+    width: 30%;
   }
 
   .p-carousel-indicators {
@@ -10735,9 +10739,8 @@
 }
 @layer primevue {
   .p-button-label {
-    font-weight: 700;
+    font-weight: 500;
   }
-
   .p-selectbutton > .p-button,
 .p-togglebutton.p-button {
     transition: background-color 0.2s, border-color 0.2s, box-shadow 0.2s;
@@ -11106,4 +11109,9 @@
 .fc.fc-theme-standard .fc-highlight {
   color: #015098;
   background: rgba(15, 139, 253, 0.12);
+}
+.label-button-user {
+  font-weight: 700;
+  font-size: 115%;
+  color: #00bcd4;
 }

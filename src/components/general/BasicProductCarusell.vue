@@ -1,11 +1,11 @@
 <template>
     <div class="card">
-        <Carousel :value="products" :numVisible="4" :numScroll="1" :responsiveOptions="responsiveOptions" circular :autoplayInterval="5000">
+        <Carousel :value="products" :numVisible="2" :numScroll="3" :responsiveOptions="responsiveOptions" circular :autoplayInterval="5000">
             <template #item="slotProps">
                 <div class="border-1 surface-border border-round m-2  p-3">
                     <div class="mb-3">
                         <div class="relative mx-auto">
-                            <img :src="imgroute(slotProps.data.id)" class="w-full h-19rem"  @click="router.push(slotProps.data.path)"/>
+                            <img :src="imgroute(slotProps.data.id)" class="h-15rem"  @click="router.push(slotProps.data.path)"/>
                         </div>
                     </div>
                     <!-- <div class="mb-3 font-medium">{{ slotProps.data.name }}</div>

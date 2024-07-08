@@ -84,7 +84,7 @@ import { useAuthStore } from '../../stores/auth';
 import OrderDataProduct from './OrderDataProduct.vue';
 import cfdiData from '../Cart/useCFDI.json';
 import taxReg from '../Cart/taxRegime.json'
-import {Buffer} from 'buffer'
+// import {Buffer} from 'buffer'
 import { useToast } from "primevue/usetoast";
 import { useCartStore } from '../../stores/cart';
 import { useRouter } from 'vue-router';

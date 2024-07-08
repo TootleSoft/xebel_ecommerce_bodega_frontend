@@ -184,15 +184,15 @@ const refresh = async () => {
         //Extraemos solo las imagenes que pertenecen a ese articulo
         const responseImg = await axios.get(`Inventory/EComerce/GetImages/${product.value[0].id}`);
         console.log('responseImg.data:', responseImg.data);
-        
-        // images.value = [];
-            // Transformar los datos recibidos a una lista de URLs de imágenes
-            images.value = responseImg.data.map(imgObj => [
-            getImageUrl(imgObj.image_name_1.replace('.jpeg', '') || 'default-image-1.jpeg'),
-            getImageUrl(imgObj.image_name_2.replace('.jpeg', '') || 'default-image-2.jpeg'),
-            getImageUrl(imgObj.image_name_3.replace('.jpeg', '') || 'default-image-3.jpeg'),
-            getImageUrl(imgObj.image_name_4.replace('.jpeg', '') || '1133_METABIO32_4')
+
+        // Transformar los datos recibidos a una lista de URLs de imágenes
+        images.value = responseImg.data.map(imgObj => [
+            imgObj.image_name_1 ? getImageUrl(imgObj.image_name_1.replace('.jpeg', '')) : imgbrand(product.value[0].barcode, product.value[0].id_brand),
+            imgObj.image_name_2 ? getImageUrl(imgObj.image_name_2.replace('.jpeg', '')) : imgbrand(product.value[0].barcode, product.value[0].id_brand),
+            imgObj.image_name_3 ? getImageUrl(imgObj.image_name_3.replace('.jpeg', '')) : imgbrand(product.value[0].barcode, product.value[0].id_brand),
+            imgObj.image_name_4 ? getImageUrl(imgObj.image_name_4.replace('.jpeg', '')) : imgbrand(product.value[0].barcode, product.value[0].id_brand)
         ]).flat(); // 'flat()' para aplanar el array de arrays
+
         console.log('images', images.value);
         
         let existence_resposnse = await axios.get('Inventory/EComerce/GetProductExistences/' + route.params.id_article + '/' + route.params.id_subarticle)
@@ -252,6 +252,10 @@ const GetName = (sa) =>{
     let name = atributes.value.filter(x => x.id == sa.id_attribute);
     return name[0].name;
 }
+const imgbrand = (id, brand) => {
+
+    return import.meta.env.VITE_API_ROUTE + 'Inventory/Ecomerce/image/' + id + brand;
+}
 
 const addToCart = () => {
     cartStore.addCart(product.value[0], quantity.value, selectedBranch.value, false);
@@ -275,7 +279,7 @@ const setSelectedImageIndex = (index: number) => {
 
 // Función para construir la URL de la imagen
 const getImageUrl = (imageName: string) => {
-    return `${apiRoute}Inventory/EComerce/image/${imageName}`+"/"+ new Date();
+    return `${apiRoute}Inventory/EComerce/image/${imageName}` + "/" + new Date();
 };
 
 const changeSubarticle = async () => {

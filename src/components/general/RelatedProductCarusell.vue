@@ -2,8 +2,8 @@
   <div class="card">
     <Carousel
       :value="relatedItems"
-      :numVisible="6"
-      :numScroll="1"
+      :numVisible="3"
+      :numScroll="2"
       :responsiveOptions="responsiveOptions"
       circular
       :autoplayInterval="5000"
@@ -14,7 +14,7 @@
             <div class="relative mx-auto">
               <img 
                 :src="imgroute(slotProps.data.id, slotProps.data.barcode, slotProps.data.id_brand)"
-                class="w-full h-19rem"
+                class="h-15rem"
                 @click="navigateToProduct(slotProps.data)"
               />
             </div>

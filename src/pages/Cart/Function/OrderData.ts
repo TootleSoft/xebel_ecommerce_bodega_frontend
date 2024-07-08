@@ -2,7 +2,7 @@ import axios from 'axios'
 import { useToast } from "primevue/usetoast";
 import { useCartStore } from '../../../stores/cart';
 import { useRouter } from 'vue-router';
-import { Buffer } from 'buffer'
+// import { Buffer } from 'buffer'
 import { useAuthStore } from '../../../stores/auth';
 import { useStorage } from 'vue3-storage';
 
@@ -21,7 +21,7 @@ export class OrderData {
         baseURL: import.meta.env.VITE_OPENPAY_BASE_URL,
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Basic ${Buffer.from(`${import.meta.env.VITE_OPENPAY_PRIVATE_API_KEY}:`).toString('base64')}`
+            // 'Authorization': `Basic ${Buffer.from(`${import.meta.env.VITE_OPENPAY_PRIVATE_API_KEY}:`).toString('base64')}`
         }
     });
 
