@@ -2,7 +2,7 @@ import axios from 'axios'
 import { useToast } from "primevue/usetoast";
 import { useCartStore } from '../../../stores/cart';
 import { useRouter } from 'vue-router';
-// import { Buffer } from 'buffer'
+import { Buffer } from 'buffer'
 import { useAuthStore } from '../../../stores/auth';
 import { useStorage } from 'vue3-storage';
 
@@ -21,7 +21,7 @@ export class OrderData {
         baseURL: import.meta.env.VITE_OPENPAY_BASE_URL,
         headers: {
             'Content-Type': 'application/json',
-            // 'Authorization': `Basic ${Buffer.from(`${import.meta.env.VITE_OPENPAY_PRIVATE_API_KEY}:`).toString('base64')}`
+            'Authorization': `Basic ${Buffer.from(`${import.meta.env.VITE_OPENPAY_PRIVATE_API_KEY}:`).toString('base64')}`
         }
     });
 
@@ -81,6 +81,11 @@ export class OrderData {
                 cartStore.id_numberItem = 0;
                 let status = order.status;
                 let update = await axios.post('Comercial/ECommerceOrder/updateOrder/' + order.order_id + '/' + order.id + '/' + status);
+                // await this.movementWarehouse({
+                //     order_id: order.order_id,
+                //     company: 1,
+                //     branch: 1,
+                // });
             }
             storage.setStorageSync('cart', cartStore.cart);
             storage.setStorageSync('order', cartStore.order);
@@ -90,4 +95,21 @@ export class OrderData {
 
         }
     }
+
+    movementWarehouse = async (params) => {
+        let query = "?";
+            if (params) {
+                Object.keys(params).forEach(prop => {
+                    if (params[prop] != null) {
+                        query = query + prop + "=" + params[prop] + "&";
+                    }
+                });
+                query = query.substring(0, query.length - 1);
+            } else {
+                query = "";
+            }
+            const response = await axios.post('Comercial/ECommerceOrder/movementWarehouse' + query);
+            return response.data;
+    }
+
 }

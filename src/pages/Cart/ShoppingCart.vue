@@ -35,6 +35,7 @@ import { ref, computed } from 'vue';
 import ShoppingCartProduct from './ShoppingCartProduct.vue';
 import { useCartStore } from '../../stores/cart';
 import { useRouter } from 'vue-router';
+import axios from 'axios';
 const cartStore = useCartStore();
 const router = useRouter();
 
@@ -69,9 +70,12 @@ const subtotal = computed(()=>{
 
 const taxes = computed(()=>{
     let i = 0;
+    console.log("carrito", cartStore.cart)
     for(const product of cartStore.cart){
         if(product.is_bundle){
-            i = i + ((product.ecomerce_offer_price ?? product.unit_price)*((product.iva_transferred+product.ieps_transferred)*.01)*product.quantity)
+            //i = i + ((product.ecomerce_offer_price ?? product.unit_price)*((product.iva_transferred+product.ieps_transferred)*.01)*product.quantity)
+            
+
         }else{
             i = i + ((product.ecomerce_offer_price ?? product.unit_price)*((product.iva_transferred+product.ieps_transferred)*.01)*product.quantity)
         }

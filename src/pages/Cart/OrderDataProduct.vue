@@ -76,12 +76,14 @@ const is_deleted = ref<boolean>(false);
 const is_deletedBundle = ref<boolean>(false);
 const items = ref <any[]>([]);
 const flattenedArray = ref <any[]>([]);
+const total = ref<number>(0);
 
 
 import { defineEmits } from 'vue';
 
 const emits = defineEmits<{
   (e: 'update:flattenedArray', value: any[]): void;
+  (e: 'totalValue', value: number): void;
 }>();
 
 const imgroute = (id, sku, brand) => {
@@ -113,11 +115,14 @@ const refresh = async () => {
                 });
                 products.value.push(bundle.data);
                 items.value.push(bundle.data);
+                total.value = total.value + product.quantity * Number(product.price_tax.toFixed(2));
             } else{
                 product.id_article = product.id;
                 items.value.push(product)
+                total.value = total.value + product.quantity * Number(product.price_tax.toFixed(2));
             }
             sendData();
+            console.log("items", items.value)
         }
     }catch{
 
@@ -135,6 +140,7 @@ const removeProduct = (id, subarticle, id_branch) => {
 const sendData = () => {
     flattenedArray.value = items.value.flat();   
     emits('update:flattenedArray', flattenedArray.value);
+    emits('totalValue', total.value);
 }
 
 watch(cartStore.cart, () => {

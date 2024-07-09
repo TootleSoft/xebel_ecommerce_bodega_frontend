@@ -1,4 +1,5 @@
 <template>
+    <ProgressSpinner v-if="loading" class="loading-overlay"/>
     <div class="card">
         <div class="grid grid-nogutter">
             <!-- Izquierda -->
@@ -66,7 +67,11 @@
                 <div class="pb-3 surface-border">
                     <span class="text-900 font-medium text-xl">Tus Productos</span>
                 </div>
-                <OrderDataProduct @update:flattenedArray="handleUpdate"></OrderDataProduct>
+                <OrderDataProduct @update:flattenedArray="handleUpdate" @total-value="totalValue"></OrderDataProduct>
+        <br>
+        <div>
+            <span class="text-900 block font-bold text-xl">Total del pedido ${{ total }}</span>
+        </div>
         <div class="col-12 flex flex-column lg:flex-row justify-content-center align-items-center lg:justify-content-end my-6">
             <Button class="mt-3 lg:mt-0 w-full lg:w-auto flex-order-2 lg:flex-order-1 lg:mr-4" severity="secondary" label="Regresar al carrito" icon="pi pi-fw pi-arrow-left" @click="router.push('/shoppingcart');"></Button>
             <Button class="w-full lg:w-auto flex-order-1 lg:flex-order-2" label="Pagar" icon="pi pi-fw pi-check" @click="processPayment"></Button>
@@ -84,12 +89,12 @@ import { useAuthStore } from '../../stores/auth';
 import OrderDataProduct from './OrderDataProduct.vue';
 import cfdiData from '../Cart/useCFDI.json';
 import taxReg from '../Cart/taxRegime.json'
-// import {Buffer} from 'buffer'
 import { useToast } from "primevue/usetoast";
 import { useCartStore } from '../../stores/cart';
 import { useRouter } from 'vue-router';
 import {OrderData} from '../Cart/Function/OrderData';
 
+const loading = ref<boolean>(false);
 const toast = useToast();
 const entity = new OrderData();
 const authStore = useAuthStore();
@@ -107,10 +112,16 @@ const customerTaxRegime = ref<string>(null)
 const useCfdi = ref<any[]>(cfdiData)
 const taxRegime = ref<any[]>(taxReg)
 const flattenedArray = ref<any[]>([]);
+const total = ref<number>(0);
 
+//Se utiliza para aplanar el arreglo cuando el carrito contenga paquetes y todos los articulos se encuentren en el mismo nivel
 function handleUpdate(value: any[]) {
     flattenedArray.value = value;
     console.log("flattened", flattenedArray.value)
+}
+
+function totalValue(value: number){
+    total.value = value;
 }
 
 const refresh = async () => {
@@ -143,6 +154,7 @@ const refreshReferences = async () => {
 
 const processPayment = async () => {
     try {
+        loading.value = true;
         if(cartStore.order.length == 1){
             if(cartStore.order[0].status == 1){
                 let payment = await entity.getOpenPayOrder();
@@ -152,10 +164,10 @@ const processPayment = async () => {
         }else if(cartStore.order.length == 0){
             let payment_info = []
             let order = await createOrder(); //se crea el pedido y se guarda en la tabla 'ecommerce_order' y 'ecommerce_order_item'
-            payment_info = await entity.getPaymentInfo({id_order: order.id}); //se obtiene la información del cliente y del pedido
+            payment_info = await entity.getPaymentInfo({id_order: order.id, total: total.value}); //se obtiene la información del cliente y del pedido
             let response = await entity.openpayAxios.post('charges/', payment_info[0]) //se envía al api de open pay la información obtenida
             let status = response.data.status;
-            let update = await axios.post('Comercial/ECommerceOrder/updateOrder/' + response.data.order_id + '/' + response.data.id + '/' + status); //guarda el id_tracking del pedido
+            let update = await axios.post('Comercial/ECommerceOrder/updateOrder/' + response.data.order_id + '/' + response.data.id + '/' + status); //guarda el id_tracking del pedido y actualiza el estatus a pagado o no pagado
             window.location.href = response.data.payment_method.url; //redirige al cliente a la URL de confirmación
             cartStore.saveOrder(order.id); //almacena temporalmente el id del pedido y el estatus
         }
@@ -176,12 +188,13 @@ const processPayment = async () => {
             console.error('Error desconocido:', error);
         }
     } finally{
+        loading.value = false;
     }
 };
 
 const createOrder = async () => {
     try{
-        const params = {items: flattenedArray.value}
+        const params = {items: flattenedArray.value, total: total.value}
         let response = await axios.post('Inventory/Ecomerce/createOrder',params,{
             headers:{
                 company: 1,
