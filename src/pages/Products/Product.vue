@@ -115,10 +115,10 @@
                 </div>
                 <br>
                 <div class="col-12">
-                    <Button @click="addToCart" label="Añadir al carrito" class="w-full"></Button>
+                    <Button @click="addToCart(false)" label="Añadir al carrito" class="w-full"></Button>
                 </div>
                 <div class="col-12">
-                    <Button label="Pagar Ahora" class="w-full"></Button>
+                    <Button @click="addToCart(true)" label="Pagar Ahora" class="w-full"></Button>
                 </div>
             </div>
         </div>
@@ -139,7 +139,9 @@ import { useRouter } from 'vue-router';
 import axios from 'axios';
 import { useToast } from "primevue/usetoast";
 import { useCartStore } from '../../stores/cart';
+import { useAuthStore } from '../../stores/auth';
 import {OrderData} from '../Cart/Function/OrderData';
+const auth = useAuthStore();
 const cartStore = useCartStore();
 const toast = useToast();
 const entity = new OrderData();
@@ -152,7 +154,7 @@ const selectedBranch = ref<number>();
 const stock = ref<number>();
 const product = ref<any[]>([]);
 const existence = ref<any[]>([])
-const id_user = ref<string>("0");
+const id_user = ref<string>(auth.id_customer ? auth.id_customer.toString() : "0");
 const loading = ref<boolean>(true);
 const atribute_name = ref<any[]>([]);
 const item_attributes = ref<any[]>([]);
@@ -257,10 +259,15 @@ const imgbrand = (id, brand) => {
     return import.meta.env.VITE_API_ROUTE + 'Inventory/Ecomerce/image/' + id + brand;
 }
 
-const addToCart = () => {
+const addToCart = (payNow) => {
     cartStore.addCart(product.value[0], quantity.value, selectedBranch.value, false);
-    toast.add({ severity: 'success', summary: 'Agregado', detail: 'Articulo Agregado al carrito', life: 3000 });
-    quantity.value = 1
+    if(payNow == true){
+        router.push('/orderdata')
+    }else{
+        toast.add({ severity: 'success', summary: 'Agregado', detail: 'Articulo Agregado al carrito', life: 3000 });
+        quantity.value = 1
+    }
+    
 }
 
 const forceUpdateBranch = (branch) =>{

@@ -1,17 +1,20 @@
 <template>
     <div class="card">
         <div class="flex flex-column align-items-center mb-6">
-            <div class="text-900 text-4xl mb-4 font-medium">Tus Pedidos</div>
+            <div class="text-900 text-4xl mb-4 font-bold">Tus Pedidos</div>
         </div>
         <div>
             
         </div>
+        <div v-if="orders.length == 0" class="flex flex-column align-items-center mb-6">
+            <div class="text-900 text-2xl mb-4 font-medium">No tienes pedidos registrados</div>
+        </div>
         <div v-for="(order, i) in orders" :key="i">
-            <div class=" flex border-round border-1">
+            <div class=" flex border-round shadow-7">
                 <ul class="list-none p-0 m-0 col-12">
                 <li style="background: #0F7E8D;">
-                    <div class="w-full sm:w-6 flex align-items-start justify-content-between mt-3 sm:mt-0 col-12">
-                        <div style="color: #FFFFFF;">
+                    <div class="w-full flex justify-content-between mt-3 sm:mt-0 col-12 grid formgrid p-fluid">
+                        <div style="color: #FFFFFF;" class="field col-12 sm:col-9">
                             <span class="text-xl font-medium mb-3">Pedido: #{{ order.id }}</span>
                             &nbsp &nbsp
                             <span class="text-xl font-medium mb-3">Fecha del pedido: {{ formatDate(order.created) }}</span>
@@ -20,6 +23,9 @@
                             &nbsp &nbsp
                             <span class="text-xl font-medium mb-3">{{ order.status }}</span>
                             <br>
+                        </div>
+                        <div class="col-12 sm:col-3">
+                            <Tag class="text-xl font-medium mb-3" :style="{backgroundColor: getSeverity(order.status, order.is_paid)}" :value="getStatus(order.status, order.is_paid)"></Tag>
                         </div>
                     </div>
                 </li>
@@ -105,6 +111,22 @@ const formatDate = (date) =>{
     let month = String(new Date(date).getMonth() + 1).padStart(2, '0'); // Los meses en JavaScript son 0-indexados
     let year = new Date(date).getFullYear();
     return `${day}/${month}/${year}`;
+}
+
+const getStatus = (status, payed) => {
+    let statusName;
+    if(status == 1 && payed == true){
+        statusName = "Procesando por tienda";
+    }
+    return statusName;
+}
+
+const getSeverity = (status, payed) => {
+    let Color;
+    if(status == 1 && payed == true){
+        Color = "#B2BEB5";
+    }
+    return Color;
 }
 
 onMounted(async () => {

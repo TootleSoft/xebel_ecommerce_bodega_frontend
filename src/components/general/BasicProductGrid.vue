@@ -35,6 +35,19 @@
                     <span v-if="product.original_price" class="text-l text-900 mb-3 line-through">{{ "$"+product.original_price.toFixed(2) }}</span>
                     <span v-if="product.original_price" class="text-l text-900 mb-3 text-red-500">{{ "$"+product.price_tax.toFixed(2) }}</span>
                     <span class="text-l text-900 mb-3 font-medium">{{ product.barcode }}</span>
+                    <div class="col-12 align-items-center">
+                        <div class="grid formgrid p-fluid">
+                            <div class="col-4"></div>
+                            <InputNumber showButtons buttonLayout="horizontal" :min="1"
+                            inputClass="w-2rem text-center py-2 px-1 border-transparent outline-none shadow-none"
+                            v-model="quantity" class="border-1 surface-border border-round col-4"
+                            decrementButtonClass="p-button-text text-600 hover:text-primary py-1 px-1"
+                            incrementButtonClass="p-button-text text-600 hover:text-primary py-1 px-1"
+                            incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus"></InputNumber>
+                            <div class="col-4"></div>
+                        </div>
+                    </div>
+                    <br>
                 </div>
             </div>
             <br></br>
@@ -44,8 +57,11 @@
         </div>
 </template>
 <script setup lang="ts">
-import { ref} from 'vue';
+import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
+import axios from 'axios';
+import { useAuthStore } from '../../stores/auth';
+const auth = useAuthStore();
 
     interface Props {
         allproducts?: any[];
@@ -58,6 +74,8 @@ import { useRouter } from 'vue-router';
         pagesize: 40,
         pagetitle: '',
     })
+
+    const id_user = ref<string>(auth.id_customer ? auth.id_customer.toString() : "0");
 
     const products = ref<any[]>(props.allproducts)
     
@@ -94,6 +112,16 @@ import { useRouter } from 'vue-router';
     const first  = ref<number>(0);
 
     const router = useRouter();
+
+    const quantity = ref<number>(1);
+
+    const product = ref<any[]>([]);
+
+    const addCart = async (id_article, id_subarticle) =>{
+        let response = await axios.get('Inventory/EComerce/GetArticleInfo/' + id_article + '/' + id_subarticle + '/' + id_user.value)
+        product.value = response.data;
+    }
+
 </script>
 <style>
 
