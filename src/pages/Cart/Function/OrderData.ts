@@ -81,16 +81,16 @@ export class OrderData {
                 cartStore.id_numberItem = 0;
                 let status = order.status;
                 let update = await axios.post('Comercial/ECommerceOrder/updateOrder/' + order.order_id + '/' + order.id + '/' + status);
-                // await this.movementWarehouse({
-                //     order_id: order.order_id,
-                //     company: 1,
-                //     branch: 1,
-                // });
+                storage.setStorageSync('cart', cartStore.cart);
+                storage.setStorageSync('order', cartStore.order);
+                storage.setStorageSync('id_numberBundle', cartStore.id_numberBundle);
+                storage.setStorageSync('id_numberItem', cartStore.id_numberItem);
+                await this.movementWarehouse({
+                    order_id: order.order_id,
+                    company: 1,
+                    branch: 1,
+                });
             }
-            storage.setStorageSync('cart', cartStore.cart);
-            storage.setStorageSync('order', cartStore.order);
-            storage.setStorageSync('id_numberBundle', cartStore.id_numberBundle);
-            storage.setStorageSync('id_numberItem', cartStore.id_numberItem);
         } catch (error) {
 
         }
@@ -98,18 +98,18 @@ export class OrderData {
 
     movementWarehouse = async (params) => {
         let query = "?";
-            if (params) {
-                Object.keys(params).forEach(prop => {
-                    if (params[prop] != null) {
-                        query = query + prop + "=" + params[prop] + "&";
-                    }
-                });
-                query = query.substring(0, query.length - 1);
-            } else {
-                query = "";
-            }
-            const response = await axios.post('Comercial/ECommerceOrder/movementWarehouse' + query);
-            return response.data;
+        if (params) {
+            Object.keys(params).forEach(prop => {
+                if (params[prop] != null) {
+                    query = query + prop + "=" + params[prop] + "&";
+                }
+            });
+            query = query.substring(0, query.length - 1);
+        } else {
+            query = "";
+        }
+        const response = await axios.post('Comercial/ECommerceOrder/movementWarehouse' + query);
+        return response.data;
     }
 
 }

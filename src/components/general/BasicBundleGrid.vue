@@ -19,7 +19,7 @@
         <div v-for="(product, i) in products.slice(first / 10 * pagesize, first / 10 * pagesize + pagesize)" :key="i"
             class="col-12 md:col-5 lg:col-3 mb-5 lg:mb-0">
             <div class="mb-3 relative">
-                <img :src="imgRoute(product.id)" class="w-full h-auto border-3 border-500" :alt="String(i)" @click="router.push('/bundle/'+ product.id)" />
+                <img :src="imgRoute(product.id)" class="w-full h-auto  border-500 shadow-7" :alt="String(i)" @click="router.push('/bundle/'+ product.id)" />
                 <Button type="button"
                     class="border-1 border-white border-round py-2 px-3 absolute bg-black-alpha-30 text-white inline-flex align-items-center justify-content-center hover:bg-black-alpha-40 transition-colors transition-duration-300 cursor-pointer"
                     :style="{ bottom: '1rem', left: '1rem', width: 'calc(100% - 2rem)' }">
