@@ -1,8 +1,10 @@
-<script setup>
+<script setup lang="ts">
 import Sidebar from 'primevue/sidebar';
 import { usePrimeVue } from 'primevue/config';
 import { ref, watch, computed, onMounted } from 'vue';
 import { useLayout } from '@/layout/composables/layout';
+import axios from 'axios';
+ import { useAuthStore } from '../stores/auth';
 
 defineProps({
     simple: {
@@ -12,7 +14,9 @@ defineProps({
 });
 
 const $primevue = usePrimeVue();
+const authStore = useAuthStore();
 const rippleActive = computed(() => $primevue.config.ripple);
+const phone = ref<string>();
 
 const { setScale, layoutConfig, layoutState, onConfigSidebarToggle } = useLayout();
 const themes = ref([
@@ -97,11 +101,36 @@ const onRippleChange = (value) => {
     $primevue.config.ripple = value;
 };
 
+const chat = () =>{
+    console.log("usuario", authStore)
+    window.open("https://wa.me/" + phone.value +"?text=Hola,%20me%20gustaría%20saber%20más%20información%20sobre%20alguno%20de%20sus%20productos.", "_blank"); 
+}
+
+const getBranchPhone = async () => {
+    let response  = await axios.get("Inventory/Ecomerce/getBranchPhone/");
+    phone.value = response.data[0];
+    console.log("telefono", phone.value)
+}
+
+onMounted(async () => {
+    await refresh();
+});
+const refresh = async () => {
+    try{
+       await getBranchPhone();
+    }catch {
+        console.log("No se cargaron los datos")
+    }
+}
+
 </script>
 
 <template>
-    <Button class="layout-config-button p-link" @click="onConfigSidebarToggle()" style="cursor: pointer">
+    <!-- <Button class="layout-config-button p-link" @click="onConfigSidebarToggle()" style="cursor: pointer">
         <i class="pi pi-cog"></i>
+    </Button> -->
+    <Button class="layout-config-button" @click="chat()" severity="success">
+        <i class="pi pi-whatsapp"></i>
     </Button>
 
     <Sidebar v-model:visible="layoutState.configSidebarVisible.value" position="right" class="layout-config-sidebar w-18rem">

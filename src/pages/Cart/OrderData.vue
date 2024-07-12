@@ -1,5 +1,6 @@
 <template>
     <ProgressSpinner v-if="loading" class="loading-overlay"/>
+    <BlockUI :blocked="blocked" fullScreen />
     <div class="card">
         <div class="grid grid-nogutter">
             <!-- Izquierda -->
@@ -74,7 +75,7 @@
         </div>
         <div class="col-12 flex flex-column lg:flex-row justify-content-center align-items-center lg:justify-content-end my-6">
             <Button class="mt-3 lg:mt-0 w-full lg:w-auto flex-order-2 lg:flex-order-1 lg:mr-4" severity="secondary" label="Regresar al carrito" icon="pi pi-fw pi-arrow-left" @click="router.push('/shoppingcart');"></Button>
-            <Button class="w-full lg:w-auto flex-order-1 lg:flex-order-2" label="Pagar" icon="pi pi-fw pi-check" @click="processPayment"></Button>
+            <Button class="w-full lg:w-auto flex-order-1 lg:flex-order-2" label="Pagar" icon="pi pi-fw pi-check" :loading="loading" @click="processPayment"></Button>
         </div>
     </div>
     </div>
@@ -93,6 +94,7 @@ import { useToast } from "primevue/usetoast";
 import { useCartStore } from '../../stores/cart';
 import { useRouter } from 'vue-router';
 import {OrderData} from '../Cart/Function/OrderData';
+import BlockUI from 'primevue/blockui';
 
 const loading = ref<boolean>(false);
 const toast = useToast();
@@ -113,6 +115,7 @@ const useCfdi = ref<any[]>(cfdiData)
 const taxRegime = ref<any[]>(taxReg)
 const flattenedArray = ref<any[]>([]);
 const total = ref<number>(0);
+const blocked = ref<boolean>(false);
 
 //Se utiliza para aplanar el arreglo cuando el carrito contenga paquetes y todos los articulos se encuentren en el mismo nivel
 function handleUpdate(value: any[]) {
@@ -155,6 +158,7 @@ const refreshReferences = async () => {
 const processPayment = async () => {
     try {
         loading.value = true;
+        blocked.value = true;
         if(cartStore.order.length == 1){
             if(cartStore.order[0].status == 1){
                 let payment = await entity.getOpenPayOrder();
@@ -189,6 +193,7 @@ const processPayment = async () => {
         }
     } finally{
         loading.value = false;
+        blocked.value = false;
     }
 };
 

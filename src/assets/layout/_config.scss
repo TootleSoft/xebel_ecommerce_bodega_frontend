@@ -5,8 +5,8 @@
         width: 3rem;
         height: 3rem;
         line-height: 3rem;
-        background: var(--primary-color);
-        color: var(--primary-color-text);
+        background: green($color: #08e510);
+        color: green($color: #08e510);
         text-align: center;
         top: 50%;
         right: 0;
@@ -30,7 +30,7 @@
         }
 
         &:hover {
-            background: var(--primary-400);
+            background: green($color: #08e510);
         }
     }
 
