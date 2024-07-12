@@ -202,7 +202,6 @@ const refresh = async () => {
         
         let article_related = await axios.get('Inventory/EComerce/GetArticleRelated/' + route.params.id_article + '/' + route.params.id_subarticle + '/' + id_user.value)
         relateds.value = article_related.data;
-        // console.log(JSON.stringify(existence.value.sort((a, b) => b.stock - a.stock)[0].stock))
 
         //Por el momento es asi, pero si el cliente ya asigno una sucursal a su cuenta, se pondra siempre el stock en esa sucursal
         let branch = existence.value.sort((a, b) => b.stock - a.stock)[0].id_branch

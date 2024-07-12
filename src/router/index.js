@@ -77,7 +77,7 @@ const routes = [
         component: () => import('@/pages/Auth/login.vue')
     },
     {
-        path: '/confirmation/:order',
+        path: '/confirmation',
         name: 'confirmorder',
         component: () => import('@/pages/Cart/ConfirmOrder.vue')
     },

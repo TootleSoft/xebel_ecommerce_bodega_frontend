@@ -3,7 +3,7 @@
         <span class="text-900 text-2xl block font-medium mb-5">Agregar direccion</span>
     </div>
     <div class="col-12 lg:col-6 field mb-4">
-        <Dropdown :options="countries" v-model="entity.country" placeholder="Pais" optionLabel="name" optionValue="name" showClear class="w-full"></Dropdown>
+        <Dropdown :options="props.countries" v-model="entity.country" placeholder="Pais" optionLabel="name" optionValue="name" showClear class="w-full"></Dropdown>
     </div>
     <div class="col-12 lg:col-6 field mb-4">
         <input v-model="entity.state" id="Estado" placeholder="Estado" type="text" class="p-inputtext w-full" />
@@ -17,16 +17,13 @@
     <div class="col-12 field mb-4">
         <input v-model="entity.address" id="Direccion" placeholder="Direccion" type="text" class="p-inputtext w-full" />
     </div>
-    <!-- <div class="col-12 lg:col-6 field mb-4">
-        <input v-model="entity.internal_address" id="Direccion2" placeholder="Numero Interior (Opcional)" type="text" class="p-inputtext w-full" />
-    </div> -->
     <div class="col-12 lg:col-6 field mb-4">
         <input v-model="entity.postal_code" id="pc" placeholder="Codigo Postal" type="number" class="p-inputtext w-full" />
     </div>
     <div class="col-12 flex align-items-center justify-content-center">
         <Button @click="save" class="flex align-items-center justify-content-center" label="Gurdar Direccion" icon="pi pi-save"></Button>
         &nbsp&nbsp&nbsp
-        <Button @click="close" class="flex align-items-center justify-content-center" label="Cerrar" icon="pi pi-save"></Button>
+        <Button @click="close" class="flex align-items-center justify-content-center" label="Cerrar" icon="pi pi-times"></Button>
     </div>
 </template>
 
@@ -41,7 +38,6 @@ import { useToast } from "primevue/usetoast";
 
 const toast = useToast();
 const countryService = new CountryService();
-const countries = ref([]);
 const selectedCountry = ref(null);
 
 export interface customer_reference {
@@ -60,6 +56,14 @@ export interface customer_reference {
     modified?: Date | null;
     modified_by?: string | null;
 }
+
+interface Props {
+    countries?: any[];
+}
+
+const props = withDefaults(defineProps<Props>(), {
+    countries: () => [],
+})
 
 const entity = ref<customer_reference>({
     id: null,
@@ -109,7 +113,8 @@ const close = () => {
 }
 
 
-onMounted(() => {
-    countryService.getCountries().then((data) => (countries.value = data));
-});
+
+// onMounted(() => {
+//     countryService.getCountries().then((data) => (countries.value = data));
+//     });
 </script>

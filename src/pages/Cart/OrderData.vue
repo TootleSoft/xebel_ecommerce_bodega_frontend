@@ -11,12 +11,20 @@
             <div class="col-12 lg:col-6 h-full px-4 py-4 md:px-6">
                 <div class="card flex justify-content-center">
                     <div class="flex flex-wrap gap-3">
-                        <div class="flex align-items-center">
-                            <RadioButton v-model="deliveryType" inputId="dt1" name="delivery" value="1" />
+                        <div v-if="pickup == 1" class="flex align-items-center">
+                            <RadioButton v-model="deliveryType" inputId="dt1" name="delivery" :value="1" />
                             <label for="dt1" class="ml-2">Entrega en Sucursal</label>
                         </div>
-                        <div class="flex align-items-center">
-                            <RadioButton v-model="deliveryType" inputId="dt2" name="delivery" value="2" />
+                        <div v-if="pickup == 0" class="flex align-items-center">
+                            <RadioButton v-model="deliveryType" inputId="dt1" name="delivery" :value="1" :disabled="true"/>
+                            <label for="dt1" class="ml-2">Entrega en Sucursal</label>
+                        </div>
+                        <div v-if="delivery == 1" class="flex align-items-center">
+                            <RadioButton v-model="deliveryType" inputId="dt2" name="delivery" :value="2"/>
+                            <label for="dt2" class="ml-2">Entrega en domicilio</label>
+                        </div>
+                        <div v-if="delivery == 0" class="flex align-items-center">
+                            <RadioButton v-model="deliveryType" inputId="dt2" name="delivery" :value="2" :disabled="true"/>
                             <label for="dt2" class="ml-2">Entrega en domicilio</label>
                         </div>
                     </div>
@@ -36,7 +44,7 @@
                             <Button v-if="!showShippingData" @click="showShippingData=true" class="flex align-items-center justify-content-center" label="Agregar nueva dirección" icon="pi pi-fw pi-check"></Button>
                         </div>
                     </div>
-                    <ShippingData v-if="showShippingData" @saveShippingData="refreshReferences" @close="showShippingData=false"></ShippingData>
+                    <ShippingData v-if="showShippingData" @saveShippingData="refreshReferences" @close="showShippingData=false" :countries="countries"></ShippingData>
                     <br>
                     <br>
                     <br>
@@ -49,17 +57,36 @@
                         </div>
                     </div>
                     <div v-if="billable" class="grid formgrid col-12">
+                        <div class="col-12 lg:col-6 field mb-4">
+                            <Dropdown :options="countries" v-model="invoice_entity.country" placeholder="Pais" optionLabel="name" optionValue="name" showClear class="w-full"></Dropdown>
+                        </div>
+                        <div class="col-12 lg:col-6 field mb-4">
+                            <input v-model="invoice_entity.state" id="Estado" placeholder="Estado" type="text" class="p-inputtext w-full" />
+                        </div>
+                        <div class="col-12 lg:col-6 field mb-4">
+                            <input v-model="invoice_entity.municipality" id="Municipio" placeholder="Municipio" type="text" class="p-inputtext w-full" />
+                        </div>
+                        <div class="col-12 lg:col-6 field mb-4">
+                            <input v-model="invoice_entity.suburb" id="Colonia" placeholder="Colonia" type="text" class="p-inputtext w-full" />
+                        </div>
                         <div class="col-12 field mb-4">
-                            <input v-model="invoiceAddress"  id="Direccion de Faturacion" placeholder="Dirección de Faturación" type="text" class="p-inputtext w-full" />
+                            <input v-model="invoice_entity.address" id="Direccion" placeholder="Direccion" type="text" class="p-inputtext w-full" />
                         </div>
                         <div class="col-12 lg:col-6 field mb-4">
-                            <input v-model="rfc" id="rfc" placeholder="RFC" type="text" class="p-inputtext w-full" />
+                            <input v-model="invoice_entity.postal_code" id="pc" placeholder="Codigo Postal" type="number" class="p-inputtext w-full" />
                         </div>
                         <div class="col-12 lg:col-6 field mb-4">
-                            <Dropdown :options="useCfdi" v-model="customerUseCfdi" placeholder="Uso CFDI" optionLabel="Descripcion" optionValue="c_UsoCFDI" showClear class="w-full"></Dropdown>
+                            <input v-model="invoice_entity.rfc" id="rfc" placeholder="RFC" type="text" class="p-inputtext w-full" />
                         </div>
                         <div class="col-12 lg:col-6 field mb-4">
-                            <Dropdown :options="taxRegime" v-model="customerTaxRegime" placeholder="Regimen Fiscal" optionLabel="Descripcion" optionValue="c_RegimenFiscal" showClear class="w-full"></Dropdown>                        </div>
+                            <Dropdown :options="useCfdi" v-model="invoice_entity.customerUseCfdi" placeholder="Uso CFDI" optionLabel="Descripcion" optionValue="c_UsoCFDI" showClear class="w-full"></Dropdown>
+                        </div>
+                        <div class="col-12 lg:col-6 field mb-4">
+                            <Dropdown :options="taxRegime" v-model="invoice_entity.customerTaxRegime" placeholder="Regimen Fiscal" optionLabel="Descripcion" optionValue="c_RegimenFiscal" showClear class="w-full"></Dropdown>                        
+                        </div>
+                        <div class="col-12 flex align-items-center justify-content-center">
+                            <Button  @click="saveShippingData" class="flex align-items-center justify-content-center" label="Guardar/Modificar Datos de Facturacion" icon="pi pi-fw pi-save"></Button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -71,11 +98,12 @@
                 <OrderDataProduct @update:flattenedArray="handleUpdate" @total-value="totalValue"></OrderDataProduct>
         <br>
         <div>
-            <span class="text-900 block font-bold text-xl">Total del pedido ${{ total }}</span>
+            <span class="text-900 block font-bold text-xl">Total del pedido ${{ total.toFixed(2) }}</span>
         </div>
         <div class="col-12 flex flex-column lg:flex-row justify-content-center align-items-center lg:justify-content-end my-6">
             <Button class="mt-3 lg:mt-0 w-full lg:w-auto flex-order-2 lg:flex-order-1 lg:mr-4" severity="secondary" label="Regresar al carrito" icon="pi pi-fw pi-arrow-left" @click="router.push('/shoppingcart');"></Button>
-            <Button class="w-full lg:w-auto flex-order-1 lg:flex-order-2" label="Pagar" icon="pi pi-fw pi-check" :loading="loading" @click="processPayment"></Button>
+            <Button v-if="only_online == 0 && deliveryType != 2" class="mt-3 lg:mt-0 w-full lg:w-auto flex-order-2 lg:flex-order-1 lg:mr-4" label="Pagar En Sucursal" icon="pi pi-fw pi-wallet" @click="processPaymentStore()"></Button>
+            <Button class="mt-3 lg:mt-0 w-full lg:w-auto flex-order-2 lg:flex-order-1 lg:mr-4" label="Pagar En Linea" icon="pi pi-fw pi-credit-card" @click="processPayment()"></Button>
         </div>
     </div>
     </div>
@@ -83,7 +111,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, watch } from 'vue';
+import { CountryService } from '../../service/CountryService';
+import { ref, onMounted, watch, computed } from 'vue';
 import ShippingData from './ShippingData.vue';
 import axios from 'axios';
 import { useAuthStore } from '../../stores/auth';
@@ -96,26 +125,53 @@ import { useRouter } from 'vue-router';
 import {OrderData} from '../Cart/Function/OrderData';
 import BlockUI from 'primevue/blockui';
 
+const countryService = new CountryService();
+const countries = ref([]);
 const loading = ref<boolean>(false);
 const toast = useToast();
 const entity = new OrderData();
 const authStore = useAuthStore();
 const cartStore = useCartStore();
 const router = useRouter();
-const billable = ref(false);
+const billable = ref<boolean>(false);
 const selectedReference = ref(null);
 const customerReferences = ref<any[]>([])
 const deliveryType = ref<number>(1);
 const showShippingData = ref<boolean>(false);
-const invoiceAddress = ref<string>(null)
-const rfc = ref<string>(null)
-const customerUseCfdi = ref<string>(null)
-const customerTaxRegime = ref<string>(null)
 const useCfdi = ref<any[]>(cfdiData)
 const taxRegime = ref<any[]>(taxReg)
 const flattenedArray = ref<any[]>([]);
 const total = ref<number>(0);
 const blocked = ref<boolean>(false);
+const pickup = ref<number>(0);
+const delivery = ref<number>(0);
+const only_online = ref<number>(0);
+
+export interface invoice_data {
+    id_customer?: number | null;
+    postal_code?: string | null;
+    country?: string | null;
+    state?: string | null;
+    municipality?: string | null;
+    suburb?: string | null;
+    address?: string | null;
+    rfc?: string | null;
+    customerUseCfdi?: string | null;
+    customerTaxRegime?: string | null;
+}
+
+const invoice_entity = ref<invoice_data>({
+    id_customer: authStore.id_customer,
+    postal_code: null,
+    country: null,
+    state: null,
+    municipality: null,
+    suburb: null,
+    address: null,
+    rfc: null,
+    customerUseCfdi: null,
+    customerTaxRegime: null,
+});
 
 //Se utiliza para aplanar el arreglo cuando el carrito contenga paquetes y todos los articulos se encuentren en el mismo nivel
 function handleUpdate(value: any[]) {
@@ -127,16 +183,55 @@ function totalValue(value: number){
     total.value = value;
 }
 
+const saveShippingData = async () =>{
+    if(billable && invoiceNotNull()){
+        let response = await axios.post('Comercial/EComerceUser/SaveInvoiceData',invoice_entity.value)
+        toast.add({ severity: 'success', summary: 'Informacion guardada', detail: "Se guardaron los datos de facturacion correctamente", life: 7500 });
+    }else{
+        toast.add({ severity: 'error', summary: 'Error al guardar informacion de facturacion', detail: "Favor de llenar todos los datos correctamente", life: 7500 });
+    }
+}
+
+const invoiceNotNull = ()=>{
+    console.log(JSON.stringify(invoice_entity.value))
+    for (const key in invoice_entity.value){
+        if (invoice_entity.value[key as keyof invoice_data] === null || invoice_entity.value[key as keyof invoice_data] === "") {
+            return false;
+        }
+    }
+    return true;
+}
+
 const refresh = async () => {
     try{
+        pickup.value = parseInt(import.meta.env.VITE_PICKUP);
+        delivery.value = parseInt(import.meta.env.VITE_DELIVERY);
+        only_online.value = parseInt(import.meta.env.VITE_ONLY_ONLINE_SALES);
+        if(pickup.value == 0){
+            deliveryType.value=2;
+        }else{
+            deliveryType.value=1;
+        }
         if(cartStore.order.length == 1)
             await entity.newOrder();
         let response = await axios.get('Comercial/EComerceUser/GetReferences/'+authStore.id_customer)
         customerReferences.value = response.data;
         response = await axios.get('Comercial/EComerceUser/GetInvoiceData/'+authStore.id_customer)
-        invoiceAddress.value = response.data[0].address;
-        rfc.value = response.data[0].rfc;
-        
+        invoice_entity.value.address = response.data[0].address;
+        invoice_entity.value.postal_code = response.data[0].postal_code;
+        invoice_entity.value.suburb = response.data[0].suburb;
+        invoice_entity.value.municipality = response.data[0].municipality;
+        invoice_entity.value.state = response.data[0].state;
+        invoice_entity.value.country = response.data[0].country;
+        invoice_entity.value.rfc = response.data[0].rfc;
+        invoice_entity.value.customerTaxRegime = response.data[0].tax_regime;
+        invoice_entity.value.customerUseCfdi = response.data[0].use_cfdi;
+        countries.value = countries.value.map(x => {
+            return {
+                ...x,
+                name: x.name.toUpperCase()
+            }
+        })
     }catch(error){
         console.log(error)
     }
@@ -147,8 +242,13 @@ const refreshReferences = async () => {
         let response = await axios.get('Comercial/EComerceUser/GetReferences/'+authStore.id_customer)
         customerReferences.value = response.data;
         response = await axios.get('Comercial/EComerceUser/GetInvoiceData/'+authStore.id_customer)
-        invoiceAddress.value = response.data[0].address;
-        rfc.value = response.data[0].rfc;
+        invoice_entity.value.address = response.data[0].address;
+        invoice_entity.value.postal_code = response.data[0].postal_code;
+        invoice_entity.value.suburb = response.data[0].suburb;
+        invoice_entity.value.municipality = response.data[0].municipality;
+        invoice_entity.value.state = response.data[0].state;
+        invoice_entity.value.country = response.data[0].country;
+        invoice_entity.value.rfc = response.data[0].rfc;
         showShippingData.value = false;
     }catch(error){
         console.log(error)
@@ -157,6 +257,15 @@ const refreshReferences = async () => {
 
 const processPayment = async () => {
     try {
+        if(deliveryType.value == 2 && selectedReference.value == null)
+            throw "Pedido con envio, favor de seleccionar/crear una direccion de envio"
+        let inn = invoiceNotNull();
+        if(billable.value == true){
+            if(inn == false){
+                throw "Favor de llenar todos los datos de facturacion"
+            }
+        }
+        console.log(inn)
         loading.value = true;
         blocked.value = true;
         if(cartStore.order.length == 1){
@@ -167,8 +276,8 @@ const processPayment = async () => {
             }
         }else if(cartStore.order.length == 0){
             let payment_info = []
-            let order = await createOrder(); //se crea el pedido y se guarda en la tabla 'ecommerce_order' y 'ecommerce_order_item'
-            payment_info = await entity.getPaymentInfo({id_order: order.id, total: total.value}); //se obtiene la información del cliente y del pedido
+            let order = await createOrder(1); //se crea el pedido y se guarda en la tabla 'ecommerce_order' y 'ecommerce_order_item'
+            payment_info = await entity.getPaymentInfo({id_order: order.id, total: total.value.toFixed(2)}); //se obtiene la información del cliente y del pedido
             let response = await entity.openpayAxios.post('charges/', payment_info[0]) //se envía al api de open pay la información obtenida
             let status = response.data.status;
             let update = await axios.post('Comercial/ECommerceOrder/updateOrder/' + response.data.order_id + '/' + response.data.id + '/' + status); //guarda el id_tracking del pedido y actualiza el estatus a pagado o no pagado
@@ -187,9 +296,9 @@ const processPayment = async () => {
             }
         }
         if (axios.isAxiosError(error)) {
-            console.error('Error procesando el pago:', error.response?.data);
+            toast.add({ severity: 'error', summary: 'Error procesando el pago:', detail: error.response?.data, life: 7000 });
         } else {
-            console.error('Error desconocido:', error);
+            toast.add({ severity: 'error', summary: 'Error procesando el pago:', detail: error, life: 7000 });
         }
     } finally{
         loading.value = false;
@@ -197,9 +306,34 @@ const processPayment = async () => {
     }
 };
 
-const createOrder = async () => {
+const processPaymentStore = async () => {
+    try {
+        let inn = invoiceNotNull();
+        if(billable.value == true){
+            if(inn == false){
+                throw "Favor de llenar todos los datos de facturacion"
+            }
+        }
+        loading.value = true;
+        let order = await createOrder(2); //se crea el pedido y se guarda en la tabla 'ecommerce_order' y 'ecommerce_order_item'
+        cartStore.saveOrder(order.id); //almacena temporalmente el id del pedido y el estatus
+        await entity.newOrderStore();
+        router.push('/confirmation')
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            toast.add({ severity: 'error', summary: 'Error procesando el pago:', detail: error.response?.data, life: 7000 });
+        } else {
+            toast.add({ severity: 'error', summary: 'Error procesando el pago:', detail: error, life: 7000 });
+        }
+    } finally{
+        loading.value = false;
+    }
+};
+
+const createOrder = async (payment_type) => {
     try{
-        const params = {items: flattenedArray.value, total: total.value}
+        console.log(JSON.stringify(payment_type))
+        const params = {items: flattenedArray.value, total: total.value, payment_type: payment_type, is_billable: billable.value, delivery_type: deliveryType.value, id_customer_reference: deliveryType.value == 2 ? selectedReference.value : null}
         let response = await axios.post('Inventory/Ecomerce/createOrder',params,{
             headers:{
                 company: 1,
@@ -217,7 +351,7 @@ const createOrder = async () => {
 }
 
 onMounted(async () => {
-    deliveryType.value = 1
+    countryService.getCountries().then((data) => (countries.value = data));
     await refresh();
 });
 

@@ -10,23 +10,6 @@
                 style="background: var(--exception-pages-image)"
             >
                 <div class="flex flex-column">
-                    <!-- Proceso de validacion -->
-                    <div v-if="!validated">
-                        <div class="pt-3 m-3">
-                            <br>
-                            <br>
-                            <div class="form-container text-center " style="max-width: 320px; min-width: 270px">
-                                <h4 class="m-0 mb-2 text-3xl">Procesando pedido porfavor espere unos momentos...</h4>
-                                <br>
-                                <br>
-                                <br>
-                                <br>
-                                <br>
-                                <ProgressSpinner class="w-full"/>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- proceso de redireccion -->
                     <div v-if="validated">
                         <div class="pt-3 m-3">
                             <br>
@@ -42,7 +25,6 @@
                             </div>
                         </div>
                     </div>
-                    <Button  @click="redirectionCounter"></button>
                 </div>
             </div>
         </div>
@@ -51,7 +33,7 @@
 
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import axios from 'axios';
 import { useToast } from "primevue/usetoast";
 import { useAuthStore } from '../../stores/auth';
@@ -60,9 +42,10 @@ const toast = useToast();
 const router = useRouter();
 
 const counter = ref<number>(5)
-const validated = ref<boolean>(false)
+const validated = ref<boolean>(true)
 
 const redirectionCounter = () => {
+    toast.add({ severity: 'success', summary: 'Pedido Registrado', detail: "El pedido fue creado con exito", life: 7500 });
     validated.value = true;
     let interval = null
     interval = window.setInterval(() => {
@@ -77,6 +60,9 @@ const redirectionCounter = () => {
 }
 
 
+onMounted(() =>{
+    redirectionCounter();
+})
 
 
 </script>

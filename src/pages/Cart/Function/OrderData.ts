@@ -41,7 +41,7 @@ export class OrderData {
             const response = await axios.get('Comercial/EcommerceOrder/getOrder/' + query);
             return response.data;
         } catch (error) {
-
+            console.log(error)
         }
     }
 
@@ -93,6 +93,31 @@ export class OrderData {
             }
         } catch (error) {
 
+        }
+    }
+
+    newOrderStore = async () => {
+        try {
+            console.log(JSON.stringify(this.cartStore.order[0].id))
+            let order = await this.getOrder({ id_order: this.cartStore.order[0].id });
+            console.log(JSON.stringify(order))
+            let update = await axios.post('Comercial/ECommerceOrder/updateOrderStore/' + order[0].id);
+            cartStore.order = [];
+            cartStore.cart = [];
+            cartStore.id_numberBundle = 0;
+            cartStore.id_numberItem = 0;
+            storage.setStorageSync('cart', cartStore.cart);
+            storage.setStorageSync('order', cartStore.order);
+            storage.setStorageSync('id_numberBundle', cartStore.id_numberBundle);
+            storage.setStorageSync('id_numberItem', cartStore.id_numberItem);
+            await this.movementWarehouse({
+                order_id: order[0].id,
+                company: 1,
+                branch: 1,
+            });
+
+        } catch (error) {
+            console.log(error)
         }
     }
 

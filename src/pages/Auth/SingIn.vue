@@ -83,7 +83,7 @@ export interface ecomerce_user {
 
 const entity = ref<ecomerce_user>({
     id: null,
-    id_company: null,
+    id_company: import.meta.env.VITE_ID_COMPANY,
     id_branch: null,
     name: null,
     email: null,
