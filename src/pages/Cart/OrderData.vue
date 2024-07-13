@@ -276,7 +276,7 @@ const processPayment = async () => {
             }
         }else if(cartStore.order.length == 0){
             let payment_info = []
-            let order = await createOrder(1); //se crea el pedido y se guarda en la tabla 'ecommerce_order' y 'ecommerce_order_item'
+            let order = await createOrder(2); //se crea el pedido y se guarda en la tabla 'ecommerce_order' y 'ecommerce_order_item'
             payment_info = await entity.getPaymentInfo({id_order: order.id, total: total.value.toFixed(2)}); //se obtiene la información del cliente y del pedido
             let response = await entity.openpayAxios.post('charges/', payment_info[0]) //se envía al api de open pay la información obtenida
             let status = response.data.status;
@@ -315,7 +315,7 @@ const processPaymentStore = async () => {
             }
         }
         loading.value = true;
-        let order = await createOrder(2); //se crea el pedido y se guarda en la tabla 'ecommerce_order' y 'ecommerce_order_item'
+        let order = await createOrder(1); //se crea el pedido y se guarda en la tabla 'ecommerce_order' y 'ecommerce_order_item'
         cartStore.saveOrder(order.id); //almacena temporalmente el id del pedido y el estatus
         await entity.newOrderStore();
         router.push('/confirmation')

@@ -17,15 +17,16 @@
                         <div style="color: #FFFFFF;" class="field col-12 sm:col-9">
                             <span class="text-xl font-medium mb-3">Pedido: #{{ order.id }}</span>
                             &nbsp &nbsp
-                            <span class="text-xl font-medium mb-3">Fecha del pedido: {{ formatDate(order.created) }}</span>
-                            <!-- &nbsp &nbsp -->
-                            <!-- <span class="text-xl font-medium mb-3">Total: ${{ order.total.toFixed(2) }}</span> -->
+                            <span v-if="order.delivery_type == 1" class="text-xl font-medium mb-3">Sucursal: {{ order.branch }}</span>
+                            <span v-if="order.delivery_type == 2" class="text-xl font-medium mb-3">Entrega a Domicilio</span>
                             &nbsp &nbsp
-                            <span class="text-xl font-medium mb-3">{{ order.status }}</span>
+                            <span class="text-xl font-medium mb-3">Fecha del pedido: {{ formatDate(order.created) }}</span>
+                            &nbsp &nbsp
+                            <span class="text-xl font-medium mb-3">Total: ${{ order.total.toFixed(2) }}</span>
                             <br>
                         </div>
                         <div class="col-12 sm:col-3">
-                            <Tag class="text-xl font-medium mb-3" :style="{backgroundColor: getSeverity(order.status, order.is_paid)}" :value="getStatus(order.status, order.is_paid)"></Tag>
+                            <Tag class="text-xl font-medium mb-3" :style="{backgroundColor: getSeverity(order.status, order.is_paid, order.delivery_type, order.payment_type)}" :value="getStatus(order.status, order.is_paid, order.delivery_type, order.payment_type)"></Tag>
                         </div>
                     </div>
                 </li>
@@ -113,19 +114,24 @@ const formatDate = (date) =>{
     return `${day}/${month}/${year}`;
 }
 
-const getStatus = (status, payed) => {
-    let statusName;
-    if(status == 1 && payed == true){
-        statusName = "Procesando por tienda";
-    }
+const getStatus = (status, payed, delivery, payment) => {
+    let statusName = ((status == 1 && payed == 1) || (status == 1 && payed == 0 && delivery == 1 && payment == 1)) ? "Procesando por tienda" : 
+    (status == 2 && payed == 0 && delivery == 1 && payment == 1) ? "Listo para recoger y pagar en sucursal" :
+    (status == 2 && payed == 1 && delivery == 1 && payment == 2) ? "Listo para recoger en sucursal" :
+    (status == 2 && payed == 1 && delivery == 2) ? "En preparacion para envio" :
+    (status == 3 && payed == 1 && delivery == 1) ? "Entregado" :
+    (status == 3 && payed == 0 && delivery == 1) ? "Por Pagar" :
+    (status == 3 && payed == 1 && delivery == 2) ? "Enviado" :
+    "Registrado";
     return statusName;
 }
 
-const getSeverity = (status, payed) => {
-    let Color;
-    if(status == 1 && payed == true){
-        Color = "#B2BEB5";
-    }
+const getSeverity = (status, payed, delivery, payment) => {
+    let Color = status == 1 ? "#B2BEB5" :
+    status == 2 ? "#EF8C1A"  :
+    status == 3 ? "#0BD18A" 
+    : "Otra cosa";
+
     return Color;
 }
 
