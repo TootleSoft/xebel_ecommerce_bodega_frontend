@@ -40,7 +40,7 @@
                             <div class="col-4"></div>
                             <InputNumber showButtons buttonLayout="horizontal" :min="1"
                             inputClass="w-2rem text-center py-2 px-1 border-transparent outline-none shadow-none"
-                            v-model="quantity" class="border-1 surface-border border-round col-4"
+                            v-model="product.quantity" class="border-1 surface-border border-round col-4"
                             decrementButtonClass="p-button-text text-600 hover:text-primary py-1 px-1"
                             incrementButtonClass="p-button-text text-600 hover:text-primary py-1 px-1"
                             incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus"></InputNumber>
@@ -112,8 +112,6 @@ const auth = useAuthStore();
     const first  = ref<number>(0);
 
     const router = useRouter();
-
-    const quantity = ref<number>(1);
 
     const product = ref<any[]>([]);
 
