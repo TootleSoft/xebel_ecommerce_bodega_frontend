@@ -185,7 +185,7 @@
 }
 
 .MegaMenuText{
-  color: rgb(77, 77, 77);
+  color: rgb(170, 170, 170);
 }
 .full-width {
   width: 100vw; /* Viewport width, ensuring it spans the entire width of the screen */
@@ -3949,7 +3949,7 @@
   .p-carousel-items-container {
     display: flex;
     flex-direction: row;
-    width: 30%;
+    width: 10%;
   }
 
   .p-carousel-indicators {
@@ -3972,7 +3972,7 @@
 
   .p-carousel-vertical .p-carousel-items-container {
     flex-direction: column;
-    height: 100%;
+    height: 50%;
   }
 
   /* Keyboard Support */
@@ -8435,20 +8435,20 @@
     margin-bottom: 0;
   }
   .p-menubar .p-menuitem > .p-menuitem-content {
-    color: #676B89;
+    color: #0bb4c9;
     transition: box-shadow 0.2s;
     border-radius: 6px;
   }
   .p-menubar .p-menuitem > .p-menuitem-content .p-menuitem-link {
-    color: #676B89;
+    color: #0bb4c9;
     padding: 0.571rem 0.429rem;
     user-select: none;
   }
   .p-menubar .p-menuitem > .p-menuitem-content .p-menuitem-link .p-menuitem-text {
-    color: #676B89;
+    color: #0bb4c9;
   }
   .p-menubar .p-menuitem > .p-menuitem-content .p-menuitem-link .p-menuitem-icon {
-    color: #676B89;
+    color: #0bb4c9;
     margin-right: 0.5rem;
   }
   .p-menubar .p-menuitem > .p-menuitem-content .p-menuitem-link .p-submenu-icon {
@@ -10739,7 +10739,7 @@
 }
 @layer primevue {
   .p-button-label {
-    font-weight: 500;
+    font-weight: 700;
   }
   .p-selectbutton > .p-button,
 .p-togglebutton.p-button {
@@ -11112,6 +11112,6 @@
 }
 .label-button-user {
   font-weight: 700;
-  font-size: 115%;
+  font-size: 120%;
   color: #00bcd4;
 }

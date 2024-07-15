@@ -1,5 +1,5 @@
 <template>
-    <div class="card">
+            <div class="card">
         <Carousel :value="products" :numVisible="3" :numScroll="3" :responsiveOptions="responsiveOptions" circular :autoplayInterval="5000">
             <template #item="slotProps">
                 <div class="surface-border border-round m-2 p-3">
@@ -8,23 +8,15 @@
                             <img :src="imgroute(slotProps.data.id)" class="h-9rem"  @click="router.push(slotProps.data.path)"/>
                         </div>
                     </div>
-                    <!-- <div class="mb-3 font-medium">{{ slotProps.data.name }}</div>
-                    <div class="flex justify-content-between align-items-center">
-                        <div class="mt-0 font-semibold text-xl">${{ slotProps.data.price }}</div>
-                        <span>
-                            <Button icon="pi pi-heart" severity="secondary" outlined />
-                            <Button icon="pi pi-shopping-cart" class="ml-2"/>
-                        </span>
-                    </div> -->
-                    <!-- <div class="flex align-items-center cursor-pointer px-3 py-2 overflow-hidden relative font-semibold text-lg uppercase">{{ slotProps.data.name }}</div> -->
+                    <div class="flex align-items-center cursor-pointer px-3 py-2 overflow-hidden relative font-semibold text-lg uppercase">{{ slotProps.data.name }}</div>
                 </div>
             </template>
         </Carousel>
     </div>
 </template>
-
-<script setup lang="ts">
-import { ref, onMounted } from "vue";
+    
+<script setup lang='ts'>
+    import { ref, onMounted } from "vue";
 import { useRouter } from 'vue-router';
 import axios from "axios";
 
@@ -55,18 +47,21 @@ const responsiveOptions = ref([
 ]);
 
 const refresh = async () =>{
-    let response = await axios.get('Inventory/EComerce/getTopBrands')
+    let response = await axios.get('Inventory/EComerce/bundles')
 
     products.value = response.data; 
 }
 
 const imgroute = (id) => {
 
-        return import.meta.env.VITE_API_ROUTE+'Inventory/Brand/image/'+id+"/"+new Date();
+    // return import.meta.env.VITE_API_ROUTE+'Inventory/Brand/image/'+id+"/"+new Date();
     }
 
 onMounted(async () => {
     await refresh();
 })
-
 </script>
+    
+<style>
+    
+</style>

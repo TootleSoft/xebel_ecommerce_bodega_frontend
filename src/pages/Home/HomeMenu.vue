@@ -2,10 +2,10 @@
     <div class="card">
         <div class="container">
             <div class="left-block">
-                <p class="bold-text text-8xl">Descubre</p>
-                <p class="bold-text text-8xl">nuestros</p>
-                <p class="cyan-text">increibles</p>
-                <p class="cyan-text">productos</p>
+                <div class="bold-text md:text-8xl">Descubre</div>
+                <div class="bold-text md:text-8xl">nuestros</div>
+                <div class="cyan-text md:text-8xl">increibles</div>
+                <div class="cyan-text md:text-8xl">productos</div>
                 <br>
                 <span class="cyan-text2">Descubre la unica variedad de marcas y productos que Villa de Cortes Monterrey
                     tiene
@@ -16,48 +16,103 @@
                 </div>
             </div>
             <div class="right-block">
-                <BasicProductCarusell />
+                <BasicImageCarusell />
             </div>
         </div>
 
-        <div class="centered-text">
-            <p class="cyan-text">Nuestras</p>
-            <p class="bold-text text-7xl">marcas</p>
+        <div class="flex justify-content-center flex-wrap">
+            <div class="flex align-items-center justify-content-center w-15rem m-2 text-cyan-700 xl:text-7xl font-bold">
+                Nuestras</div>
+            <div class="flex align-items-center justify-content-center w-15rem m-2 xl:text-7xl font-bold">marcas</div>
+            <!-- <div class="cyan-text xl:text-7xl flex align-items-center justify-content-center w-4rem h-4rem">Nuestras</div>
+            <div class="bold-text xl:text-7xl flex align-items-center justify-content-center w-4rem h-4rem">marcas</div> -->
         </div>
         <BasicProductCarusell />
-    </div>
+        <div class="flex justify-content-center flex-wrap">
+            <div class="flex align-items-center justify-content-center w-24rem m-2 text-cyan-700 xl:text-7xl font-bold">
+                Promociones</div>
+            <div class="flex align-items-center justify-content-center w-13rem m-2 xl:text-7xl font-bold">para ti</div>
+        </div>
+        <BasicProductCarusell />
 
-    <div class="card">
+
         <div class="centered-text">
-            <p class="cyan-text">Promociones</p>
-            <p class="bold-text text-7xl">para ti</p>
-        </div>
-        <BasicProductCarusell />
-    </div>
-    <div class="card">
-        <div class="centered-text">
-            <p class="cyan-text">¿Quienes</p>
-            <p class="bold-text text-7xl">somos?</p>
+            <p class="flex align-items-center justify-content-center w-20rem m-2 text-cyan-700 xl:text-7xl font-bold">¿Quienes</p>
+            <p class="flex align-items-center justify-content-center w-13rem m-2 xl:text-7xl font-bold">somos?</p>
         </div>
         <div class="container">
             <div class="left-block">
-                <BasicProductCarusell />
+                <BasicImageCarusell />
             </div>
             <div class="right-block">
-                <p class="bold-text text-7xl">Más de 30 años a tu</p>
-                <p class="cyan-text text-6xl">servicio</p>
-                <p class="cyan-text text-4xl"> De Ciudad de México a Monterrey, llevamos
+                <p class="bold-text xl:text-8xl font-bold-800 text-left">Más de 30 años a tu</p>
+                <p class="cyan-text xl:text-8xl text-left">servicio.</p>
+                <p class="cyan-text2 xl:text-4xl text-left"> De Ciudad de México a Monterrey, llevamos
                     más de 30 años brindando soluciones a los
                     profesionistas de la industria dental. </p>
+                <p class="cyan-text2 xl:text-4xl text-left">En Villa de Cortés Monterrey somos una
+                    empresa mexicana líder en venta de insumos
+                    dentales y ofreciéndote la mejor calidad y
+                    proveedores del mercado. </p>
+            </div>
+        </div>
+        <div class="container">
+            <div class="card">
+                <footer class="footer">
+                    <div class="footer-content">
+                        <div class="footer-column">
+                            <h3 class="font-bold-800 xl:text-4xl">Contacto</h3>
+                            <p class="font-bold xl:text-2xl"> (81) 2948-6399</p>
+                            <p class="line-height-1 w-15">Eduardo Aguirre Pequeño</p>
+                            <p class="line-height-1 w-15">1302, Mitras Centro, Monterrey,</p>
+                            <p class="line-height-1 w-15">Nuevo Léon, México. CP. 64460</p>
+                            <span class="social-icons">
+                                <a href="https://www.facebook.com/villadcmty" target="_blank" class="social-icon">
+                                    <i class="pi pi-facebook"></i>
+                                </a>
+                                <a href="https://www.instagram.com/villadcmty" target="_blank" class="social-icon">
+                                    <i class="pi pi-instagram"></i>
+                                </a>
+                            </span>
+                        </div>
+                        <div class="footer-column">
+                            <h3 class="font-bold-800 xl:text-4xl">Villas de Cortés Monterrey</h3>
+                            <ul>
+                                <li>Inicio</li>
+                                <li>Nuestras marcas</li>
+                                <li>Promociones para ti</li>
+                                <li>¿Quienes somos?</li>
+                                <li>Lo más buscado</li>
+                            </ul>
+                            <div class="flex align-items-center justify-content-center">
+                                <p>Equipos Dentales Villa de Cortés Monterrey 2024 © All rights reserved.</p>
+                            </div>
+                        </div>
+                        <div class="footer-column">
+                            <h3 class="font-bold-800 xl:text-4xl">Tienda</h3>
+                            <p class="line-height-1 w-15">Equipos Dentales</p>
+                            <p class="line-height-1 w-15">Instrumental</p>
+                            <p class="line-height-1 w-15">Laboratorio</p>
+                            <p class="line-height-1 w-15">Ortodoncia</p>
+                            <p class="line-height-1 w-15">Unidades</p>
+                            <p class="line-height-1 w-15">Uniformes</p>
+                            <p class="line-height-1 w-15">Otros</p>
+                        </div>
+                    </div>
+                </footer>
             </div>
         </div>
     </div>
+
+
+
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import BasicProductGrid from '../../components/general/BasicProductGrid.vue';
 import BasicProductCarusell from '../../components/general/BasicProductCarusell.vue'
+import BasicImageCarusell from '../../components/general/BasicImageCarusell.vue'
 import axios from 'axios';
 import {OrderData} from '../Cart/Function/OrderData';
 import { useCartStore } from '../../stores/cart';
@@ -152,7 +207,7 @@ const products2 = ref([
   font-size:450%;
   font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   text-align: justify; /* Justifica el texto */
-  line-height: 1cm; /* Altura de línea específica */
+  line-height: 2cm; /* Altura de línea específica */
   font-weight:900;
 }
 .cyan-text2 {
@@ -175,7 +230,7 @@ const products2 = ref([
 
 .right-block {
     text-align:right;
-    width: 40%; /* Ajusta el ancho según sea necesario */
+    width: 70%; /* Ajusta el ancho según sea necesario */
 }
 .right-block2 {
     text-align:right;
@@ -215,5 +270,94 @@ const products2 = ref([
 .button:active {
 	position:relative;
 	top:1px;
+}
+.footer {
+  background-image: url('public/demo/images/pages/fondo dental-01.jpg');
+  background-size: cover;
+  background-position: center;
+  padding: 100px;
+  color: rgb(255, 255, 255);
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  text-align: center; /* Center text within each column */
+  height: 300px; /* Set the height as needed */
+  width: 100vw;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-around; /* Space columns evenly */
+  width: 100%;
+  max-width: 1200px;
+}
+
+.footer-column {
+  flex: 1;
+  padding: 15px;
+}
+
+.footer-column h3 {
+  margin-top: 0;
+}
+
+.footer-column ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-column ul li {
+  margin-bottom: 10px;
+  font-family:Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.icon-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Para centrar verticalmente en la pantalla completa */
+}
+
+.social-icons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px; /* Espacio entre los íconos */
+}
+
+.social-icons i {
+  font-size: 2rem; /* Tamaño de los íconos */
+  color: #ffffff; /* Color de los íconos de Facebook */
+}.icon-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Para centrar verticalmente en la pantalla completa */
+}
+
+.social-icons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px; /* Espacio entre los íconos */
+}
+
+.social-icons i {
+  font-size: 2rem; /* Tamaño de los íconos */
+  color: #ffffff; /* Color de los íconos de Facebook */
+}
+.footer-legend {
+  text-align: center;
+  padding: 5px;
+  color: white; /* Color del texto */
+}
+@media (max-width: 768px) {
+  .footer-content {
+    flex-direction: column;
+  }
+
+  .footer-column {
+    margin: 10px 0;
+  }
 }
 </style>

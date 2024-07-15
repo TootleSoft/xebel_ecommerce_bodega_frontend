@@ -34,13 +34,15 @@
                     <TieredMenu ref="muser" class="tiered-menu-class" id="overlay_tmenu" :model="user" popup />
                 </div>
                 <div v-if="authStore.id_usuario == undefined" class="field col-12 sm:col-12 md:col-1 xl:col-1">
-                    <Button class="label-button-user" icon="pi pi-user" label="Ingresar" severity="contrast" outlined @click="tlogin" />
+                    <Button class="label-button-user" icon="pi pi-user" label="Ingresar" severity="contrast" outlined
+                        @click="tlogin" />
                     <TieredMenu ref="mlogin" class="tiered-menu-class" id="overlay_tmenu" :model="login" popup />
                 </div>
                 <div class="field col-12 sm:col-12 md:col-1 xl:col-1">
-                    <Button class="label-button-user" @click="shoppingCart" icon="pi pi-shopping-cart" label="Carrito" severity="contrast"
-                        outlined />
+                    <Button class="label-button-user" @click="shoppingCart" icon="pi pi-shopping-cart"
+                        :label="`Carrito (${cartStore.cart.length})`" severity="contrast" outlined />
                 </div>
+
                 <!-- <div class="field col-12 sm:col-12 md:col-1 xl:col-1">
                         <Button icon="pi pi-bell" label='Alertas' severity="contrast" outlined/>
                     </div> -->
@@ -69,12 +71,14 @@ import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '../stores/auth';
 const authStore = useAuthStore();
+const cartStore = useCartStore();
 
 
 import { useLayout } from '../layout/composables/layout.js';
 //import { useLayout } from '@/layout/composables/layout';
 import axios from 'axios';
 import { LoginStructure, UserStructure, ItemsStructure } from './StructureMenus/Structure';
+import { useCartStore } from '../stores/cart';
 
 // variables y constantes
 const { layoutConfig } = useLayout();

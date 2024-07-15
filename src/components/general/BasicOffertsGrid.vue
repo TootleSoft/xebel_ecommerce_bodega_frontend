@@ -30,7 +30,7 @@
             <div class="flex flex-column align-items-center">
                 <span class="text-l text-900 font-bold mb-3">{{ product.name }}</span>
                 <span class="text-l text-900 mb-3 line-through">{{ "$" + product.unit_price.toFixed(2)}}</span>
-                <span class="text-l text-900 mb-3">{{ "$" + product.ecomerce_offer_price.toFixed(2)}}</span>
+                <span class="text-l text-900 mb-3 text-red-500">{{ "$" + product.ecomerce_offer_price.toFixed(2)}}</span>
             </div>
         </div>
     </div>
