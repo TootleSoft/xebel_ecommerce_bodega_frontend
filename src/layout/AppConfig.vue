@@ -107,9 +107,17 @@ const chat = () =>{
 }
 
 const getBranchPhone = async () => {
-    let response  = await axios.get("Inventory/Ecomerce/getBranchPhone/");
-    phone.value = response.data[0];
-    console.log("telefono", phone.value)
+    if(authStore.id_usuario == undefined){
+        let response  = await axios.get("Inventory/Ecomerce/getBranchPhone/" + 1);
+        phone.value = response.data[0];
+        console.log("telefono", phone.value)
+    }else{
+        let user = await axios.get("Inventory/Ecomerce/getUserInfo/" + authStore.id_usuario);
+        let info = user.data;
+        let response  = await axios.get("Inventory/Ecomerce/getBranchPhone/" + info[0]);
+        phone.value = response.data[0];
+        console.log("telefono", phone.value)
+    }
 }
 
 onMounted(async () => {
