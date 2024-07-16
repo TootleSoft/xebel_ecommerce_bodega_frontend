@@ -5,7 +5,7 @@
                 <div class="surface-border border-round m-2 p-3">
                     <div class="mb-3">
                         <div class="relative mx-auto">
-                            <img :src="imgroute(slotProps.data.id)" class="h-9rem"  @click="router.push(slotProps.data.path)"/>
+                            <img :src="imgroute(slotProps.data.id)" class="h-20rem" @click="navigateToProduct(slotProps.data)"/>
                         </div>
                     </div>
                     <div class="flex align-items-center cursor-pointer px-3 py-2 overflow-hidden relative font-semibold text-lg uppercase">{{ slotProps.data.name }}</div>
@@ -52,9 +52,13 @@ const refresh = async () =>{
     products.value = response.data; 
 }
 
+const navigateToProduct = (item) => {
+  router.push(`/bundle/${item.id}`);
+};
+
 const imgroute = (id) => {
 
-    // return import.meta.env.VITE_API_ROUTE+'Inventory/Brand/image/'+id+"/"+new Date();
+    return import.meta.env.VITE_API_ROUTE+'Inventory/Promotions/image/'+id;
     }
 
 onMounted(async () => {

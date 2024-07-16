@@ -33,7 +33,14 @@
                 Promociones</div>
             <div class="flex align-items-center justify-content-center w-13rem m-2 xl:text-7xl font-bold">para ti</div>
         </div>
-        <BasicProductCarusell />
+        <BasicBundleCarusell />
+
+        <div class="flex justify-content-center flex-wrap">
+            <div class="flex align-items-center justify-content-center w-12rem m-2 text-cyan-700 xl:text-7xl font-bold">
+                Ofertas</div>
+            <div class="flex align-items-center justify-content-center w-13rem m-2 xl:text-7xl font-bold">para ti</div>
+        </div>
+        <BasicOffertsCarusell />
 
 
         <div class="centered-text">
@@ -56,56 +63,49 @@
                     proveedores del mercado. </p>
             </div>
         </div>
-        <div class="container">
-            <div class="card">
-                <footer class="footer">
-                    <div class="footer-content">
-                        <div class="footer-column">
-                            <h3 class="font-bold-800 xl:text-4xl">Contacto</h3>
-                            <p class="font-bold xl:text-2xl"> (81) 2948-6399</p>
-                            <p class="line-height-1 w-15">Eduardo Aguirre Pequeño</p>
-                            <p class="line-height-1 w-15">1302, Mitras Centro, Monterrey,</p>
-                            <p class="line-height-1 w-15">Nuevo Léon, México. CP. 64460</p>
-                            <span class="social-icons">
-                                <a href="https://www.facebook.com/villadcmty" target="_blank" class="social-icon">
-                                    <i class="pi pi-facebook"></i>
-                                </a>
-                                <a href="https://www.instagram.com/villadcmty" target="_blank" class="social-icon">
-                                    <i class="pi pi-instagram"></i>
-                                </a>
-                            </span>
-                        </div>
-                        <div class="footer-column">
-                            <h3 class="font-bold-800 xl:text-4xl">Villas de Cortés Monterrey</h3>
-                            <ul>
-                                <li>Inicio</li>
-                                <li>Nuestras marcas</li>
-                                <li>Promociones para ti</li>
-                                <li>¿Quienes somos?</li>
-                                <li>Lo más buscado</li>
-                            </ul>
-                            <div class="flex align-items-center justify-content-center">
-                                <p>Equipos Dentales Villa de Cortés Monterrey 2024 © All rights reserved.</p>
-                            </div>
-                        </div>
-                        <div class="footer-column">
-                            <h3 class="font-bold-800 xl:text-4xl">Tienda</h3>
-                            <p class="line-height-1 w-15">Equipos Dentales</p>
-                            <p class="line-height-1 w-15">Instrumental</p>
-                            <p class="line-height-1 w-15">Laboratorio</p>
-                            <p class="line-height-1 w-15">Ortodoncia</p>
-                            <p class="line-height-1 w-15">Unidades</p>
-                            <p class="line-height-1 w-15">Uniformes</p>
-                            <p class="line-height-1 w-15">Otros</p>
+        <footer class="footer">
+                <div class="footer-content">
+                    <div class="footer-column">
+                        <h3 class="font-bold-800 xl:text-4xl">Contacto</h3>
+                        <p class="font-bold xl:text-2xl"> (81) 2948-6399</p>
+                        <p class="line-height-1 w-15">Eduardo Aguirre Pequeño</p>
+                        <p class="line-height-1 w-15">1302, Mitras Centro, Monterrey,</p>
+                        <p class="line-height-1 w-15">Nuevo Léon, México. CP. 64460</p>
+                        <span class="social-icons">
+                            <a href="https://www.facebook.com/villadcmty" target="_blank" class="social-icon">
+                                <i class="pi pi-facebook"></i>
+                            </a>
+                            <a href="https://www.instagram.com/villadcmty" target="_blank" class="social-icon">
+                                <i class="pi pi-instagram"></i>
+                            </a>
+                        </span>
+                    </div>
+                    <div class="footer-column">
+                        <h3 class="font-bold-800 xl:text-4xl">Villas de Cortés Monterrey</h3>
+                        <ul>
+                            <li>Inicio</li>
+                            <li>Nuestras marcas</li>
+                            <li>Promociones para ti</li>
+                            <li>¿Quienes somos?</li>
+                            <li>Lo más buscado</li>
+                        </ul>
+                        <div class="flex align-items-center justify-content-center">
+                            <p>Equipos Dentales Villa de Cortés Monterrey 2024 © All rights reserved.</p>
                         </div>
                     </div>
-                </footer>
-            </div>
-        </div>
+                    <div class="footer-column">
+                        <h3 class="font-bold-800 xl:text-4xl">Tienda</h3>
+                        <p class="line-height-1 w-15">Equipos Dentales</p>
+                        <p class="line-height-1 w-15">Instrumental</p>
+                        <p class="line-height-1 w-15">Laboratorio</p>
+                        <p class="line-height-1 w-15">Ortodoncia</p>
+                        <p class="line-height-1 w-15">Unidades</p>
+                        <p class="line-height-1 w-15">Uniformes</p>
+                        <p class="line-height-1 w-15">Otros</p>
+                    </div>
+                </div>
+            </footer>
     </div>
-
-
-
 </template>
 
 <script setup lang="ts">
@@ -113,6 +113,8 @@ import { ref, onMounted } from 'vue';
 import BasicProductGrid from '../../components/general/BasicProductGrid.vue';
 import BasicProductCarusell from '../../components/general/BasicProductCarusell.vue'
 import BasicImageCarusell from '../../components/general/BasicImageCarusell.vue'
+import BasicBundleCarusell from '../../components/general/BasicBundleCarusell.vue';
+import BasicOffertsCarusell from '../../components/general/BasicOffertsCarusell.vue';
 import axios from 'axios';
 import {OrderData} from '../Cart/Function/OrderData';
 import { useCartStore } from '../../stores/cart';
@@ -282,7 +284,7 @@ const products2 = ref([
   align-items: center; /* Center vertically */
   text-align: center; /* Center text within each column */
   height: 300px; /* Set the height as needed */
-  width: 100vw;
+  width: 93vw;
 }
 
 .footer-content {
