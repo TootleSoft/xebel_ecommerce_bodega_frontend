@@ -22,7 +22,7 @@
                 <img :src="imgRoute(product.id)" class="w-full h-auto  border-500 shadow-7" :alt="String(i)" @click="router.push('/bundle/'+ product.id)" />
                 <Button type="button"
                     class="border-1 border-white border-round py-2 px-3 absolute bg-black-alpha-30 text-white inline-flex align-items-center justify-content-center hover:bg-black-alpha-40 transition-colors transition-duration-300 cursor-pointer"
-                    :style="{ bottom: '1rem', left: '1rem', width: 'calc(100% - 2rem)' }">
+                    :style="{ bottom: '1rem', left: '1rem', width: 'calc(100% - 2rem)' }" @click="addToCart(product)">
                     <i class="pi pi-shopping-cart mr-3 text-base"></i>
                     <span class="text-base">Agregar al carrito</span>
                 </Button>
@@ -31,6 +31,19 @@
                 <span class="text-l text-900 font-bold mb-3">{{ product.name }}</span>
                 <span class="text-l text-900 mb-3">{{ "$" + product.total.toFixed(2)}}</span>
             </div>
+            <div class="col-12 align-items-center">
+                <div class="grid formgrid p-fluid">
+                    <div class="col-4"></div>
+                    <InputNumber showButtons buttonLayout="horizontal" :min="1"
+                    inputClass="w-2rem text-center py-2 px-1 border-transparent outline-none shadow-none"
+                    v-model="quantity" class="border-1 surface-border border-round col-4"
+                    decrementButtonClass="p-button-text text-600 hover:text-primary py-1 px-1"
+                    incrementButtonClass="p-button-text text-600 hover:text-primary py-1 px-1"
+                    incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus"></InputNumber>
+                    <div class="col-4"></div>
+                </div>
+            </div>
+            <br>
         </div>
     </div>
 </template>
@@ -63,6 +76,7 @@ const suggest = ref<any[]>([]);
 
 const router = useRouter();
 const first = ref<number>(0);
+const quantity = ref<number>(1);
 
 const search = (event) => {
     suggest.value = products.value.filter(x => { return (x.name || '').toLowerCase().includes((event.query || '').toLowerCase()) });
@@ -81,5 +95,13 @@ const filteredsearch = (newValue) => {
 
 const imgRoute = (id) => {
     return import.meta.env.VITE_API_ROUTE + 'Inventory/Promotions/image/' + id;
+}
+
+const addToCart = async (product) =>{
+    try{
+        console.log("Holi", product)
+    }catch{
+
+    }
 }
 </script>
