@@ -73,8 +73,7 @@ const taxes = computed(()=>{
     console.log("carrito", cartStore.cart)
     for(const product of cartStore.cart){
         if(product.is_bundle){
-            i = i + product.total_taxes;
-            //console.log("carrito impuestos paquete", product.total_taxes);
+            i = i + product.total_taxes * product.quantity;
         }else{
             i = i + ((product.ecomerce_offer_price ?? product.unit_price)*((product.iva_transferred+product.ieps_transferred)*.01)*product.quantity)
         }
