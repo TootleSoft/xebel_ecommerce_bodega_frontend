@@ -49,7 +49,12 @@
                 <div class="field col-12 sm:col-12 md:col-12 xl:col-12">
                     <Menubar :model="items" class="MegaMenuBar">
                         <template #item="{item}">
-                            <a v-if="item.root"
+                            <a v-if="item.root && item.items_type == 0"
+                                class="flex align-items-center cursor-pointer px-3 py-2 overflow-hidden relative font-semibold text-lg uppercase"
+                                style="border-radius: 2rem" @click="navigateToExternal(item.to)">
+                                <span class="MegaMenuText">{{ item.label }}</span>
+                            </a>
+                            <a v-else-if="item.root"
                                 class="flex align-items-center cursor-pointer px-3 py-2 overflow-hidden relative font-semibold text-lg uppercase"
                                 style="border-radius: 2rem" @click="router.push(item.to)">
                                 <span class="MegaMenuText">{{ item.label }}</span>
@@ -106,6 +111,10 @@ const shoppingCart = () => {
         router.push('/auth/login')
     }
 }
+
+const navigateToExternal = (url) => {
+      window.location.href = url;
+    }
 
 onMounted(async () => {
     await refresh();

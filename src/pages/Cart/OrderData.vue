@@ -277,7 +277,8 @@ const processPayment = async () => {
         }else if(cartStore.order.length == 0){
             let payment_info = []
             let order = await createOrder(2); //se crea el pedido y se guarda en la tabla 'ecommerce_order' y 'ecommerce_order_item'
-            payment_info = await entity.getPaymentInfo({id_order: order.id, total: total.value.toFixed(2)}); //se obtiene la información del cliente y del pedido
+            let url = import.meta.env.VITE_INDEX_ROUTE
+            payment_info = await entity.getPaymentInfo({id_order: order.id, total: total.value.toFixed(2),url:url}); //se obtiene la información del cliente y del pedido
             let response = await entity.openpayAxios.post('charges/', payment_info[0]) //se envía al api de open pay la información obtenida
             let status = response.data.status;
             let update = await axios.post('Comercial/ECommerceOrder/updateOrder/' + response.data.order_id + '/' + response.data.id + '/' + status); //guarda el id_tracking del pedido y actualiza el estatus a pagado o no pagado
