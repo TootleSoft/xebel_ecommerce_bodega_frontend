@@ -28,6 +28,7 @@
             <div class="bold-text xl:text-7xl flex align-items-center justify-content-center w-4rem h-4rem">marcas</div> -->
         </div>
         <BasicProductCarusell />
+        
         <div class="flex justify-content-center flex-wrap">
             <div class="flex align-items-center justify-content-center w-24rem m-2 text-cyan-700 xl:text-7xl font-bold">
                 Promociones</div>
