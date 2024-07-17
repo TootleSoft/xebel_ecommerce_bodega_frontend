@@ -19,9 +19,9 @@
         <div v-for="(product, i) in products.slice(first / 10 * pagesize, first / 10 * pagesize + pagesize)" :key="i"
             class="col-12 md:col-5 lg:col-3 mb-5 lg:mb-0">
             <div class="mb-3 relative">
-                <img :src="imgroute(product.id, product.barcode, product.id_brand)" class="w-full h-auto border-3 border-500" :alt="String(i)" @click="router.push('/product/'+product.id+'/'+product.id_subarticle)"/>
+                <img :src="imgroute(product.id, product.barcode, product.id_brand)" class="w-full h-auto shadow-8" :alt="String(i)" @click="router.push('/product/'+product.id+'/'+product.id_subarticle)"/>
                 <Button type="button"
-                    class="border-1 border-white border-round py-2 px-3 absolute bg-black-alpha-30 text-white inline-flex align-items-center justify-content-center hover:bg-black-alpha-40 transition-colors transition-duration-300 cursor-pointer"
+                    class="border-1 border-white border-round py-2 px-3 absolute bg-black-alpha-30 text-white inline-flex align-items-center justify-content-center hover:bg-teal-400 transition-colors transition-duration-300 cursor-pointer"
                     :style="{ bottom: '1rem', left: '1rem', width: 'calc(100% - 2rem)' }">
                     <i class="pi pi-shopping-cart mr-3 text-base"></i>
                     <span class="text-base">Agregar al carrito</span>

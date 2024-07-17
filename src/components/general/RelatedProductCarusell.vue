@@ -6,7 +6,6 @@
       :numScroll="2"
       :responsiveOptions="responsiveOptions"
       circular
-      :autoplayInterval="5000"
     >
       <template #item="slotProps">
         <div class="border-1 surface-border border-round m-2 p-3">

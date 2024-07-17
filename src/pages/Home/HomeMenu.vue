@@ -274,7 +274,7 @@ const products2 = ref([
 	top:1px;
 }
 .footer {
-  background-image: url('public/demo/images/pages/fondo dental-01.jpg');
+  background-image: url('/public/demo/images/pages/fondo dental-01.jpg');
   background-size: cover;
   background-position: center;
   padding: 100px;

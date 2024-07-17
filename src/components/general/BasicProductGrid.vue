@@ -22,7 +22,7 @@
                     <span v-if="product.existence == 'SIN EXISTENCIA'" class="surface-card text-900 shadow-2 px-3 py-2 absolute border-round-3xl text-red-500 font-bold" :style="{ left: '1rem', top: '1rem' }"> {{ product.existence }} </span>
                     <Button
                         type="button"
-                        class="border-1 border-white border-round py-2 px-3 absolute bg-black-alpha-30 text-white inline-flex align-items-center justify-content-center hover:bg-black-alpha-40 transition-colors transition-duration-300 cursor-pointer"
+                        class="border-1 border-white border-round py-2 px-3 absolute bg-black-alpha-30 text-white inline-flex align-items-center justify-content-center hover:bg-teal-400 transition-colors transition-duration-300 cursor-pointer"
                         :style="{ bottom: '1rem', left: '1rem', width: 'calc(100% - 2rem)' }"
                     >
                         <i class="pi pi-shopping-cart mr-3 text-base"></i>

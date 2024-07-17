@@ -2,11 +2,10 @@
     <div class="card">
       <Carousel
         :value="carouselItems"
-        :numVisible="3"
+        :numVisible="1"
         :numScroll="3"
         :responsiveOptions="responsiveOptions"
         circular
-        :autoplayInterval="5000"
         class="custom-carousel"
       >
         <template #item="slotProps">
