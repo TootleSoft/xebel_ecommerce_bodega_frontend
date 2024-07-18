@@ -118,7 +118,7 @@
                     <Button @click="addToCart(false)" label="Añadir al carrito" class="w-full"></Button>
                 </div>
                 <div class="col-12">
-                    <Button @click="addToCart(true)" label="Pagar Ahora" class="w-full"></Button>
+                    <Button @click="addToCart(true)" label="Añadir al carrito y Pagar Ahora" class="w-full"></Button>
                 </div>
             </div>
         </div>
@@ -259,9 +259,14 @@ const imgbrand = (id, brand) => {
 }
 
 const addToCart = (payNow) => {
+    console.log(JSON.stringify(product.value[0]))
     cartStore.addCart(product.value[0], quantity.value, selectedBranch.value, false);
     if(payNow == true){
-        router.push('/orderdata')
+        if(auth.id_usuario){
+            router.push('/orderdata')
+        }else{
+            router.push('/auth/login')
+        }
     }else{
         toast.add({ severity: 'success', summary: 'Agregado', detail: 'Articulo Agregado al carrito', life: 3000 });
         quantity.value = 1

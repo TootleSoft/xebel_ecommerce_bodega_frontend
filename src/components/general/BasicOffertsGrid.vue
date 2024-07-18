@@ -22,7 +22,8 @@
                 <img :src="imgroute(product.id, product.barcode, product.id_brand)" class="w-full h-auto shadow-8" :alt="String(i)" @click="router.push('/product/'+product.id+'/'+product.id_subarticle)"/>
                 <Button type="button"
                     class="border-1 border-white border-round py-2 px-3 absolute bg-black-alpha-30 text-white inline-flex align-items-center justify-content-center hover:bg-teal-400 transition-colors transition-duration-300 cursor-pointer"
-                    :style="{ bottom: '1rem', left: '1rem', width: 'calc(100% - 2rem)' }">
+                    :style="{ bottom: '1rem', left: '1rem', width: 'calc(100% - 2rem)' }"
+                    @click="addCart(product.id, product.id_subarticle, product.quantity, i)">
                     <i class="pi pi-shopping-cart mr-3 text-base"></i>
                     <span class="text-base">Agregar al carrito</span>
                 </Button>
@@ -31,6 +32,19 @@
                 <span class="text-l text-900 font-bold mb-3">{{ product.name }}</span>
                 <span class="text-l text-900 mb-3 line-through">{{ "$" + product.unit_price.toFixed(2)}}</span>
                 <span class="text-l text-900 mb-3 text-red-500">{{ "$" + product.ecomerce_offer_price.toFixed(2)}}</span>
+                <span class="text-l text-900 mb-3 font-medium">{{ product.barcode }}</span>
+                <div class="col-12 align-items-center">
+                    <div class="grid formgrid p-fluid">
+                        <div class="col-4"></div>
+                        <InputNumber showButtons buttonLayout="horizontal" :min="1"
+                        inputClass="w-2rem text-center py-2 px-1 border-transparent outline-none shadow-none"
+                        v-model="product.quantity" class="border-1 surface-border border-round col-4"
+                        decrementButtonClass="p-button-text text-600 hover:text-primary py-1 px-1"
+                        incrementButtonClass="p-button-text text-600 hover:text-primary py-1 px-1"
+                        incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus"></InputNumber>
+                        <div class="col-4"></div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -39,6 +53,10 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import axios from 'axios';
+import { useAuthStore } from '../../stores/auth';
+import { useCartStore } from '../../stores/cart';
+import { useToast } from 'primevue/usetoast';
 
 interface Props {
     allproducts?: any[];
@@ -51,6 +69,13 @@ const props = withDefaults(defineProps<Props>(), {
     pagesize: 40,
     pagetitle: '',
 })
+
+const auth = useAuthStore();
+const cartStore = useCartStore();
+const product = ref<any[]>([]);
+const id_user = ref<string>(auth.id_customer ? auth.id_customer.toString() : "0");
+const toast = useToast();
+
 
 const products = ref<any[]>(props.allproducts)
 const filterproductname = ref<string>();
@@ -84,6 +109,20 @@ const imgroute = (id, sku, brand) => {
         console.log(brand)
         sku= sku.replace(/\//g, "--").replace(/ñ/g, "nnn").replace(/Ñ/g, "nnn").replace(/#/g, '----')
         return import.meta.env.VITE_API_ROUTE+'Inventory/Ecomerce/image/'+id+'_'+sku+'_1/'+brand;
+    }
+
+    const addCart = async (id_article, id_subarticle, quantity, i) =>{
+        let response = await axios.get('Inventory/EComerce/GetArticleInfo/' + id_article + '/' + id_subarticle + '/' + id_user.value)
+        product.value = response.data;
+        let existence_resposnse = await axios.get('Inventory/EComerce/GetProductExistences/' + id_article + '/' + id_subarticle)
+        let existence = existence_resposnse.data;
+        let branch = existence.sort((a, b) => b.stock - a.stock)[0].id_branch
+        console.log(JSON.stringify(quantity))
+        console.log(JSON.stringify(branch))
+        console.log(JSON.stringify(product.value[0]))
+        products.value[i].quantity = 1
+        cartStore.addCart(product.value[0], quantity, branch, false);
+        toast.add({ severity: 'success', summary: 'Agregado', detail: 'Articulo Agregado al carrito', life: 3000 });
     }
 </script>
 <style lang="scss" scoped>

@@ -24,6 +24,7 @@
                         type="button"
                         class="border-1 border-white border-round py-2 px-3 absolute bg-black-alpha-30 text-white inline-flex align-items-center justify-content-center hover:bg-teal-400 transition-colors transition-duration-300 cursor-pointer"
                         :style="{ bottom: '1rem', left: '1rem', width: 'calc(100% - 2rem)' }"
+                        @click="addCart(product.id, product.id_subarticle, product.quantity, i)"
                     >
                         <i class="pi pi-shopping-cart mr-3 text-base"></i>
                         <span class="text-base">Add to Cart</span>
@@ -59,9 +60,13 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
+import { useCartStore } from '../../stores/cart';
+import { useToast } from 'primevue/usetoast';
 import axios from 'axios';
 import { useAuthStore } from '../../stores/auth';
 const auth = useAuthStore();
+const cartStore = useCartStore();
+const toast = useToast();
 
     interface Props {
         allproducts?: any[];
@@ -115,9 +120,18 @@ const auth = useAuthStore();
 
     const product = ref<any[]>([]);
 
-    const addCart = async (id_article, id_subarticle) =>{
+    const addCart = async (id_article, id_subarticle, quantity, i) =>{
         let response = await axios.get('Inventory/EComerce/GetArticleInfo/' + id_article + '/' + id_subarticle + '/' + id_user.value)
         product.value = response.data;
+        let existence_resposnse = await axios.get('Inventory/EComerce/GetProductExistences/' + id_article + '/' + id_subarticle)
+        let existence = existence_resposnse.data;
+        let branch = existence.sort((a, b) => b.stock - a.stock)[0].id_branch
+        console.log(JSON.stringify(quantity))
+        console.log(JSON.stringify(branch))
+        console.log(JSON.stringify(product.value))
+        products.value[i].quantity = 1
+        cartStore.addCart(product.value[0], quantity, branch, false);
+        toast.add({ severity: 'success', summary: 'Agregado', detail: 'Articulo Agregado al carrito', life: 3000 });
     }
 
 </script>
