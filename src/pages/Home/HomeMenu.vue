@@ -82,7 +82,7 @@
                         </span>
                     </div>
                     <div class="footer-column">
-                        <h3 class="font-bold-800 xl:text-4xl">Villas de Cortés Monterrey</h3>
+                        <h3 class="font-bold-800 xl:text-4xl">Villa de Cortés Monterrey</h3>
                         <ul>
                             <li>Inicio</li>
                             <li>Nuestras marcas</li>
@@ -119,11 +119,15 @@ import BasicOffertsCarusell from '../../components/general/BasicOffertsCarusell.
 import axios from 'axios';
 import {OrderData} from '../Cart/Function/OrderData';
 import { useCartStore } from '../../stores/cart';
+import { useAuthStore } from '../../stores/auth';
+import { useRouter } from 'vue-router';
 
 const products = ref<any[]>([]);
 const entity = new OrderData();
 const cartStore = useCartStore();
 const mlogin = ref();
+const router = useRouter();
+const auth = useAuthStore();
 
 
 
@@ -144,6 +148,9 @@ const refresh = async () => {
 }
 
 const tlogin = (event) => {
+    if(!auth.id_usuario){
+        router.push('/auth/singin')
+    }
     mlogin.value.toggle(event);
 };
 
