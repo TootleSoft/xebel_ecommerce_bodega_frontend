@@ -18,10 +18,13 @@
                 <div class="mb-3 relative">
                     <!-- <img :src="'/demo/images/ecommerce/product-list/product-list-4-1.png'" class="w-full" :alt="String(i)" @click="router.push('/product/'+product.id+'/'+product.id_subarticle)"/> -->
                     <img :src="imgroute(product.id, product.barcode, product.id_brand)" class="w-full h-auto shadow-8" :alt="String(i)" @click="router.push('/product/'+product.id+'/'+product.id_subarticle)"/>
-                    <span v-if="product.existence == 'DISPONIBLE'" class="surface-card text-900 shadow-2 px-3 py-2 absolute border-round-3xl text-green-500 font-bold" :style="{ left: '1rem', top: '1rem' }"> {{ product.existence }} </span>
+                    <span v-if="product.existence == 'EN EXISTENCIA'" class="surface-card text-900 shadow-2 px-3 py-2 absolute border-round-3xl text-green-500 font-bold" :style="{ left: '1rem', top: '1rem' }"> {{ product.existence }} </span>
+                    <span v-if="product.existence == 'POCA EXISTENCIA'" class="surface-card text-900 shadow-2 px-3 py-2 absolute border-round-3xl text-orange-500 font-bold" :style="{ left: '1rem', top: '1rem' }"> {{ product.existence }} </span>
+                    <span v-if="product.existence == 'SOLO DE VENTA EN TIENDA'" class="surface-card text-900 shadow-2 px-3 py-2 absolute border-round-3xl text-green-500 font-bold" :style="{ left: '1rem', top: '1rem' }"> {{ product.existence }} </span>
                     <span v-if="product.existence == 'SIN EXISTENCIA'" class="surface-card text-900 shadow-2 px-3 py-2 absolute border-round-3xl text-red-500 font-bold" :style="{ left: '1rem', top: '1rem' }"> {{ product.existence }} </span>
                     <Button
                         type="button"
+                        :disabled="(dissableNoStock == 1 && product.stock <= 0) || product.existence == 'SOLO DE VENTA EN TIENDA'"
                         class="border-1 border-white border-round py-2 px-3 absolute bg-black-alpha-30 text-white inline-flex align-items-center justify-content-center hover:bg-teal-400 transition-colors transition-duration-300 cursor-pointer"
                         :style="{ bottom: '1rem', left: '1rem', width: 'calc(100% - 2rem)' }"
                         @click="addCart(product.id, product.id_subarticle, product.quantity, i)"
@@ -39,7 +42,7 @@
                     <div class="col-12 align-items-center">
                         <div class="grid formgrid p-fluid">
                             <div class="col-4"></div>
-                            <InputNumber showButtons buttonLayout="horizontal" :min="1"
+                            <InputNumber showButtons buttonLayout="horizontal" :min="1" :max="product.stock == 0 ? 1 : product.stock"
                             inputClass="w-2rem text-center py-2 px-1 border-transparent outline-none shadow-none"
                             v-model="product.quantity" class="border-1 surface-border border-round col-4"
                             decrementButtonClass="p-button-text text-600 hover:text-primary py-1 px-1"
@@ -88,6 +91,8 @@ const toast = useToast();
 
     const suggest = ref<any[]>([]);
 
+    const dissableNoStock = ref<number>(0);
+
     const search = (event) => {
         suggest.value = products.value.filter(x => {return (x.description || '').toLowerCase().includes((event.query || '').toLowerCase())});
     }
@@ -134,6 +139,9 @@ const toast = useToast();
         toast.add({ severity: 'success', summary: 'Agregado', detail: 'Articulo Agregado al carrito', life: 3000 });
     }
 
+onMounted(() => {
+    dissableNoStock.value = import.meta.env.VITE_DISSABLE_NO_STOCK;
+})
 </script>
 <style>
 

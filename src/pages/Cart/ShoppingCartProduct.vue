@@ -31,7 +31,7 @@
                     <div>
                         &nbsp
                         <!-- <Dropdown :options="quantityOptions" v-model="selectedQuantity" optionLabel="label"></Dropdown> -->
-                        <InputNumber showButtons buttonLayout="horizontal" :min="1"
+                        <InputNumber v-if="!loading" showButtons buttonLayout="horizontal" :min="1" :max="getMax(product.id_numberItem,product.id_branch)"
                             inputClass="w-2rem text-center py-2 px-1 border-transparent outline-none shadow-none"
                             v-model="product.quantity" class="border-1 surface-border border-round"
                             decrementButtonClass="p-button-text text-600 hover:text-primary py-1 px-1"
@@ -66,7 +66,7 @@
                     <Dropdown v-if="product.is_bundle" v-model="product.id_branch" :options="branches"
                         optionValue="id_branch" :optionLabel="'branch_name'" class="align-items-center mb-3" :disabled=true ></Dropdown>
                 </div>
-                <span class="inline-flex align-items-center mb-3">
+                <span v-if="showStock == 1" class="inline-flex align-items-center mb-3">
                     <span v-if="!product.is_bundle || product.is_bundle == undefined" class="text-700 mr-2">Existencia: {{ getExistence(product.id_numberItem,product.id_branch) }}</span>
                     <span v-if="product.is_bundle && (products.length % 2 === 0 || products.length == 1)" class="text-700 mr-2" >Existencia: {{ array[(product.id_numberBundle-1)+(products.length-1)]}}</span>
                     <span v-if="product.is_bundle && products.length % 2 !== 0 && products.length > 1" class="text-700 mr-2" >Existencia: {{ array[(product.id_numberBundle-1)+(products.length)]}}</span>
@@ -92,9 +92,10 @@ const bundles = ref<any[]>([]);
 const items = ref<any[]>([]);
 const array = ref<any[]>([]);
 const products = ref<any[]>([]);
-const loading = ref<boolean>(false);
+const loading = ref<boolean>(true);
 const is_deleted = ref<boolean>(false);
 const is_deletedBundle = ref<boolean>(false);
+const showStock = ref<number>(0);
 
 
 const imgroute = (id, sku, brand) => {
@@ -109,6 +110,7 @@ const imgBundle = (id) => {
 const refresh = async () => {
     loading.value = true
     try{
+        showStock.value = import.meta.env.VITE_SHOW_STOCK;
         cartproduct.value = cartStore.cart
         if(cartStore.order.length == 1)
             await entity.newOrder();
@@ -205,6 +207,21 @@ const getExistence = (id_numberItem,id_branch) => computed(() => {
         return 'Existencia no cargada';
     }
 });
+const getMax = (id_numberItem,id_branch) => {
+    console.log(productExistence.value[id_numberItem-1])
+    const filteredBranch = productExistence.value[id_numberItem-1].filter(branch => branch.id_branch === id_branch);
+    return filteredBranch[0].stock == 0 ? 1 : filteredBranch[0].stock;
+    // if (productExistence.value[id_numberItem-1]) {
+    //     const filteredBranch = productExistence.value[id_numberItem-1].filter(branch => branch.id_branch === id_branch);
+    //     if (filteredBranch.length > 0) {
+    //         return filteredBranch[0].stock;
+    //     } else {
+    //         return 'Stock no encontrado';
+    //     }
+    // } else {
+    //     return 'Existencia no cargada';
+    // }
+};
 
 watch(cartStore.cart, () => {
     console.log(JSON.stringify(cartStore.cart))

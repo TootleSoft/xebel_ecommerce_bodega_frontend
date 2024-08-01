@@ -34,6 +34,11 @@
                                     <Button type="button" @click="submit" class="block" style="max-width: 320px; margin-bottom: 32px">Enviar</Button>
                                 </div>
                                 <span class="font-medium text-600">¿No tienes tienes cuenta? <a class="font-semibold cursor-pointer text-900 hover:text-primary transition-colors transition-duration-300" @click="goSingIn">Registrate aqui</a></span>
+                                <br>
+                                <br>
+                                <br></div>
+                            <div class="align-items-center">
+                                <a class="font-semibold cursor-pointer text-900 hover:text-primary transition-colors transition-duration-300" @click="goSingIn">Olvide mi contraseña</a>
                             </div>
                         </div>
                     </div>

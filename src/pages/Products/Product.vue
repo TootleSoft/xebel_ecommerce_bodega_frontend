@@ -1,5 +1,5 @@
 <template>
-    <div class="card">
+    <div v-if="!loading" class="card">
         <div class="grid mb-7">
             <div class="col-12 lg:col-5">
                 <div class="flex">
@@ -56,9 +56,12 @@
                                 </ul>
                             </div>
                             <div class="col-12 lg:col-6">
-                                <span class="text-900 block font-medium mb-3 font-bold">Peso</span>
+                                <span class="text-900 block font-medium mb-3 font-bold">Medidas</span>
                                 <ul class="py-0 pl-3 m-0 text-600 mb-3">
-                                    <li class="mb-2" v-if="!loading">{{product[0].weight}} KG</li>
+                                    <li class="mb-2" v-if="!loading">Peso: {{product[0].weight}} g</li>
+                                    <li class="mb-2" v-if="!loading">Largo: {{product[0].height}} cm</li>
+                                    <li class="mb-2" v-if="!loading">Ancho: {{product[0].width}} cm</li>
+                                    <li class="mb-2" v-if="!loading">Alto: {{product[0].length}} cm</li>
                                 </ul>
                             </div>
                             <div class="col-12 lg:col-6">
@@ -94,16 +97,31 @@
                     <span v-if="!loading && product[0].original_price"
                         class="text-900 font-medium text-lg block text-red-500">${{product[0].price_tax.toFixed(2)}}</span>
                 </div>
-                <div class="font-bold text-900 mb-3">Stock</div>
-                <div class="flex align-items-center mb-5">
-                    <label v-if="stock != undefined && stock > 0" class="w-full text-lg text-green-500">{{ stock }}
-                        Disponible</label>
-                    <label v-if="stock != undefined && stock <= 0" class="w-full text-lg text-red-500">{{ stock }}
-                        Disponible</label>
+                <div v-if="!loading">
+                    <div v-if="showStock == 1">
+                        <div class="font-bold text-900 mb-3">Stock</div>
+                        <div class="flex align-items-center mb-5">
+                            <label v-if="product[0].is_only_store == true" class="w-full text-lg text-green-500">SOLO DE VENTA EN TIENDA</label>
+                            <label v-else-if="stock != undefined  && stock > 0 && stock > 2" class="w-full text-lg text-green-500">{{ stock }}
+                                Disponible</label>
+                            <label v-else-if="stock != undefined && stock > 0 && stock <= 2" class="w-full text-lg text-orange-500">{{ stock }}
+                                Disponible</label>
+                            <label v-else-if="stock != undefined && stock <= 0" class="w-full text-lg text-red-500">{{ stock }}
+                                Disponible</label>
+                        </div>
+                    </div>
+                    <div v-else>
+                        <div class="flex align-items-center mb-5">
+                            <label v-if="product[0].is_only_store == true" class="w-full text-lg text-green-500">SOLO DE VENTA EN TIENDA</label>
+                            <label v-else-if="stock != undefined  && stock > 0 && stock > 2" class="w-full text-lg text-green-500">EN EXISTENCIA</label>
+                            <label v-else-if="stock != undefined && stock > 0 && stock <= 2" class="w-full text-lg text-orange-500">POCA EXISTENCIA</label>
+                            <label v-else-if="stock != undefined && stock <= 0" class="w-full text-lg text-red-500">SIN EXISTENCIA</label>
+                        </div>
+                    </div>
                 </div>
                 <div class="font-bold text-900 mb-3">Cantidad</div>
                 <div class="flex flex-column sm:flex-row sm:align-items-center sm:justify-content-between">
-                    <InputNumber showButtons buttonLayout="horizontal" :min="1"
+                    <InputNumber showButtons buttonLayout="horizontal" :min="1" :max="stock == 0 ? 1 : stock"
                         inputClass="w-2rem text-center py-2 px-1 border-transparent outline-none shadow-none"
                         v-model="quantity" class="border-1 surface-border border-round"
                         decrementButtonClass="p-button-text text-600 hover:text-primary py-1 px-1"
@@ -115,10 +133,10 @@
                 </div>
                 <br>
                 <div class="col-12">
-                    <Button @click="addToCart(false)" label="Añadir al carrito" class="w-full"></Button>
+                    <Button @click="addToCart(false)" :disabled="(dissableNoStock == 1 && stock <= 0) || product[0].is_only_store == true" label="Añadir al carrito" class="w-full"></Button>
                 </div>
                 <div class="col-12">
-                    <Button @click="addToCart(true)" label="Añadir al carrito y Pagar Ahora" class="w-full"></Button>
+                    <Button @click="addToCart(true)" :disabled="(dissableNoStock == 1 && stock <= 0) || product[0].is_only_store == true" label="Añadir al carrito y Pagar Ahora" class="w-full"></Button>
                 </div>
             </div>
         </div>
@@ -146,6 +164,7 @@ const cartStore = useCartStore();
 const toast = useToast();
 const entity = new OrderData();
 import RelatedProductCarusell from '../../components/general/RelatedProductCarusell.vue'
+import Galleria from 'primevue/galleria';
 
 
 const route = useRoute();
@@ -162,7 +181,8 @@ const atts = ref<any[]>([]);
 const save_atributes = ref<any[]>([]);
 const atributes = ref<any[]>([]);
 const relateds = ref<any[]>([]);
-
+const dissableNoStock = ref<number>(0);
+const showStock = ref<number>(0);
 
 
 const selectedImageIndex = ref(0);
@@ -177,6 +197,8 @@ const apiRoute = import.meta.env.VITE_API_ROUTE;
 const refresh = async () => {
     loading.value = true;
     try {
+        dissableNoStock.value = import.meta.env.VITE_DISSABLE_NO_STOCK;
+        showStock.value = import.meta.env.VITE_SHOW_STOCK;
         if(cartStore.order.length == 1)
             await entity.newOrder();
         let response = await axios.get('Inventory/EComerce/GetArticleInfo/' + route.params.id_article + '/' + route.params.id_subarticle + '/' + id_user.value)
