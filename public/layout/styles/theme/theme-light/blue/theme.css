@@ -37,13 +37,13 @@
   --gray-900: #343753;
   --content-padding:1.143rem;
   --inline-spacing:0.5rem;
-  --border-radius:6px;
+  --border-radius:20px;
   --surface-ground:linear-gradient(180deg, #F6F9FC 0%, #ECECF9 100%);
   --surface-section:#ffffff;
   --surface-card:rgba(255, 255, 255, 0.9);
   --surface-overlay:#ececf9;
   --surface-border:rgba(68, 72, 109, 0.2);
-  --surface-hover:rgba(68, 72, 109, 0.07);
+  --surface-hover:rgb(255, 255, 255);
   --focus-ring: 0 none;
   --maskbg: rgba(0, 0, 0, 0.4);
   --highlight-bg: rgba(15, 139, 253, 0.12);
@@ -184,9 +184,14 @@
   z-index:99 !important;
 }
 
-.MegaMenuText{
+.MegaMenuText {
   color: rgb(170, 170, 170);
 }
+
+.MegaMenuText:hover {
+  color: rgb(255, 255, 255); /* Cambia este valor al color que prefieras */
+}
+
 .full-width {
   width: 100vw; /* Viewport width, ensuring it spans the entire width of the screen */
   position: relative;
@@ -195,7 +200,7 @@
   margin-left: -50vw;
   margin-right: -50vw;
   box-sizing: border-box;
-  background-color: #0f7e8d;
+  background:linear-gradient(to right, #ffffff 0%, #11BACC 50%);
   color: #ffffff;
 }
 .custom-border .p-inputtext {
@@ -204,7 +209,7 @@
 
 .loading-overlay {
   position: fixed;
-  top: 50%;
+  top: 80%;
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 9999; /* Ajusta el índice z según sea necesario */
@@ -460,6 +465,10 @@
 
   .pi {
     font-size: 1rem;
+  }
+
+  .pi-icon-user {
+    font-size: 1.5rem;
   }
 
   .p-icon {
@@ -2077,8 +2086,8 @@
     font-size: 1rem;
     color: #44486D;
     background: rgba(68, 72, 109, 0.07);
-    padding: 0.429rem 0.571rem;
-    border: 1px solid transparent;
+    padding: 1rem;
+    border: 2px solid transparent;
     transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
     appearance: none;
     border-radius: 6px;
@@ -3133,7 +3142,7 @@
   }
 
   .p-button-label {
-    flex: 1 1 auto;
+    flex: 1auto;
   }
 
   .p-button-icon-right {
@@ -3922,6 +3931,7 @@
     display: flex;
     flex-direction: column;
     overflow: auto;
+    width: 100%;
   }
 
   .p-carousel-prev,
@@ -3939,6 +3949,7 @@
   .p-carousel-container {
     display: flex;
     flex-direction: row;
+    width: 100%;
   }
 
   .p-carousel-items-content {
@@ -3949,8 +3960,8 @@
   .p-carousel-items-container {
     display: flex;
     flex-direction: row;
-    width: 10%;
-  }
+    width: 100%; /* Ajusta esto según sea necesario */
+}
 
   .p-carousel-indicators {
     display: flex;
@@ -3972,7 +3983,7 @@
 
   .p-carousel-vertical .p-carousel-items-container {
     flex-direction: column;
-    height: 50%;
+    height: 100%;
   }
 
   /* Keyboard Support */
@@ -8416,17 +8427,18 @@
     margin-left: 0.5rem;
   }
   .p-menubar .p-menubar-root-list > .p-menuitem:not(.p-highlight):not(.p-disabled) > .p-menuitem-content:hover {
-    color: #44486D;
-    background: rgba(68, 72, 109, 0.07);
-  }
+    color: white;
+    background:linear-gradient(to right, #1B2955 5%, #11BACC 90%);
+    border-radius:28px;
+}
   .p-menubar .p-menubar-root-list > .p-menuitem:not(.p-highlight):not(.p-disabled) > .p-menuitem-content:hover .p-menuitem-link .p-menuitem-text {
-    color: #44486D;
+    color: #11BACC;
   }
   .p-menubar .p-menubar-root-list > .p-menuitem:not(.p-highlight):not(.p-disabled) > .p-menuitem-content:hover .p-menuitem-link .p-menuitem-icon, .p-menubar .p-menubar-root-list > .p-menuitem:not(.p-highlight):not(.p-disabled) > .p-menuitem-content:hover .p-menuitem-link .p-submenu-icon {
-    color: #44486D;
+    color: #11BACC;
   }
   .p-menubar .p-menuitem {
-    margin: 0;
+    margin: 5;
   }
   .p-menubar .p-menuitem:first-child {
     margin-top: 0;
@@ -8435,7 +8447,7 @@
     margin-bottom: 0;
   }
   .p-menubar .p-menuitem > .p-menuitem-content {
-    color: #0bb4c9;
+    color: #11BACC;
     transition: box-shadow 0.2s;
     border-radius: 6px;
   }
@@ -8455,8 +8467,8 @@
     color: #676B89;
   }
   .p-menubar .p-menuitem.p-highlight > .p-menuitem-content {
-    color: #44486D;
-    background: rgba(15, 139, 253, 0.12);
+    color: #ffffff;
+    background:linear-gradient(to right, #1B2955 5%, #11BACC 90%);
   }
   .p-menubar .p-menuitem.p-highlight > .p-menuitem-content .p-menuitem-link .p-menuitem-text {
     color: #44486D;
@@ -8465,11 +8477,11 @@
     color: #44486D;
   }
   .p-menubar .p-menuitem.p-highlight.p-focus > .p-menuitem-content {
-    background: rgba(15, 139, 253, 0.24);
+    background: #11BACC;
   }
   .p-menubar .p-menuitem:not(.p-highlight):not(.p-disabled).p-focus > .p-menuitem-content {
     color: #44486D;
-    background: rgba(68, 72, 109, 0.07);
+    background: #11BACC;
   }
   .p-menubar .p-menuitem:not(.p-highlight):not(.p-disabled).p-focus > .p-menuitem-content .p-menuitem-link .p-menuitem-text {
     color: #44486D;
@@ -8479,7 +8491,7 @@
   }
   .p-menubar .p-menuitem:not(.p-highlight):not(.p-disabled).p-focus > .p-menuitem-content:hover {
     color: #44486D;
-    background: rgba(68, 72, 109, 0.07);
+    background: #11BACC;
   }
   .p-menubar .p-menuitem:not(.p-highlight):not(.p-disabled).p-focus > .p-menuitem-content:hover .p-menuitem-link .p-menuitem-text {
     color: #44486D;
@@ -8499,11 +8511,11 @@
   }
   .p-menubar .p-submenu-list {
     padding: 0.429rem;
-    background: #ececf9;
+    background: #ffffff;
     border: 1px solid transparent;
-    box-shadow: 0px 9px 30px rgba(68, 72, 109, 0.06);
+    box-shadow: 0px 9px 30px rgb(1 1 1 / 82%);
     min-width: 12.5rem;
-    border-radius: 6px;
+    border-radius: 0px;
   }
   .p-menubar .p-submenu-list .p-menuitem-separator {
     border-top: 1px solid rgba(68, 72, 109, 0.17);
@@ -8521,7 +8533,7 @@
     outline-color: transparent;
   }
   .p-menubar.p-menubar-mobile .p-menubar-button:hover {
-    color: #44486D;
+    color: #11BACC;
     background: rgba(68, 72, 109, 0.07);
   }
   .p-menubar.p-menubar-mobile .p-menubar-button:focus {
@@ -10385,7 +10397,7 @@
     animation-delay: 1.15s;
   }
 
-  @-webkit-keyframes p-progressbar-indeterminate-anim {
+  /* @-webkit-keyframes p-progressbar-indeterminate-anim {
     0% {
       left: -35%;
       right: 100%;
@@ -10493,9 +10505,9 @@
     stroke: #44486D;
     animation: p-progress-spinner-dash 1.5s ease-in-out infinite, p-progress-spinner-color 6s ease-in-out infinite;
     stroke-linecap: round;
-  }
+  } */
 
-  @keyframes p-progress-spinner-rotate {
+  /* @keyframes p-progress-spinner-rotate {
     100% {
       transform: rotate(360deg);
     }
@@ -10527,7 +10539,7 @@
     80%, 90% {
       stroke: #44486D;
     }
-  }
+  } */
   .p-ripple {
     overflow: hidden;
     position: relative;
@@ -11112,6 +11124,6 @@
 }
 .label-button-user {
   font-weight: 700;
-  font-size: 120%;
+  font-size: 150%;
   color: #00bcd4;
 }

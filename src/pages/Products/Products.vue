@@ -1,6 +1,10 @@
 <template>
-    <ProgressSpinner v-if="loading" class="loading-overlay"/>
-    <ProductSkeleton :skeleton="skeleton"/>
+    <!-- <ProgressSpinner v-if="loading" class="loading-overlay"/> -->
+    <div v-if="loading" class="layout-preloader-container">
+        <img src="/src/assets/demo/resources/webcontent/images/loader.gif" alt="Loading..."
+            class="layout-preloader-gif">
+    </div>
+    <ProductSkeleton :skeleton="skeleton" />
     <div class="p-grid crud-demo" v-if="!skeleton">
         <div class="col-12">
             <div class="grid formgrid p-fluid">
@@ -8,17 +12,20 @@
                     <!-- Definitivamente hacerlo componente -->
                     <span class="text-900 font-medium text-4xl mb-4">{{ pagetitle }}</span>
                     <br>
-                    <span class="text-900 font-medium text-xs mb-4">{{  products.length }} Productos Relacionados</span>
+                    <span class="text-900 font-medium text-xs mb-4">{{ products.length }} Productos Relacionados</span>
                     <br>
                     <br>
-                    <BasicFilterSelection @v-model="getcategories" :key="componentKey" :allcategories="subgroups" filtername="Filtro por Grupos"/>
-                    <BasicFilterSelection @v-model="getfilterprices" :key="componentKey" :allcategories="priceorder" filtername="Filtro por Precios" pickone/>
+                    <BasicFilterSelection @v-model="getcategories" :key="componentKey" :allcategories="subgroups"
+                        filtername="Filtro por Grupos" />
+                    <BasicFilterSelection @v-model="getfilterprices" :key="componentKey" :allcategories="priceorder"
+                        filtername="Filtro por Precios" pickone />
                 </div>
                 <div class="field col-12 sm:col-12 md:col-12 xl:col-10">
                     <div class="card">
                         <br>
                         <!-- Agregar paginator obligatorio -->
-                        <BasicProductGrid :allproducts="products" :pagesize="40" :pagetitle="pagetitle" :key="productsKey"/>
+                        <BasicProductGrid :allproducts="products" :pagesize="40" :pagetitle="pagetitle"
+                            :key="productsKey" />
                     </div>
                 </div>
             </div>

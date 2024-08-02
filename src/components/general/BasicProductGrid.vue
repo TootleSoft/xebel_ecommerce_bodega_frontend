@@ -15,7 +15,7 @@
                 </div>
             </div>
             <div v-for="(product, i) in products.slice(first/10*pagesize,first/10*pagesize+pagesize)" :key="i" class="col-12 md:col-5 lg:col-3 mb-5 lg:mb-0">
-                <div class="mb-3 relative">
+                <div class="mb-1 relative">
                     <!-- <img :src="'/demo/images/ecommerce/product-list/product-list-4-1.png'" class="w-full" :alt="String(i)" @click="router.push('/product/'+product.id+'/'+product.id_subarticle)"/> -->
                     <img :src="imgroute(product.id, product.barcode, product.id_brand)" class="w-full h-auto shadow-8" :alt="String(i)" @click="router.push('/product/'+product.id+'/'+product.id_subarticle)"/>
                     <span v-if="product.existence == 'EN EXISTENCIA'" class="surface-card text-900 shadow-2 px-3 py-2 absolute border-round-3xl text-green-500 font-bold" :style="{ left: '1rem', top: '1rem' }"> {{ product.existence }} </span>
@@ -23,14 +23,14 @@
                     <span v-if="product.existence == 'SOLO DE VENTA EN TIENDA'" class="surface-card text-900 shadow-2 px-3 py-2 absolute border-round-3xl text-green-500 font-bold" :style="{ left: '1rem', top: '1rem' }"> {{ product.existence }} </span>
                     <span v-if="product.existence == 'SIN EXISTENCIA'" class="surface-card text-900 shadow-2 px-3 py-2 absolute border-round-3xl text-red-500 font-bold" :style="{ left: '1rem', top: '1rem' }"> {{ product.existence }} </span>
                     <Button
-                        type="button"
+                    type="button"
                         :disabled="(dissableNoStock == 1 && product.stock <= 0) || product.existence == 'SOLO DE VENTA EN TIENDA'"
-                        class="border-1 border-white border-round py-2 px-3 absolute bg-black-alpha-30 text-white inline-flex align-items-center justify-content-center hover:bg-teal-400 transition-colors transition-duration-300 cursor-pointer"
-                        :style="{ bottom: '1rem', left: '1rem', width: 'calc(100% - 2rem)' }"
-                        @click="addCart(product.id, product.id_subarticle, product.quantity, i)"
+                    class="border-1 border-white border-round py-2 px-3 absolute bg-black-alpha-30 text-white inline-flex align-items-center justify-content-center hover:bg-teal-500 transition-colors transition-duration-300 cursor-pointer"
+                    :style="{ bottom: '1rem', left: '1rem', width: 'calc(100% - 2rem)' }"
+                    @click="addCart(product.id, product.id_subarticle, product.quantity, i)"
                     >
                         <i class="pi pi-shopping-cart mr-3 text-base"></i>
-                        <span class="text-base">Add to Cart</span>
+                        <span class="text-base">Agregar al carrito</span>
                     </Button>
                 </div>
                 <div class="flex flex-column align-items-center">
@@ -41,10 +41,10 @@
                     <span class="text-l text-900 mb-3 font-medium">{{ product.barcode }}</span>
                     <div class="col-12 align-items-center">
                         <div class="grid formgrid p-fluid">
-                            <div class="col-4"></div>
+                            <div class="col-3"></div>
                             <InputNumber showButtons buttonLayout="horizontal" :min="1" :max="product.stock == 0 ? 1 : product.stock"
                             inputClass="w-2rem text-center py-2 px-1 border-transparent outline-none shadow-none"
-                            v-model="product.quantity" class="border-1 surface-border border-round col-4"
+                            v-model="product.quantity" class="border-1 surface-border border-round col-6"
                             decrementButtonClass="p-button-text text-600 hover:text-primary py-1 px-1"
                             incrementButtonClass="p-button-text text-600 hover:text-primary py-1 px-1"
                             incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus"></InputNumber>

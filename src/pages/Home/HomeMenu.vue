@@ -7,7 +7,7 @@
                 <div class="cyan-text md:text-8xl">increibles</div>
                 <div class="cyan-text md:text-8xl">productos</div>
                 <br>
-                <span class="cyan-text2">Descubre la unica variedad de marcas y productos que Villa de Cortes Monterrey
+                <span class="cyan-text2">Descubre la unica variedad de marcas y productos que <strong>Villa de Cortes Monterrey</strong>
                     tiene
                     para ti</span>
                 <div class="col-8">
@@ -21,50 +21,51 @@
         </div>
 
         <div class="flex justify-content-center flex-wrap">
-            <div class="flex align-items-center justify-content-center w-15rem m-2 text-cyan-700 xl:text-7xl font-bold">
+            <div class="flex align-items-center justify-content-center w-16rem m-2 cyan-text xl:text-7xl font-bold">
                 Nuestras</div>
-            <div class="flex align-items-center justify-content-center w-15rem m-2 xl:text-7xl font-bold">marcas</div>
+            <div class="flex align-items-center justify-content-center w-15rem m-2 xl:text-7xl font-bold" style="color: #1B2955;">marcas</div>
             <!-- <div class="cyan-text xl:text-7xl flex align-items-center justify-content-center w-4rem h-4rem">Nuestras</div>
             <div class="bold-text xl:text-7xl flex align-items-center justify-content-center w-4rem h-4rem">marcas</div> -->
         </div>
         <BasicProductCarusell />
         
         <div class="flex justify-content-center flex-wrap">
-            <div class="flex align-items-center justify-content-center w-24rem m-2 text-cyan-700 xl:text-7xl font-bold">
+            <div class="flex align-items-center justify-content-center w-25rem m-2 cyan-text xl:text-7xl font-bold">
                 Promociones</div>
-            <div class="flex align-items-center justify-content-center w-13rem m-2 xl:text-7xl font-bold">para ti</div>
+            <div class="flex align-items-center justify-content-center w-13rem m-2 xl:text-7xl font-bold" style="color: #1B2955;">para ti</div>
         </div>
         <BasicBundleCarusell />
 
         <div class="flex justify-content-center flex-wrap">
-            <div class="flex align-items-center justify-content-center w-12rem m-2 text-cyan-700 xl:text-7xl font-bold">
+            <div class="flex align-items-center justify-content-center w-13rem m-2 cyan-text xl:text-7xl font-bold">
                 Ofertas</div>
-            <div class="flex align-items-center justify-content-center w-13rem m-2 xl:text-7xl font-bold">para ti</div>
+            <div class="flex align-items-center justify-content-center w-13rem m-2 xl:text-7xl font-bold" style="color: #1B2955;">para ti</div>
         </div>
         <BasicOffertsCarusell />
 
 
         <div class="centered-text">
-            <p class="flex align-items-center justify-content-center w-20rem m-2 text-cyan-700 xl:text-7xl font-bold">¿Quienes</p>
-            <p class="flex align-items-center justify-content-center w-13rem m-2 xl:text-7xl font-bold">somos?</p>
+            <p class="flex align-items-center justify-content-center w-20rem m-2 cyan-text xl:text-7xl font-bold">¿Quienes</p>
+            <p class="flex align-items-center justify-content-center w-13rem m-2 xl:text-7xl font-bold" style="color: #1B2955;">somos?</p>
         </div>
         <div class="container">
-            <div class="left-block">
+            <div class="left-block2">
                 <BasicImageCarusell />
             </div>
             <div class="right-block">
                 <p class="bold-text xl:text-8xl font-bold-800 text-left">Más de 30 años a tu</p>
                 <p class="cyan-text xl:text-8xl text-left">servicio.</p>
-                <p class="cyan-text2 xl:text-4xl text-left"> De Ciudad de México a Monterrey, llevamos
+                <p class="cyan-text3 xl:text-2xl text-left"> De <strong>Ciudad de México a Monterrey</strong>, llevamos
                     más de 30 años brindando soluciones a los
                     profesionistas de la industria dental. </p>
-                <p class="cyan-text2 xl:text-4xl text-left">En Villa de Cortés Monterrey somos una
+                    <br>
+                <p class="cyan-text3 xl:text-2xl text-left">En <strong>Villa de Cortés Monterrey</strong> somos una
                     empresa mexicana líder en venta de insumos
                     dentales y ofreciéndote la mejor calidad y
                     proveedores del mercado. </p>
             </div>
         </div>
-        <footer class="footer">
+        <footer class="flex flex-row footer">
                 <div class="footer-content">
                     <div class="footer-column">
                         <h3 class="font-bold-800 xl:text-4xl">Contacto</h3>
@@ -213,19 +214,26 @@ const products2 = ref([
 </script>
 <style lang="scss" scoped>
 .cyan-text {
-  color: rgb(19, 224, 228);
+  color: #11BACC;
   font-size:450%;
-  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: Poppins;
   text-align: justify; /* Justifica el texto */
   line-height: 2cm; /* Altura de línea específica */
   font-weight:900;
 }
 .cyan-text2 {
-  color: rgb(19, 224, 228);
-  font-size:300%;
-  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #11BACC;
+  font-size:150%;
+  font-family: Poppins;
   text-align: justify; /* Justifica el texto */
-  line-height: 100%; /* Altura de línea específica */
+  line-height: 1.1cm; /* Altura de línea específica */
+}
+.cyan-text3 {
+  color: #11BACC;
+  font-size:50px;
+  font-family: Poppins;
+  text-align: justify; /* Justifica el texto */
+  line-height: 0.8cm; /* Altura de línea específica */
 }
 .container {
     display: flex;
@@ -237,10 +245,14 @@ const products2 = ref([
     text-align: left;
     width: 60%; /* Ajusta el ancho según sea necesario */
 }
+.left-block2 {
+    text-align: left;
+    width: 57%; /* Ajusta el ancho según sea necesario */
+}
 
 .right-block {
     text-align:right;
-    width: 70%; /* Ajusta el ancho según sea necesario */
+    width: 57%; /* Ajusta el ancho según sea necesario */
 }
 .right-block2 {
     text-align:right;
@@ -250,8 +262,9 @@ const products2 = ref([
 .bold-text {
     font-weight:800;
     font-size:1cm;
-    color: #061171;
-    line-height: 2cm; /* Altura de línea específica */
+    font-family: Poppins;
+    color: #1B2955;
+    line-height: 2.1cm; /* Altura de línea específica */
 }
 
 
@@ -261,7 +274,7 @@ const products2 = ref([
   justify-content: center;
 }
 .button {
-	background:linear-gradient(to bottom, #1a17a6 5%, #2c68bd 100%);
+	background:linear-gradient(to right, #1a17a6 5%, #11BACC 90%);
 	background-color:#1a17a6;
 	border-radius:28px;
 	display:inline-block;
@@ -292,7 +305,7 @@ const products2 = ref([
   align-items: center; /* Center vertically */
   text-align: center; /* Center text within each column */
   height: 300px; /* Set the height as needed */
-  width: 93vw;
+  width: 100vw;
 }
 
 .footer-content {
@@ -369,5 +382,11 @@ const products2 = ref([
   .footer-column {
     margin: 10px 0;
   }
+}
+@font-face {
+    font-family: "Poppins";
+    font-style: normal;
+    font-weight: normal;
+    src: local("?"), url("/fonts/poppins-v20-latin-700.woff") format("woff");
 }
 </style>

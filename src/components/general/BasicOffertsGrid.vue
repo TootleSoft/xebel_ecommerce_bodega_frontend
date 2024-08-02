@@ -17,7 +17,7 @@
             </div>
         </div>
         <div v-for="(product, i) in products.slice(first / 10 * pagesize, first / 10 * pagesize + pagesize)" :key="i"
-            class="col-12 md:col-5 lg:col-3 mb-5 lg:mb-0">
+            class="col-12 md:col-5 lg:col-3 mb-5 lg:mb-4">
             <div class="mb-3 relative">
                 <img :src="imgroute(product.id, product.barcode, product.id_brand)" class="w-full h-auto shadow-8" :alt="String(i)" @click="router.push('/product/'+product.id+'/'+product.id_subarticle)"/>
                 <Button type="button"
@@ -35,14 +35,14 @@
                 <span class="text-l text-900 mb-3 font-medium">{{ product.barcode }}</span>
                 <div class="col-12 align-items-center">
                     <div class="grid formgrid p-fluid">
-                        <div class="col-4"></div>
+                        <div class="col-3"></div>
                         <InputNumber showButtons buttonLayout="horizontal" :min="1"
                         inputClass="w-2rem text-center py-2 px-1 border-transparent outline-none shadow-none"
-                        v-model="product.quantity" class="border-1 surface-border border-round col-4"
+                        v-model="product.quantity" class="border-1 surface-border border-round col-6"
                         decrementButtonClass="p-button-text text-600 hover:text-primary py-1 px-1"
                         incrementButtonClass="p-button-text text-600 hover:text-primary py-1 px-1"
                         incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus"></InputNumber>
-                        <div class="col-4"></div>
+                        <div class="col-3"></div>
                     </div>
                 </div>
             </div>

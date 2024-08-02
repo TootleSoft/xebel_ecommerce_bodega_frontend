@@ -2,6 +2,28 @@ body {
     margin: 0;
 }
 
+.layout-preloader-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 100vw;
+    background-color: #ffffff;
+}
+
+.layout-preloader-gif {
+    width: 100px; /* Ajusta el tamaño del GIF según sea necesario */
+    height: 100px; /* Ajusta el tamaño del GIF según sea necesario */
+    z-index: 9999; /* Ajusta el índice z según sea necesario */
+}
+
+
+
+
+/* body {
+    margin: 0;
+}
+
 .p-MegaMenuBar{
     background-color: #326fd1;
   }
@@ -28,7 +50,7 @@ body {
     color: #6366f1;
     letter-spacing: 4px;
     text-transform: uppercase;
-    text-shadow: 0 0 10px #6366f1;
+    text-shadow: 0 0 10px #0004ff;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
 }
 .layout-preloader-container .layout-preloader:before {
@@ -39,8 +61,8 @@ body {
     width: 100%;
     height: 100%;
     border: 3px solid transparent;
-    border-top: 3px solid #6366f1;
-    border-right: 3px solid #6366f1;
+    border-top: 3px solid #d60000;
+    border-right: 3px solid #0004ff;
     border-radius: 50%;
     animation: preloader-rotate-c 1s linear infinite;
 }
@@ -61,10 +83,10 @@ body {
     width: 16px;
     height: 16px;
     border-radius: 50%;
-    background: #6366f1;
+    background: #0004ff;
     top: -6px;
     right: -8px;
-    box-shadow: 0 0 20px #6366f1;
+    box-shadow: 0 0 20px #f90008;
 }
 
 @keyframes preloader-rotate-c {
@@ -82,4 +104,4 @@ body {
     100% {
         transform: rotate(405deg);
     }
-}
+} */

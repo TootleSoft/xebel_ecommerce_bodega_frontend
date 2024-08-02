@@ -4,7 +4,6 @@
       :value="relatedItems"
       :numVisible="3"
       :numScroll="2"
-      :responsiveOptions="responsiveOptions"
       circular
     >
       <template #item="slotProps">
@@ -44,28 +43,28 @@ const emit = defineEmits(['update:value']);
 
 const router = useRouter();
 
-const responsiveOptions = [
-  {
-    breakpoint: '1400px',
-    numVisible: 2,
-    numScroll: 1
-  },
-  {
-    breakpoint: '1199px',
-    numVisible: 3,
-    numScroll: 1
-  },
-  {
-    breakpoint: '767px',
-    numVisible: 2,
-    numScroll: 1
-  },
-  {
-    breakpoint: '575px',
-    numVisible: 1,
-    numScroll: 1
-  }
-];
+// const responsiveOptions = [
+//   {
+//     breakpoint: '1400px',
+//     numVisible: 2,
+//     numScroll: 1
+//   },
+//   {
+//     breakpoint: '1199px',
+//     numVisible: 3,
+//     numScroll: 1
+//   },
+//   {
+//     breakpoint: '767px',
+//     numVisible: 2,
+//     numScroll: 1
+//   },
+//   {
+//     breakpoint: '575px',
+//     numVisible: 1,
+//     numScroll: 1
+//   }
+// ];
 
 const imgroute = (id, sku, brand) => {
   sku = sku.replace(/\//g, "--").replace(/ñ/g, "nnn").replace(/Ñ/g, "nnn").replace(/#/g, '----');

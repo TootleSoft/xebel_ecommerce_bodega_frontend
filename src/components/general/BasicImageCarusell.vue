@@ -3,13 +3,13 @@
       <Carousel
         :value="carouselItems"
         :numVisible="1"
-        :numScroll="3"
-        :responsiveOptions="responsiveOptions"
+        :numScroll="1"
         circular
         class="custom-carousel"
+        :autoplayInterval="5000"
       >
         <template #item="slotProps">
-          <div class="border-1 surface-border border-round m-9 p-2">
+          <div class="border-1 surface-border border-round m-9 p-3">
             <div class="mb-3">
               <div class="relative mx-auto">
                 <img :src="slotProps.data.src" class="h-30rem" @click="navigateToProduct(slotProps.data)" />
@@ -48,17 +48,17 @@
   const carouselItems = ref([
     {
       id: 1,
-      src: 'public/demo/images/galleria/dentista-carusell-1.jpg',
+      src: '/src/assets/demo/resources/webcontent/images/foto19.jpg',
     //   path: '/product/1'
     },
     {
       id: 2,
-      src: 'public/demo/images/galleria/dental-carusell-2.jpg',
+      src: '/src/assets/demo/resources/webcontent/images/foto13.jpg',
     //   path: '/product/2'
     },
     {
       id: 3,
-      src: 'public/demo/images/galleria/dental-carusell-3.jpg',
+      src: '/src/assets/demo/resources/webcontent/images/foto16.jpg',
     //   path: '/product/3'
     },
     // ... puedes añadir más imágenes si lo deseas

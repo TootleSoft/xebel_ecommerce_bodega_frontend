@@ -13,9 +13,9 @@
     <div class="p-grid crud-demo MegaMenuBackground">
         <div class="col-12">
             <div class="grid formgrid p-fluid">
-                <div class="field col-12 sm:col-12 md:col-3 xl:col-3">
+                <div class="field col-12 sm:col-8 md:col-2 xl:col-2">
                     <img :src="'/layout/images/logo/appname-' + (layoutConfig.colorScheme.value === 'light' ? 'dark' : 'light') + '.png'"
-                        class="app-logo-small h-2rem" />
+                        class="app-logo-small h-5rem" />
                 </div>
                 <div class="field col-12 sm:col-12 md:col-6 xl:col-6">
                     <FloatLabel>
@@ -27,18 +27,18 @@
                         </label>
                     </FloatLabel>
                 </div>
-                <div class="field col-12 sm:col-12 md:col-1 xl:col-1">
-                </div>
+                <!-- <div class="field col-12 sm:col-12 md:col-1 xl:col-1">
+                </div> -->
                 <div v-if="authStore.id_usuario != undefined" class="field col-12 sm:col-12 md:col-1 xl:col-1">
-                    <Button icon="pi pi-user" label="Cuenta" severity="contrast" outlined @click="tuser" />
+                    <Button icon="pi pi-user" label="Mi Cuenta" severity="contrast" outlined @click="tuser" />
                     <TieredMenu ref="muser" class="tiered-menu-class" id="overlay_tmenu" :model="user" popup />
                 </div>
-                <div v-if="authStore.id_usuario == undefined" class="field col-12 sm:col-12 md:col-1 xl:col-1">
+                <div v-if="authStore.id_usuario == undefined" class="field col-12 sm:col-12 md:col-1 xl:col-2">
                     <Button class="label-button-user" icon="pi pi-user" label="Ingresar" severity="contrast" outlined
                         @click="tlogin" />
                     <TieredMenu ref="mlogin" class="tiered-menu-class" id="overlay_tmenu" :model="login" popup />
                 </div>
-                <div class="field col-12 sm:col-12 md:col-1 xl:col-1">
+                <div class="field col-12 sm:col-12 md:col-1 xl:col-2">
                     <Button class="label-button-user" @click="shoppingCart" icon="pi pi-shopping-cart"
                         :label="`Carrito (${cartStore.cart.length})`" severity="contrast" outlined />
                 </div>
@@ -197,7 +197,7 @@ const user = ref<any[]>([
 </script>
 <style>
 .custom-border .p-inputtext {
-  border-color:  rgb(19, 224, 228); /* Cambia #ff0000 por el color de tu preferencia */
+  border-color:  #11BACC; /* Cambia #ff0000 por el color de tu preferencia */
 }
 .tiered-menu-class {
   border: none;
