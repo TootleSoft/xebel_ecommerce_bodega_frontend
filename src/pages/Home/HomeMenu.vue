@@ -333,7 +333,7 @@ const products2 = ref([
   flex-direction: column; /* Cambiar a columna para centrar verticalmente en pantallas pequeñas */
   align-items: center; /* Center horizontally */
   text-align: center; /* Center text within each column */
-  width: 100vw;
+  width: 97vw;
 }
 
 .footer-content {
