@@ -50,7 +50,7 @@
         </div>
         <div class="container">
             <div class="left-block2">
-                <BasicImageCarusell />
+                <BasicImageCarusell2 />
             </div>
             <div class="right-block">
                 <p class="bold-text xl:text-8xl font-bold-800 text-left">Más de 30 años a tu</p>
@@ -115,6 +115,7 @@ import { ref, onMounted } from 'vue';
 import BasicProductGrid from '../../components/general/BasicProductGrid.vue';
 import BasicProductCarusell from '../../components/general/BasicProductCarusell.vue'
 import BasicImageCarusell from '../../components/general/BasicImageCarusell.vue'
+import BasicImageCarusell2 from '../../components/general/BasicImageCarusell2.vue'
 import BasicBundleCarusell from '../../components/general/BasicBundleCarusell.vue';
 import BasicOffertsCarusell from '../../components/general/BasicOffertsCarusell.vue';
 import axios from 'axios';
@@ -216,7 +217,7 @@ const products2 = ref([
 .cyan-text {
   color: #11BACC;
   font-size:450%;
-  font-family: Poppins;
+  font-family: 'Poppins', sans-serif;
   text-align: justify; /* Justifica el texto */
   line-height: 2cm; /* Altura de línea específica */
   font-weight:900;
@@ -241,23 +242,51 @@ const products2 = ref([
     align-items: center; /* Alinea verticalmente al centro */
 }
 
-.left-block {
+.left-block, .left-block2, .right-block, .right-block2 {
     text-align: left;
-    width: 60%; /* Ajusta el ancho según sea necesario */
-}
-.left-block2 {
-    text-align: left;
-    width: 57%; /* Ajusta el ancho según sea necesario */
+    width: 100%; /* Por defecto, los bloques ocupan el 100% del ancho en pantallas pequeñas */
 }
 
-.right-block {
-    text-align:right;
-    width: 57%; /* Ajusta el ancho según sea necesario */
+/* Media query para pantallas medianas (tablets) */
+@media (min-width: 768px) {
+    .left-block {
+        width: 60%; /* Ajusta el ancho según sea necesario */
+        text-align: left;
+    }
+    .left-block2 {
+        width: 57%; /* Ajusta el ancho según sea necesario */
+        text-align: left;
+    }
+    .right-block {
+        width: 57%; /* Ajusta el ancho según sea necesario */
+        text-align: right;
+    }
+    .right-block2 {
+        width: 30%; /* Ajusta el ancho según sea necesario */
+        text-align: right;
+    }
 }
-.right-block2 {
-    text-align:right;
-    width: 30%; /* Ajusta el ancho según sea necesario */
+
+/* Media query para pantallas grandes (desktops) */
+@media (min-width: 1024px) {
+    .left-block {
+        width: 60%; /* Ajusta el ancho según sea necesario */
+        text-align: left;
+    }
+    .left-block2 {
+        width: 57%; /* Ajusta el ancho según sea necesario */
+        text-align: left;
+    }
+    .right-block {
+        width: 57%; /* Ajusta el ancho según sea necesario */
+        text-align: right;
+    }
+    .right-block2 {
+        width: 30%; /* Ajusta el ancho según sea necesario */
+        text-align: right;
+    }
 }
+
 
 .bold-text {
     font-weight:800;
@@ -298,26 +327,28 @@ const products2 = ref([
   background-image: url('/public/demo/images/pages/fondo dental-01.jpg');
   background-size: cover;
   background-position: center;
-  padding: 100px;
+  padding: 50px 20px; /* Reducir padding en pantallas pequeñas */
   color: rgb(255, 255, 255);
   display: flex;
-  justify-content: center; /* Center horizontally */
-  align-items: center; /* Center vertically */
+  flex-direction: column; /* Cambiar a columna para centrar verticalmente en pantallas pequeñas */
+  align-items: center; /* Center horizontally */
   text-align: center; /* Center text within each column */
-  height: 300px; /* Set the height as needed */
   width: 100vw;
 }
 
 .footer-content {
   display: flex;
+  flex-direction: row; /* Mantener filas en pantallas grandes */
   justify-content: space-around; /* Space columns evenly */
   width: 100%;
   max-width: 1200px;
+  flex-wrap: wrap; /* Permitir que las columnas se ajusten en varias líneas en pantallas pequeñas */
 }
 
 .footer-column {
   flex: 1;
   padding: 15px;
+  min-width: 200px; /* Asegurar un ancho mínimo para columnas */
 }
 
 .footer-column h3 {
@@ -331,14 +362,7 @@ const products2 = ref([
 
 .footer-column ul li {
   margin-bottom: 10px;
-  font-family:Verdana, Geneva, Tahoma, sans-serif;
-}
-
-.icon-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh; /* Para centrar verticalmente en la pantalla completa */
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
 .social-icons {
@@ -350,43 +374,53 @@ const products2 = ref([
 
 .social-icons i {
   font-size: 2rem; /* Tamaño de los íconos */
-  color: #ffffff; /* Color de los íconos de Facebook */
-}.icon-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh; /* Para centrar verticalmente en la pantalla completa */
+  color: #ffffff; /* Color de los íconos */
 }
 
-.social-icons {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px; /* Espacio entre los íconos */
-}
-
-.social-icons i {
-  font-size: 2rem; /* Tamaño de los íconos */
-  color: #ffffff; /* Color de los íconos de Facebook */
-}
 .footer-legend {
   text-align: center;
   padding: 5px;
   color: white; /* Color del texto */
+  width: 100%;
+  margin-top: 20px; /* Espacio en la parte superior */
 }
+
 @media (max-width: 768px) {
+  .footer {
+    padding: 20px; /* Reducir padding en pantallas pequeñas */
+  }
+
   .footer-content {
-    flex-direction: column;
+    flex-direction: column; /* Cambiar a columna en pantallas pequeñas */
+    align-items: center; /* Alinear columnas en el centro */
   }
 
   .footer-column {
     margin: 10px 0;
+    width: 100%; /* Asegurar que las columnas ocupen todo el ancho */
+  }
+
+  .social-icons i {
+    font-size: 1.5rem; /* Reducir tamaño de los íconos en pantallas pequeñas */
   }
 }
+
 @font-face {
-    font-family: "Poppins";
+    font-family: 'Poppins';
     font-style: normal;
-    font-weight: normal;
-    src: local("?"), url("/fonts/poppins-v20-latin-700.woff") format("woff");
+    font-weight: 400;
+    src: local('Poppins Regular'), local('Poppins-Regular'),
+        url('/src/assets/layout/fonts/poppins-v20-latin-regular.woff2') format('woff2'),
+        url('/src/assets/layout/fonts/poppins-v20-latin-regular.woff') format('woff');
 }
+
+@font-face {
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 700;
+    src: local('Poppins Bold'), local('Poppins-Bold'),
+        url('/src/assets/layout/fonts/poppins-v20-latin-700.woff2') format('woff2'),
+        url('/src/assets/layout/fonts/poppins-v20-latin-700.woff') format('woff');
+}
+
 </style>
