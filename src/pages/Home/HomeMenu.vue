@@ -1,54 +1,112 @@
 <template>
     <div class="card">
-        <div class="container">
-            <div class="left-block">
-                <div class="bold-text md:text-8xl">Descubre</div>
-                <div class="bold-text md:text-8xl">nuestros</div>
-                <div class="cyan-text md:text-8xl">increibles</div>
-                <div class="cyan-text md:text-8xl">productos</div>
-                <br>
-                <span class="cyan-text2">Descubre la unica variedad de marcas y productos que <strong>Villa de Cortes Monterrey</strong>
-                    tiene
-                    para ti</span>
-                <div class="col-8">
-                    <Button ref="mlogin" @click="tlogin" label="Registrate para comprar" class="button"
-                        rounded></Button>
+        <div class="hidden sm:block">
+            <div class="grid">
+                <div class="col-6 hidden md:block">
+                    <div class="bold-text md:text-8xl">Descubre</div>
+                    <br>
+                    <br>
+                    <div class="bold-text md:text-8xl">nuestros</div>
+                    <br>
+                    <br>
+                    <div class="cyan-text md:text-8xl">increibles</div>
+                    <br>
+                    <br>
+                    <div class="cyan-text md:text-8xl">productos</div>
+                    <br>
+                    <br>
+                    <span class="cyan-text4">Descubre la unica variedad de marcas y productos <br>que <strong>Villa de Cortes Monterrey</strong>
+                        tiene
+                        para ti</span>
+                    <div class="col-8">
+                        <Button ref="mlogin" @click="tlogin" label="Registrate para comprar" class="button"
+                            rounded></Button>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <BasicImageCarusell />
                 </div>
             </div>
-            <div class="right-block">
-                <BasicImageCarusell />
+        </div>
+        <div class="block sm:hidden grid formgrid p-fluid">
+            <div class="col-12 flex align-items-center justify-content-center cyan-text text-sm h-2rem">
+                Bienvenido a Villa de Cortés Monterrey
+            </div>
+            <div class="col-12 flex align-items-center justify-content-center bold-text text-lg h-2rem">
+                Descubre nuestros increíbles productos
+            </div>
+        </div>
+        <div class="block sm:hidden full-width-sm-index">
+            <div class="p-3 flex justify-content-center align-items-center flex-wrap">
+                <div class="justify-content-center align-items-center flex">
+                    <span class="w-full text-sm">
+                        <i class="pi pi-box"></i>
+                        Recuerda que tenemos envíos a todo México
+                    </span>
+                </div>
             </div>
         </div>
 
-        <div class="flex justify-content-center flex-wrap">
-            <div class="flex align-items-center justify-content-center w-16rem m-2 cyan-text xl:text-7xl font-bold">
-                Nuestras</div>
-            <div class="flex align-items-center justify-content-center w-15rem m-2 xl:text-7xl font-bold" style="color: #1B2955;">marcas</div>
-            <!-- <div class="cyan-text xl:text-7xl flex align-items-center justify-content-center w-4rem h-4rem">Nuestras</div>
-            <div class="bold-text xl:text-7xl flex align-items-center justify-content-center w-4rem h-4rem">marcas</div> -->
+        <div class="hidden sm:block">
+            <div class="flex justify-content-center flex-wrap">
+                <div class="flex align-items-center justify-content-center w-16rem m-2 cyan-text xl:text-7xl font-bold">
+                    Nuestras</div> 
+                <div class="flex align-items-center justify-content-center w-15rem m-2 xl:text-7xl font-bold" style="color: #1B2955;">marcas</div>
+                <!-- <div class="cyan-text xl:text-7xl flex align-items-center justify-content-center w-4rem h-4rem">Nuestras</div>
+                <div class="bold-text xl:text-7xl flex align-items-center justify-content-center w-4rem h-4rem">marcas</div> -->
+            </div>
+        </div>
+        <div class="block sm:hidden">
+            <div class="flex align-items-center justify-content-center flex-wrap">
+                <div class="flex align-items-center justify-content-center w-10rem m-2 cyan-text text-5xl font-bold">
+                    Nuestras</div> 
+                <div class="flex align-items-center justify-content-center w-10rem m-2 text-5xl font-bold" style="color: #1B2955;">marcas</div>
+                <!-- <div class="cyan-text xl:text-7xl flex align-items-center justify-content-center w-4rem h-4rem">Nuestras</div>
+                <div class="bold-text xl:text-7xl flex align-items-center justify-content-center w-4rem h-4rem">marcas</div> -->
+            </div>
         </div>
         <BasicProductCarusell />
-        
-        <div class="flex justify-content-center flex-wrap">
-            <div class="flex align-items-center justify-content-center w-25rem m-2 cyan-text xl:text-7xl font-bold">
-                Promociones</div>
-            <div class="flex align-items-center justify-content-center w-13rem m-2 xl:text-7xl font-bold" style="color: #1B2955;">para ti</div>
+
+        <div class="hidden sm:block">
+            <div class="flex justify-content-center flex-wrap">
+                <div class="flex align-items-center justify-content-center w-25rem m-2 cyan-text xl:text-7xl font-bold">
+                    Promociones</div> 
+                <div class="flex align-items-center justify-content-center w-13rem m-2 xl:text-7xl font-bold" style="color: #1B2955;">para ti</div>
+            </div>
         </div>
+        <div class="block sm:hidden">
+            <div class="flex justify-content-center align-items-center flex-wrap">
+                <div class="flex align-items-center justify-content-center w-15rem m-2 cyan-text text-5xl font-bold">
+                    Promociones</div> 
+                <div class="flex align-items-center justify-content-center w-8rem m-2 text-5xl font-bold" style="color: #1B2955;">para ti</div>
+            </div>
+        </div>
+        
         <BasicBundleCarusell />
 
-        <div class="flex justify-content-center flex-wrap">
-            <div class="flex align-items-center justify-content-center w-13rem m-2 cyan-text xl:text-7xl font-bold">
-                Ofertas</div>
-            <div class="flex align-items-center justify-content-center w-13rem m-2 xl:text-7xl font-bold" style="color: #1B2955;">para ti</div>
+        <div class="hidden sm:block">
+            <div class="flex justify-content-center flex-wrap">
+                <div class="flex align-items-center justify-content-center w-13rem m-2 cyan-text xl:text-7xl font-bold">
+                    Ofertas</div>
+                <div class="flex align-items-center justify-content-center w-13rem m-2 xl:text-7xl font-bold" style="color: #1B2955;">para ti</div>
+            </div>
+        </div>
+        <div class="block sm:hidden">
+            <div class="flex align-items-center justify-content-center flex-wrap">
+                <div class="flex align-items-center justify-content-center w-10rem m-2 cyan-text text-5xl font-bold">
+                    Ofertas</div>
+                <div class="flex align-items-center justify-content-center w-8rem m-2 text-5xl font-bold" style="color: #1B2955;">para ti</div>
+            </div>
         </div>
         <BasicOffertsCarusell />
 
-
-        <div class="centered-text">
-            <p class="flex align-items-center justify-content-center w-20rem m-2 cyan-text xl:text-7xl font-bold">¿Quienes</p>
-            <p class="flex align-items-center justify-content-center w-13rem m-2 xl:text-7xl font-bold" style="color: #1B2955;">somos?</p>
+        <div class="hidden sm:block">
+            <div class="flex justify-content-center flex-wrap">
+                <p class="flex align-items-center justify-content-center w-20rem m-2 cyan-text xl:text-7xl font-bold">¿Quienes</p>
+                <p class="flex align-items-center justify-content-center w-13rem m-2 xl:text-7xl font-bold" style="color: #1B2955;">somos?</p>
+            </div>
         </div>
-        <div class="container">
+        <!-- <div class="container">
             <div class="left-block2">
                 <BasicImageCarusell2 />
             </div>
@@ -60,6 +118,25 @@
                     profesionistas de la industria dental. </p>
                     <br>
                 <p class="cyan-text3 xl:text-2xl text-left">En <strong>Villa de Cortés Monterrey</strong> somos una
+                    empresa mexicana líder en venta de insumos
+                    dentales y ofreciéndote la mejor calidad y
+                    proveedores del mercado. </p>
+            </div>
+        </div> -->
+        <div class="grid">
+            <div class="col-6 hidden sm:block">
+                <BasicImageCarusell2 />
+            </div>
+            <div class="col-6 hidden sm:block">
+                <p class="bold-text xl:text-8xl font-bold-800 text-left">Más de 30 años a tu</p>
+                <br>
+                <p class="cyan-text xl:text-8xl text-left">servicio.</p>
+                <br>
+                <p class="cyan-text4 xl:text-2xl text-left"> De <strong>Ciudad de México a Monterrey</strong>, llevamos
+                    más de 30 años brindando soluciones a los
+                    profesionistas de la industria dental. </p>
+                    <br>
+                <p class="cyan-text4 xl:text-2xl text-left">En <strong>Villa de Cortés Monterrey</strong> somos una
                     empresa mexicana líder en venta de insumos
                     dentales y ofreciéndote la mejor calidad y
                     proveedores del mercado. </p>
@@ -235,6 +312,13 @@ const products2 = ref([
   font-family: Poppins;
   text-align: justify; /* Justifica el texto */
   line-height: 0.8cm; /* Altura de línea específica */
+}
+.cyan-text4 {
+  color: #11BACC;
+  font-size:200%;
+  font-family: Poppins;
+  text-align: justify; /* Justifica el texto */
+  line-height: 1.1cm; /* Altura de línea específica */
 }
 .container {
     display: flex;
@@ -421,6 +505,22 @@ const products2 = ref([
     src: local('Poppins Bold'), local('Poppins-Bold'),
         url('/src/assets/layout/fonts/poppins-v20-latin-700.woff2') format('woff2'),
         url('/src/assets/layout/fonts/poppins-v20-latin-700.woff') format('woff');
+}
+
+.full-width-sm-index {
+  width: 100vw; /* Viewport width, ensuring it spans the entire width of the screen */
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  box-sizing: border-box;
+  background:linear-gradient(to right, #ffffff -20%, #11BACC 50%);
+  color: #ffffff;
+}
+
+.font-size-max {
+    font-size: 40px;
 }
 
 </style>

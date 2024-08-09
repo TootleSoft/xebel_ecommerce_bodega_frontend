@@ -1,39 +1,114 @@
 <template>
-    <div class="card">
-        <div class="col-12">
-            <div class="grid -mt-3 -ml-3 -mr-3 col-12">
-                <div v-for="(product, i) in products" :key="i" class="col-12 md:col-5 lg:col-2 mb-5 lg:mb-0">
-                    <img :src="imgroute(product.id)" class="w-full h-7rem"  @click="router.push(product.path)"/>
-                </div>
+    <div class="card hidden sm:block">
+    <swiper
+      :autoHeight="true"
+      :rewind="true"
+      :slidesPerView="6"
+      :spaceBetween="10"
+      :autoplay="{
+      delay: 2500,
+      disableOnInteraction: false,
+    }"
+      :breakpoints="{
+      '@0.00': {
+        slidesPerView: 1,
+        spaceBetween: 10,
+      },
+      '@0.75': {
+        slidesPerView: 2,
+        spaceBetween: 20,
+      },
+      '@1.00': {
+        slidesPerView: 4,
+        spaceBetween: 40,
+      },
+      '@1.50': {
+        slidesPerView: 6,
+        spaceBetween: 50,
+      },
+    }"
+      :pagination="{
+        clickable: true,
+      }"
+      :modules="modules"
+      :navigation="true"
+      class="mySwiper"
+    >
+      <swiper-slide v-for="(item, i) in products" :key="i"><div class="surface-border border-round m-2 p-3">
+          <div class="mb-3 flex align-items-center justify-content-center">
+            <div class="relative mx-auto">
+              <img 
+                :src="imgroute(item.id)"
+                class="w-16rem h-7rem"
+                @click="router.push(item.path)"
+              />
             </div>
-        </div>
-        <!-- <Carousel :value="products" :numVisible="6" :numScroll="4"  >
-            <template #item="slotProps" class="col-12">
-                <div class="border border-surface-200 dark:border-surface-700 rounded m-2  p-4">
-                    <div class="mb-3">
-                        <div class="relative mx-auto">
-                            <img :src="imgroute(slotProps.data.id)" class=" w-full h-full"  @click="router.push(slotProps.data.path)"/>
-                        </div>
-                    </div>
-                    <div class="mb-3 font-medium">{{ slotProps.data.name }}</div>
-                    <div class="flex justify-content-between align-items-center">
-                        <div class="mt-0 font-semibold text-xl">${{ slotProps.data.price }}</div>
-                        <span>
-                            <Button icon="pi pi-heart" severity="secondary" outlined />
-                            <Button icon="pi pi-shopping-cart" class="ml-2"/>
-                        </span>
-                    </div>
-                    <div class="flex align-items-center cursor-pointer px-3 py-2 overflow-hidden relative font-semibold text-lg uppercase">{{ slotProps.data.name }}</div>
-                </div>
-            </template>
-        </Carousel> -->
-    </div>
+          </div>
+        </div></swiper-slide>
+    </swiper>
+  </div>
+  <div class="card block sm:hidden">
+    <swiper
+      :autoHeight="true"
+      :rewind="true"
+      :slidesPerView="6"
+      :spaceBetween="10"
+      :autoplay="{
+      delay: 2500,
+      disableOnInteraction: false,
+    }"
+      :breakpoints="{
+      '@0.00': {
+        slidesPerView: 1,
+        spaceBetween: 10,
+      },
+      '@0.75': {
+        slidesPerView: 2,
+        spaceBetween: 20,
+      },
+      '@1.00': {
+        slidesPerView: 4,
+        spaceBetween: 40,
+      },
+      '@1.50': {
+        slidesPerView: 6,
+        spaceBetween: 50,
+      },
+    }"
+      :pagination="{
+        clickable: true,
+      }"
+      :modules="modules"
+      class="mySwiper"
+    >
+      <swiper-slide v-for="(item, i) in products" :key="i"><div class="surface-border border-round m-2 p-3">
+          <div class="mb-3 flex align-items-center justify-content-center">
+            <div class="relative mx-auto">
+              <img 
+                :src="imgroute(item.id)"
+                class="w-18rem h-7rem border-round"
+                @click="router.push(item.path)"
+              />
+            </div>
+          </div>
+        </div></swiper-slide>
+    </swiper>
+  </div>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
 import { useRouter } from 'vue-router';
 import axios from "axios";
+import { Swiper, SwiperSlide } from 'swiper/vue';
+import { Autoplay, Pagination, Navigation } from 'swiper/modules';
+  // Import Swiper styles
+  import 'swiper/css';
+
+  import 'swiper/css/pagination';
+  import 'swiper/css/navigation';
+
+const modules = ref<any[]>([Autoplay, Pagination, Navigation]);
 
 
 const router = useRouter();

@@ -1,36 +1,67 @@
 <template>
   <div class="card">
-    <Carousel
-      :value="relatedItems"
-      :numVisible="3"
-      :numScroll="2"
-      circular
+    <swiper
+      :autoHeight="true"
+      :rewind="true"
+      :slidesPerView="3"
+      :spaceBetween="10"
+      :breakpoints="{
+      '@0.00': {
+        slidesPerView: 1,
+        spaceBetween: 10,
+      },
+      '@0.75': {
+        slidesPerView: 2,
+        spaceBetween: 20,
+      },
+      '@1.00': {
+        slidesPerView: 3,
+        spaceBetween: 40,
+      },
+      '@1.50': {
+        slidesPerView: 4,
+        spaceBetween: 50,
+      },
+    }"
+      :pagination="{
+        clickable: true,
+      }"
+      :modules="modules"
+      :navigation="true"
+      class="mySwiper"
     >
-      <template #item="slotProps">
-        <div class="border-1 surface-border border-round m-2 p-3">
-          <div class="mb-3">
+      <swiper-slide v-for="(item, i) in relatedItems" :key="i"><div class="shadow-5 surface-border border-round m-2 p-3">
+          <div class="mb-3 flex align-items-center justify-content-center">
             <div class="relative mx-auto">
               <img 
-                :src="imgroute(slotProps.data.id, slotProps.data.barcode, slotProps.data.id_brand)"
+                :src="imgroute(item.id, item.barcode, item.id_brand)"
                 class="h-15rem"
-                @click="navigateToProduct(slotProps.data)"
+                @click="navigateToProduct(item)"
               />
             </div>
           </div>
           <div
-            class="flex align-items-center cursor-pointer px-3 py-2 overflow-hidden relative font-semibold text-lg uppercase"
+            class="flex align-items-center justify-content-center cursor-pointer px-3 py-2 overflow-hidden relative font-semibold text-lg uppercase"
           >
-            {{ slotProps.data.article_name }}
+            {{ item.article_name }}
           </div>
-        </div>
-      </template>
-    </Carousel>
+        </div></swiper-slide>
+    </swiper>
   </div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import { ref, watch } from "vue";
 import { useRouter } from "vue-router";
+import { Swiper, SwiperSlide } from 'swiper/vue';
+import { Pagination, Navigation } from 'swiper/modules';
+  // Import Swiper styles
+  import 'swiper/css';
+
+  import 'swiper/css/pagination';
+  import 'swiper/css/navigation';
+
+const modules = ref<any[]>([Pagination, Navigation]);
 
 const props = defineProps({
   value: {
@@ -42,6 +73,7 @@ const props = defineProps({
 const emit = defineEmits(['update:value']);
 
 const router = useRouter();
+
 
 // const responsiveOptions = [
 //   {

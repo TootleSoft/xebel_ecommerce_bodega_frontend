@@ -12,7 +12,7 @@
                 <div class="flex flex-column">
                     <div class="align-items-center mb-6 logo-container">
                         <!-- <img :src="'/layout/images/logo/logo-' + (layoutConfig.colorScheme.value === 'light' ? 'dark' : 'light') + '.png'" class="login-logo" style="width: 45px" /> -->
-                        <img :src="'/src/images/logo/appname-' + (layoutConfig.colorScheme.value === 'light' ? 'dark' : 'light') + '.png'" class="login-appname ml-3" style="width: 100px" />
+                        <img :src="'/layout/images/logo/appname-' + (layoutConfig.colorScheme.value === 'light' ? 'dark' : 'light') + '.png'" class="login-appname ml-3" style="width: 100px" />
                     </div>
                     <div class="border-1 border-round border-gray-50">
                         <div class="pt-3 m-3">
@@ -38,7 +38,7 @@
                                 <br>
                                 <br></div>
                             <div class="align-items-center">
-                                <a class="font-semibold cursor-pointer text-900 hover:text-primary transition-colors transition-duration-300" @click="router.push('/auth/recoveryemail');">Olvide mi contraseña</a>
+                                <a class="font-semibold cursor-pointer text-900 hover:text-primary transition-colors transition-duration-300" @click="goSingIn">Olvide mi contraseña</a>
                             </div>
                         </div>
                     </div>

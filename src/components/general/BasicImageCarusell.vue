@@ -1,29 +1,43 @@
 <template>
-    <div class="card">
-      <Carousel
-        :value="carouselItems"
-        :numVisible="1"
-        :numScroll="1"
-        circular
-        class="custom-carousel"
-        :autoplayInterval="5000"
-      >
-        <template #item="slotProps">
-          <div class="border-1 surface-border border-round m-9 p-3">
-            <div class="mb-3">
-              <div class="relative mx-auto">
-                <img :src="slotProps.data.src" class="h-30rem" @click="navigateToProduct(slotProps.data)" />
-              </div>
+    <swiper
+      :rewind="true"
+      :slidesPerView="1"
+      :spaceBetween="10"
+      :pagination="{
+        clickable: true,
+      }"
+      :autoplay="{
+      delay: 2500,
+      disableOnInteraction: false,
+    }"
+      :modules="modules"
+      class="mySwiper"
+    >
+      <swiper-slide v-for="(item, i) in carouselItems" :key="i">
+        <div class="surface-border border-round m-9 p-3">
+          <div class="mb-3 flex align-items-center justify-content-center">
+            <div class="relative mx-auto">
+              <img :src="item.src" class="w-full border-round" @click="navigateToProduct(item)" />
             </div>
           </div>
-        </template>
-      </Carousel>
-    </div>
+        </div>
+      </swiper-slide>
+    </swiper>
   </template>
   
-  <script setup>
+  <script lang="ts" setup>
   import { ref } from 'vue';
   import { useRouter } from 'vue-router';
+  import { Swiper, SwiperSlide } from 'swiper/vue';
+  import { Autoplay, Pagination, Navigation } from 'swiper/modules';
+  // Import Swiper styles
+  import 'swiper/css';
+
+  import 'swiper/css/pagination';
+  import 'swiper/css/navigation';
+
+  const modules = ref<any[]>([Autoplay, Pagination, Navigation]);
+
   
   const router = useRouter();
   

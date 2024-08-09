@@ -1,24 +1,63 @@
 <template>
-            <div class="card">
-        <Carousel :value="products" :numVisible="3" :numScroll="3" :responsiveOptions="responsiveOptions" circular :autoplayInterval="5000">
-            <template #item="slotProps">
-                <div class="surface-border border-round m-2 p-3">
-                    <div class="mb-3">
-                        <div class="relative mx-auto">
-                            <img :src="imgroute(slotProps.data.id)" class="h-20rem" @click="navigateToProduct(slotProps.data)"/>
-                        </div>
-                    </div>
-                    <div class="flex align-items-center cursor-pointer px-3 py-2 overflow-hidden relative font-semibold text-lg uppercase">{{ slotProps.data.name }}</div>
-                </div>
-            </template>
-        </Carousel>
-    </div>
+    <div class="card">
+    <swiper
+      :autoHeight="true"
+      :rewind="true"
+      :slidesPerView="5"
+      :spaceBetween="10"
+      :breakpoints="{
+      '@0.00': {
+        slidesPerView: 1,
+        spaceBetween: 10,
+      },
+      '@0.75': {
+        slidesPerView: 2,
+        spaceBetween: 20,
+      },
+      '@1.00': {
+        slidesPerView: 4,
+        spaceBetween: 40,
+      },
+      '@1.50': {
+        slidesPerView: 5,
+        spaceBetween: 10,
+      },
+    }"autoplay
+      :pagination="{
+        clickable: true,
+      }"
+      :modules="modules"
+      :navigation="true"
+      class="mySwiper"
+    >
+      <swiper-slide v-for="(item, i) in products" :key="i"><div class="surface-border border-round m-2 p-3">
+          <div class="mb-3 flex align-items-center justify-content-center">
+            <div class="relative mx-auto">
+              <img 
+                :src="imgroute(item.id)"
+                class="h-15rem shadow-5 border-round"
+                @click="navigateToProduct(item)"
+              />
+            </div>
+          </div>
+        </div></swiper-slide>
+    </swiper>
+  </div>
 </template>
     
 <script setup lang='ts'>
     import { ref, onMounted } from "vue";
 import { useRouter } from 'vue-router';
 import axios from "axios";
+import { Swiper, SwiperSlide } from 'swiper/vue';
+  import { Autoplay, Pagination, Navigation } from 'swiper/modules';
+  // Import Swiper styles
+  import 'swiper/css';
+
+  import 'swiper/css/pagination';
+  import 'swiper/css/navigation';
+
+  const modules = ref<any[]>([Autoplay, Pagination, Navigation]);
 
 
 const router = useRouter();

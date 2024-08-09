@@ -167,6 +167,8 @@ import RelatedProductCarusell from '../../components/general/RelatedProductCarus
 import Galleria from 'primevue/galleria';
 
 
+
+
 const route = useRoute();
 const router = useRouter();
 const selectedBranch = ref<number>();
@@ -193,6 +195,13 @@ const size = ref('M');
 const images = ref<string[]>([]);
 // Obtener la ruta base de la API desde las variables de entorno
 const apiRoute = import.meta.env.VITE_API_ROUTE;
+
+const onSwiper = (swiper) => {
+        console.log(swiper);
+      };
+      const onSlideChange = () => {
+        console.log('slide change');
+      };
 
 const refresh = async () => {
     loading.value = true;
@@ -277,7 +286,7 @@ const GetName = (sa) =>{
 }
 const imgbrand = (id, brand) => {
 
-    return import.meta.env.VITE_API_ROUTE + 'Inventory/Ecomerce/image/' + id + brand;
+    return import.meta.env.VITE_API_ROUTE + 'Inventory/Ecomerce/imgbrand/' + id + '/' + brand;
 }
 
 const addToCart = (payNow) => {

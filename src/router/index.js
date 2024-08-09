@@ -77,6 +77,11 @@ const routes = [
         component: () => import('@/pages/Auth/login.vue')
     },
     {
+        path: '/auth/recoveryemail',
+        name: 'recoveryemail',
+        component: () => import('@/pages/Auth/SendRecoveryEmail.vue')
+    },
+    {
         path: '/confirmation',
         name: 'confirmorder',
         component: () => import('@/pages/Cart/ConfirmOrder.vue')

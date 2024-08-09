@@ -107,17 +107,18 @@ const chat = () =>{
 }
 
 const getBranchPhone = async () => {
-    if(authStore.id_usuario == undefined){
-        let response  = await axios.get("Inventory/Ecomerce/getBranchPhone/" + 1);
-        phone.value = response.data[0];
-        console.log("telefono", phone.value)
-    }else{
-        let user = await axios.get("Inventory/Ecomerce/getUserInfo/" + authStore.id_usuario);
-        let info = user.data;
-        let response  = await axios.get("Inventory/Ecomerce/getBranchPhone/" + info[0]);
-        phone.value = response.data[0];
-        console.log("telefono", phone.value)
-    }
+    phone.value=import.meta.env.VITE_PHONE_NUMBER;
+    // if(authStore.id_usuario == undefined){
+    //     let response  = await axios.get("Inventory/Ecomerce/getBranchPhone/" + 1);
+    //     phone.value = response.data[0];
+    //     console.log("telefono", phone.value)
+    // }else{
+    //     let user = await axios.get("Inventory/Ecomerce/getUserInfo/" + authStore.id_usuario);
+    //     let info = user.data;
+    //     let response  = await axios.get("Inventory/Ecomerce/getBranchPhone/" + info[0]);
+    //     phone.value = response.data[0];
+    //     console.log("telefono", phone.value)
+    // }
 }
 
 onMounted(async () => {

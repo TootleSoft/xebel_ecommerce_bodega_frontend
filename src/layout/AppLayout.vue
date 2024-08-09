@@ -7,6 +7,7 @@ import AppProfileMenu from './AppProfileMenu.vue';
 import AppBreadCrumb from './AppBreadcrumb.vue';
 import { useLayout } from '@/layout/composables/layout';
 import AppMegaMenu from './AppMegaMenu.vue';
+import AppMegaMenuSm from './AppMegaMenuSm.vue';
 // import { useRouter } from 'vue-router';
 // import {OrderData} from '../pages/Cart/Function/OrderData';
 
@@ -94,12 +95,17 @@ const isOutsideClicked = (event) => {
 <template>
     <div class="layout-container" :class="containerClass">
         <div class="layout-content-wrapper">
-            <AppMegaMenu></AppMegaMenu>
+            <div class="hidden sm:block">
+                <AppMegaMenu></AppMegaMenu>
+            </div>
+            <div class="block sm:hidden">
+                <AppMegaMenuSm></AppMegaMenuSm>
+            </div>
             <!-- <AppTopbar ref="topbarRef" /> -->
-
+<!-- 
             <div class="content-breadcrumb">
                 <AppBreadCrumb />
-            </div>
+            </div> -->
 
             <div class="layout-content">
                 <router-view></router-view>

@@ -8,7 +8,7 @@
     <div class="p-grid crud-demo" v-if="!skeleton">
         <div class="col-12">
             <div class="grid formgrid p-fluid">
-                <div class="field hidden md:block col-12 xl:col-2">
+                <div class="field hidden md:block col-2">
                     <!-- Definitivamente hacerlo componente -->
                     <span class="text-900 font-medium text-4xl mb-4">{{ pagetitle }}</span>
                     <br>
@@ -20,7 +20,21 @@
                     <BasicFilterSelection @v-model="getfilterprices" :key="componentKey" :allcategories="priceorder"
                         filtername="Filtro por Precios" pickone />
                 </div>
-                <div class="field col-12 sm:col-12 md:col-12 xl:col-10">
+                <div class="field block sm:hidden col-12">
+                    <Sidebar v-model:visible="visible">
+                        <span class="text-900 font-medium text-4xl mb-4">{{ pagetitle }}</span>
+                        <br>
+                        <span class="text-900 font-medium text-xs mb-4">{{ products.length }} Productos Relacionados</span>
+                        <br>
+                        <br>
+                        <BasicFilterSelection @v-model="getcategories" :key="componentKey" :allcategories="subgroups"
+                            filtername="Filtro por Grupos" />
+                        <BasicFilterSelection @v-model="getfilterprices" :key="componentKey" :allcategories="priceorder"
+                            filtername="Filtro por Precios" pickone />
+                    </Sidebar>
+                    <Button icon="pi pi-filter" class="filtter-menu-button border-transparent border-1 shadow-3" @click="visible = true" />
+                </div>
+                <div class="field col-12 sm:col-10">
                     <div class="card">
                         <br>
                         <!-- Agregar paginator obligatorio -->
@@ -66,6 +80,7 @@ const categoryselection = ref<number[]>([]);
 const filterpriceselection = ref<number[]>([]);
 const priceorder = ref<any[]>([{"id": 1, "name": "Menor a Mayor"},{"id": 2, "name": "Mayor a Menor"}]);
 const subgroup = ref<subgrupos[]>([])
+const visible = ref<boolean>(false)
 
 const refresh = async () => {
     loading.value=true;
@@ -148,3 +163,37 @@ onMounted(async () => {
 });
 
 </script>
+
+<style>
+.filtter-menu-button {
+        display: block;
+        position: fixed;
+        width: 3rem;
+        height: 3rem;
+        line-height: 3rem;
+        background-color: #11BACC;
+        color: green($color: #08e510);
+        text-align: center;
+        top: 21%;
+        left: 0;
+        padding: 0;
+        margin-top: -1.5rem;
+        transition: background-color var(--transition-duration);
+        overflow: hidden;
+        cursor: pointer;
+        z-index: 999;
+        box-shadow: -0.25rem 0 1rem rgba(0, 0, 0, 0.15);
+
+        i {
+            font-size: 2rem;
+            line-height: inherit;
+            transform: rotate(0deg);
+            transition: transform 1s;
+        }
+
+        &:hover {
+            background: green($color: #08e510);
+        }
+    }
+
+</style>
