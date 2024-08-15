@@ -3,24 +3,24 @@
     <swiper
       :autoHeight="true"
       :rewind="true"
-      :slidesPerView="5"
+      :slidesPerView="1"
       :spaceBetween="10"
       :breakpoints="{
-      '@0.00': {
+      '640': {
         slidesPerView: 1,
         spaceBetween: 10,
       },
-      '@0.75': {
-        slidesPerView: 2,
-        spaceBetween: 20,
-      },
-      '@1.00': {
-        slidesPerView: 4,
+      '768': {
+        slidesPerView: 3,
         spaceBetween: 40,
       },
-      '@1.50': {
-        slidesPerView: 5,
-        spaceBetween: 10,
+      '1024': {
+        slidesPerView: 4,
+        spaceBetween: 50,
+      },
+      '1400': {
+        slidesPerView: 6,
+        spaceBetween: 50,
       },
     }"
     :autoplay="{
@@ -48,6 +48,11 @@
             class="flex align-items-center justify-content-center cursor-pointer px-3 py-2 overflow-hidden relative font-semibold text-lg uppercase"
           >
             {{ item.name }}
+          </div>
+          <div
+            class="flex align-items-center justify-content-center cursor-pointer px-3 py-2 overflow-hidden relative font-semibold text-lg uppercase"
+          >
+            <span class="text-l text-900 mb-3 text-red-500">{{ "$"+item.ecomerce_offer_price .toFixed(2) }}</span>
           </div>
         </div></swiper-slide>
     </swiper>
@@ -96,9 +101,11 @@ numScroll: 1
 ]);
 
 const refresh = async () =>{
-let response = await axios.get('Inventory/EComerce/offers')
+  let response = await axios.get('Inventory/EComerce/offers')
 
-products.value = response.data; 
+  products.value = response.data; 
+
+  console.log(JSON.stringify(products.value))
 }
 
 const navigateToProduct = (item) => {

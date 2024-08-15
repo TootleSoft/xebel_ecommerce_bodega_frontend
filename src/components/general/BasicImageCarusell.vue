@@ -11,7 +11,7 @@
       disableOnInteraction: false,
     }"
       :modules="modules"
-      class="mySwiper"
+      class="mySwiper bg-white"
     >
       <swiper-slide v-for="(item, i) in carouselItems" :key="i">
         <div class="surface-border border-round m-9 p-3">

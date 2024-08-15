@@ -98,7 +98,6 @@ const toast = useToast();
     }
 
     const imgroute = (id, sku, brand) => {
-        console.log(brand)
         sku= sku.replace(/\//g, "--").replace(/ñ/g, "nnn").replace(/Ñ/g, "nnn").replace(/#/g, '----')
         return import.meta.env.VITE_API_ROUTE+'Inventory/Ecomerce/image/'+id+'_'+sku+'_1/'+brand;
     }

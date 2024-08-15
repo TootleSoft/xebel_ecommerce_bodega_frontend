@@ -8,17 +8,30 @@
     <div class="p-grid crud-demo" v-if="!skeleton">
         <div class="col-12">
             <div class="grid formgrid p-fluid">
-                <div class="field hidden md:block col-2">
+                <div v-if="is_search!=true" class="field col-12 hidden md:block">
+                    <div class="field w-full">
+                        <div class=" full-width-sm-index">
+                        <div class="p-3 flex justify-content-center align-items-center flex-wrap">
+                            <div class="justify-content-center align-items-center flex">
+                                <span class="w-full text-8xl">
+                                    {{ pagetitle }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                <div class="field hidden sm:block col-2">
                     <!-- Definitivamente hacerlo componente -->
-                    <span class="text-900 font-medium text-4xl mb-4">{{ pagetitle }}</span>
+                    <span v-if="is_search==true" class="text-900 font-medium text-4xl mb-4">{{ pagetitle }}</span>
                     <br>
                     <span class="text-900 font-medium text-xs mb-4">{{ products.length }} Productos Relacionados</span>
                     <br>
                     <br>
                     <BasicFilterSelection @v-model="getcategories" :key="componentKey" :allcategories="subgroups"
-                        filtername="Filtro por Grupos" />
+                        filtername="Filtro por Grupos" :selected="categoryselection"/>
                     <BasicFilterSelection @v-model="getfilterprices" :key="componentKey" :allcategories="priceorder"
-                        filtername="Filtro por Precios" pickone />
+                        filtername="Filtro por Precios" pickone :selected="filterpriceselection"/>
                 </div>
                 <div class="field block sm:hidden col-12">
                     <Sidebar v-model:visible="visible">
@@ -28,9 +41,9 @@
                         <br>
                         <br>
                         <BasicFilterSelection @v-model="getcategories" :key="componentKey" :allcategories="subgroups"
-                            filtername="Filtro por Grupos" />
+                            filtername="Filtro por Grupos" :selected="categoryselection"/>
                         <BasicFilterSelection @v-model="getfilterprices" :key="componentKey" :allcategories="priceorder"
-                            filtername="Filtro por Precios" pickone />
+                            filtername="Filtro por Precios" pickone :selected="filterpriceselection"/>
                     </Sidebar>
                     <Button icon="pi pi-filter" class="filtter-menu-button border-transparent border-1 shadow-3" @click="visible = true" />
                 </div>
@@ -81,9 +94,11 @@ const filterpriceselection = ref<number[]>([]);
 const priceorder = ref<any[]>([{"id": 1, "name": "Menor a Mayor"},{"id": 2, "name": "Mayor a Menor"}]);
 const subgroup = ref<subgrupos[]>([])
 const visible = ref<boolean>(false)
+const is_search = ref<boolean>(false)
 
 const refresh = async () => {
     loading.value=true;
+    is_search.value=false
     try{
         categoryselection.value = [];
         if(cartStore.order.length == 1)
@@ -112,6 +127,8 @@ const refresh = async () => {
                 break;
             case("s"):
                 pagetitle.value = route.params.param.toString().replace(/--/g, " ");
+                is_search.value = true;
+                console.log(is_search.value)
                 break;
             case("b"):
                 pagetitle.value = route.params.param.toString().replace(/--/g, " ");
@@ -128,6 +145,7 @@ const refresh = async () => {
     }
 }
 const getcategories = (model) =>{
+    console.log(JSON.stringify(model))
     categoryselection.value = model;
 }
 
@@ -147,6 +165,7 @@ watch(categoryselection, (newvalue)=>{
         products.value = products.value.filter(x => newvalue.includes(x.id_subgrupo))
     }
     productsKey.value = productsKey.value+1;
+    componentKey.value = componentKey.value+1;
 })
 
 watch(filterpriceselection, (newvalue)=>{
@@ -156,6 +175,7 @@ watch(filterpriceselection, (newvalue)=>{
         products.value = products.value.sort((a,b) => b.price_tax - a.price_tax)
     }
     productsKey.value = productsKey.value+1;
+    componentKey.value = componentKey.value+1;
 })
 
 onMounted(async () => {
@@ -172,9 +192,8 @@ onMounted(async () => {
         height: 3rem;
         line-height: 3rem;
         background-color: #11BACC;
-        color: green($color: #08e510);
         text-align: center;
-        top: 21%;
+        top: 25%;
         left: 0;
         padding: 0;
         margin-top: -1.5rem;
@@ -190,10 +209,17 @@ onMounted(async () => {
             transform: rotate(0deg);
             transition: transform 1s;
         }
-
-        &:hover {
-            background: green($color: #08e510);
-        }
+    }
+    .full-width-sm-index {
+  background-image: url('/public/demo/images/pages/fondo dental-01.jpg');
+  background-size: cover;
+  background-position: center;
+  padding: 50px 20px; /* Reducir padding en pantallas pequeñas */
+  color: rgb(255, 255, 255);
+  display: flex;
+  flex-direction: column; /* Cambiar a columna para centrar verticalmente en pantallas pequeñas */
+  align-items: center; /* Center horizontally */
+  text-align: center; /* Center text within each column */
     }
 
 </style>

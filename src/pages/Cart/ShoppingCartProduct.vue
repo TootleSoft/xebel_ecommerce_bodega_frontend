@@ -208,9 +208,16 @@ const getExistence = (id_numberItem,id_branch) => computed(() => {
     }
 });
 const getMax = (id_numberItem,id_branch) => {
-    console.log(productExistence.value[id_numberItem-1])
-    const filteredBranch = productExistence.value[id_numberItem-1].filter(branch => branch.id_branch === id_branch);
-    return filteredBranch[0].stock == 0 ? 1 : filteredBranch[0].stock;
+    console.log(JSON.stringify(id_numberItem))
+    console.log(JSON.stringify(id_branch))
+    if(id_numberItem == undefined || id_branch == undefined){
+        return 999
+    }else{
+        console.log(JSON.stringify(id_numberItem,id_branch))
+        console.log(productExistence.value[id_numberItem-1])
+        const filteredBranch = productExistence.value[id_numberItem-1].filter(branch => branch.id_branch === id_branch);
+        return filteredBranch[0].stock == 0 ? 1 : filteredBranch[0].stock;
+    }
     // if (productExistence.value[id_numberItem-1]) {
     //     const filteredBranch = productExistence.value[id_numberItem-1].filter(branch => branch.id_branch === id_branch);
     //     if (filteredBranch.length > 0) {

@@ -64,6 +64,11 @@ const routes = [
                 path: '/userorders',
                 component: () => import ('@/pages/Orders/UserOrders.vue'),
             },
+            {
+                name: 'Nostros',
+                path: '/about',
+                component: () => import ('@/pages/Home/About.vue')
+            }
         ]
     },
     {

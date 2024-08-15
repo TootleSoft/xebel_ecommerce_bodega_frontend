@@ -3,24 +3,24 @@
     <swiper
       :autoHeight="true"
       :rewind="true"
-      :slidesPerView="5"
+      :slidesPerView="1"
       :spaceBetween="10"
       :breakpoints="{
-      '@0.00': {
+      '640': {
         slidesPerView: 1,
         spaceBetween: 10,
       },
-      '@0.75': {
-        slidesPerView: 2,
-        spaceBetween: 20,
-      },
-      '@1.00': {
-        slidesPerView: 4,
+      '768': {
+        slidesPerView: 3,
         spaceBetween: 40,
       },
-      '@1.50': {
-        slidesPerView: 5,
-        spaceBetween: 10,
+      '1024': {
+        slidesPerView: 4,
+        spaceBetween: 50,
+      },
+      '1400': {
+        slidesPerView: 6,
+        spaceBetween: 50,
       },
     }"autoplay
       :pagination="{

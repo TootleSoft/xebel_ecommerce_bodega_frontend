@@ -13,11 +13,12 @@
     <div class="p-grid crud-demo MegaMenuBackground">
         <div class="col-12">
             <div class="grid formgrid p-fluid">
-                <div class="field col-12 sm:col-8 md:col-2 xl:col-2">
+                <div class="field col-12 sm:col-8 md:col-2 xl:col-2 flex align-items-center justify-content-center">
                     <img :src="'/src/images/logo/appname-' + (layoutConfig.colorScheme.value === 'light' ? 'dark' : 'light') + '.png'"
                         class="app-logo-small h-5rem" @click="router.push('/');"/>
                 </div>
                 <div class="field col-12 sm:col-12 md:col-6 xl:col-6">
+                    <br>
                     <FloatLabel>
                         <AutoComplete v-model="serch" @item-select="selectSuggestion" inputId="serch" optionLabel="name"
                             :suggestions="filteredArticles" @complete="search" class="text-lg custom-border"
@@ -30,15 +31,18 @@
                 <!-- <div class="field col-12 sm:col-12 md:col-1 xl:col-1">
                 </div> -->
                 <div v-if="authStore.id_usuario != undefined" class="field col-2">
-                    <Button icon="pi pi-user" label="Mi Cuenta" severity="contrast" outlined @click="tuser" />
+                    <br>
+                    <Button icon="pi pi-user" label="Mi Cuenta" severity="contrast" class="label-button-user"  outlined @click="tuser" />
                     <TieredMenu ref="muser" class="tiered-menu-class" id="overlay_tmenu" :model="user" popup />
                 </div>
                 <div v-if="authStore.id_usuario == undefined" class="field col-2">
+                    <br>
                     <Button class="label-button-user" icon="pi pi-user" label="Ingresar" severity="contrast" outlined
                         @click="tlogin" />
                     <TieredMenu ref="mlogin" class="tiered-menu-class" id="overlay_tmenu" :model="login" popup />
                 </div>
                 <div class="field col-2">
+                    <br>
                     <Button class="label-button-user" @click="shoppingCart" icon="pi pi-shopping-cart"
                         :label="`Carrito (${cartStore.cart.length})`" severity="contrast" outlined />
                 </div>
@@ -49,7 +53,12 @@
                 <div class="field col-12 sm:col-12 md:col-12 xl:col-12">
                     <Menubar :model="items" class="MegaMenuBar">
                         <template #item="{item}">
-                            <a v-if="item.root && item.items_type == 0"
+                            <a v-if="item.to == '#finalcontacto'"
+                                class="flex align-items-center cursor-pointer px-3 py-2 overflow-hidden relative font-semibold text-lg uppercase"
+                                style="border-radius: 2rem" @click="scrollToFinalContacto()">
+                                <span class="MegaMenuText">{{ item.label }}</span>
+                            </a>
+                            <a v-else-if="item.root && item.items_type == 0"
                                 class="flex align-items-center cursor-pointer px-3 py-2 overflow-hidden relative font-semibold text-lg uppercase"
                                 style="border-radius: 2rem" @click="navigateToExternal(item.to)">
                                 <span class="MegaMenuText">{{ item.label }}</span>
@@ -140,6 +149,15 @@ const selectSuggestion = (payload) =>{
     serch.value = payload.value.name;
 }
 
+const scrollToFinalContacto = () => {
+    router.push('/');
+    setTimeout((): void =>{
+        const finalContactoElement = document.getElementById('finalcontacto');
+        if (finalContactoElement) {
+            finalContactoElement.scrollIntoView({ behavior: 'smooth' });
+        }
+    }, 200)
+}
 
 const search = (event) => {
     console.log(JSON.stringify(article_names.value))

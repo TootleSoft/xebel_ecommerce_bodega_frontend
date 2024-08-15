@@ -12,33 +12,23 @@
                 <div class="flex flex-column">
                     <div class="align-items-center mb-6 logo-container">
                         <!-- <img :src="'/layout/images/logo/logo-' + (layoutConfig.colorScheme.value === 'light' ? 'dark' : 'light') + '.png'" class="login-logo" style="width: 45px" /> -->
-                        <img :src="'/layout/images/logo/appname-' + (layoutConfig.colorScheme.value === 'light' ? 'dark' : 'light') + '.png'" class="login-appname ml-3" style="width: 100px" />
+                        <img :src="'/src/images/logo/appname-' + (layoutConfig.colorScheme.value === 'light' ? 'dark' : 'light') + '.png'" class="login-appname ml-3" style="width: 100px" />
                     </div>
                     <div class="border-1 border-round border-gray-50">
                         <div class="pt-3 m-3">
                             <div class="form-container text-left " style="max-width: 320px; min-width: 270px">
-                                <h4 class="m-0 mb-2">Iniciar Sesion</h4>
-                                <span class="block text-600 font-medium mb-4">Ingresa tus credenciales</span>
+                                <h4 class="m-0 mb-2">Recuperar Contraseña</h4>
+                                <span class="block text-600 font-medium mb-4">Ingresa el correo de tu usuario</span>
                                 <IconField iconPosition="left">
                                     <InputIcon class="pi pi-envelope" />
-                                    <InputText v-model="entity.email" type="mail" autocomplete="off" placeholder="Email" class="block mb-3" style="max-width: 320px; min-width: 270px" />
-                                </IconField>
-                                <IconField iconPosition="left">
-                                    <InputIcon class="pi pi-key" />
-                                    <InputText @keyup.enter="submit" v-model="entity.password" type="password" autocomplete="off" placeholder="Contraseña" class="block mb-3" style="max-width: 320px; min-width: 270px" />
+                                    <InputText v-model="email" type="mail" autocomplete="off" placeholder="Email" class="block mb-3" style="max-width: 320px; min-width: 270px" />
                                 </IconField>
                             </div>
                             <div class="button-container mt-4 text-left" style="max-width: 320px; min-width: 270px">
                                 <div class="buttons flex align-items-center gap-3">
-                                    <Button type="button" @click="goHome" class="block" severity="danger" outlined style="max-width: 320px; margin-bottom: 32px">Cancelar</Button>
+                                    <Button type="button" @click="goLogin" class="block" severity="danger" outlined style="max-width: 320px; margin-bottom: 32px">Cancelar</Button>
                                     <Button type="button" @click="submit" class="block" style="max-width: 320px; margin-bottom: 32px">Enviar</Button>
                                 </div>
-                                <span class="font-medium text-600">¿No tienes tienes cuenta? <a class="font-semibold cursor-pointer text-900 hover:text-primary transition-colors transition-duration-300" @click="goSingIn">Registrate aqui</a></span>
-                                <br>
-                                <br>
-                                <br></div>
-                            <div class="align-items-center">
-                                <a class="font-semibold cursor-pointer text-900 hover:text-primary transition-colors transition-duration-300" @click="goSingIn">Olvide mi contraseña</a>
                             </div>
                         </div>
                     </div>
@@ -62,33 +52,8 @@ import { useToast } from "primevue/usetoast";
 import { useAuthStore } from '../../stores/auth';
 const authStore = useAuthStore();
 const toast = useToast();
+const email = ref<string>('')
 
-
-export interface ecomerce_user {
-    id?: number | null;
-    id_company?: number | null;
-    id_branch?: number | null;
-    name?: string | null;
-    email?: string | null;
-    password?: string | null;
-    created?: Date | null;
-    created_by?: string | null;
-    modified?: Date | null;
-    modified_by?: string | null;
-}
-
-const entity = ref<ecomerce_user>({
-    id: null,
-    id_company: null,
-    id_branch: null,
-    name: null,
-    email: null,
-    password: null,
-    created: new Date(),
-    created_by: null,
-    modified: null,
-    modified_by: null
-});
 
 const { layoutConfig } = useLayout();
 const router = useRouter();
@@ -99,15 +64,15 @@ const goSingIn = () => {
     router.push('/auth/singin');
 };
 
-const goHome = () => {
-    router.push('/');
+const goLogin = () => {
+    router.push('/auth/login');
 };
 
 const submit = async () => {
     try{
-        if(entity.value.email == null || entity.value.password == null)
-            throw "Favor de llenar todos los campos"
-        let response = await axios.get('Comercial/EComerceUser/GetSession/'+entity.value.email+'/'+entity.value.password)
+        if(email.value == null)
+            throw "Favor de ingresar un correo valido"
+        let response = await axios.get('Comercial/EComerceUser/Reset/'+email.value)
         toast.add({ severity: 'success', summary: 'Inicio de session', detail: "Credenciales Validadas", life: 7500 });
         console.log(JSON.stringify(response.data))
         authStore.setSession(response.data.id_user,response.data.id_customer,response.data.user, response.data.company, response.data.branch, response.data.branch_name);

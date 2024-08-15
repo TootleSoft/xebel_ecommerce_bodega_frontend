@@ -37,7 +37,12 @@
                         </div>
                         <PanelMenu :model="items" unstyled>
                                 <template #item="{item, hasSubmenu}">
-                                <a v-if="item.root && item.items_type == 0"
+                                <a v-if="item.to == '#finalcontacto'"
+                                    class="flex align-items-center cursor-pointer px-3 py-2 overflow-hidden relative uppercase border-bottom-2"
+                                    @click="scrollToFinalContacto()">
+                                    <span class="panel-menu-text-class">{{ item.label }}</span>
+                                </a>
+                                <a v-else-if="item.root && item.items_type == 0"
                                     class="flex align-items-center cursor-pointer px-3 py-2 overflow-hidden relative uppercase border-bottom-2"
                                     @click="navigateToExternal(item.to)">
                                     <span class="panel-menu-text-class">{{ item.label }}</span>
@@ -129,6 +134,17 @@ const shoppingCart = () => {
     }
 }
 
+const scrollToFinalContacto = () => {
+    router.push('/');
+    setTimeout((): void =>{
+        const finalContactoElement = document.getElementById('finalcontacto');
+        if (finalContactoElement) {
+            finalContactoElement.scrollIntoView({ behavior: 'smooth' });
+        }
+    }, 200)
+    visible.value = false;
+}
+
 const navigateToExternal = (url) => {
       window.location.href = url;
     }
@@ -146,7 +162,6 @@ const refresh = async () => {
         article_names.value = response.data; 
         let menu = await axios.get('Inventory/EComerce/get_menu')
         items.value = menu.data;
-        console.log(JSON.stringify(items.value))
         let menuWithSeparators = [];
         items.value.forEach((item, index) => {
             menuWithSeparators.push(item);
@@ -154,7 +169,6 @@ const refresh = async () => {
                 menuWithSeparators.push({ separator: true });
             }
         });
-        console.log(JSON.stringify(menuWithSeparators))
         items.value = menuWithSeparators
     }catch {
         console.log("No se cargaron los datos")

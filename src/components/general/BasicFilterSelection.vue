@@ -13,7 +13,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { ref, watch, onMounted } from 'vue';
 
 const emit = defineEmits(['v-model']);
 
@@ -21,12 +21,14 @@ interface Props {
         allcategories?: any[];
         filtername?: string;
         pickone?: boolean;
+        selected?: any[];
     }
 
 const props = withDefaults(defineProps<Props>(),{
         allcategories: () => [],
         filtername: '',
         pickone: false,
+        selected: () => [],
     })
 
 const categories = ref<any[]>(props.allcategories.slice(0, 5));
@@ -51,5 +53,8 @@ watch(selectedCategories, (newValue) => {
     emit('v-model', newValue)
 });
 
+onMounted(()=>{
+    selectedCategories.value = props.selected
+})
 
 </script>
