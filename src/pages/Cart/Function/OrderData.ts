@@ -137,4 +137,31 @@ export class OrderData {
         return response.data;
     }
 
+    getDimensionsByArticle = async (params) => {
+        try {
+            let query = "?";
+            if (params) {
+                Object.keys(params).forEach(prop => {
+                    if (params[prop] != null) {
+                        query = query + prop + "=" + params[prop] + "&";
+                    }
+                });
+                query = query.substring(0, query.length - 1);
+            } else {
+                query = "";
+            }
+            console.log("params", params)
+            const response = await axios.post('Comercial/ECommerceOrder/getDimensionsByArticle', params, {
+                headers: {
+                    company: authStore.company,
+                    branch: authStore.branch,
+                    'Content-Type': 'application/json'
+                }
+            });
+            return response.data;
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
 }

@@ -12,19 +12,19 @@
                 <div class="card flex justify-content-center">
                     <div class="flex flex-wrap gap-3">
                         <div v-if="pickup == 1" class="flex align-items-center">
-                            <RadioButton v-model="deliveryType" inputId="dt1" name="delivery" :value="1" />
+                            <RadioButton v-model="deliveryType" inputId="dt1" name="delivery" :value="1" @change="deliveryChange"/>
                             <label for="dt1" class="ml-2">Entrega en Sucursal</label>
                         </div>
                         <div v-if="pickup == 0" class="flex align-items-center">
-                            <RadioButton v-model="deliveryType" inputId="dt1" name="delivery" :value="1" :disabled="true"/>
+                            <RadioButton v-model="deliveryType" inputId="dt1" name="delivery" :value="1" :disabled="true" @change="deliveryChange"/>
                             <label for="dt1" class="ml-2">Entrega en Sucursal</label>
                         </div>
                         <div v-if="delivery == 1" class="flex align-items-center">
-                            <RadioButton v-model="deliveryType" inputId="dt2" name="delivery" :value="2"/>
+                            <RadioButton v-model="deliveryType" inputId="dt2" name="delivery" :value="2" @change="deliveryChange"/>
                             <label for="dt2" class="ml-2">Entrega en domicilio</label>
                         </div>
                         <div v-if="delivery == 0" class="flex align-items-center">
-                            <RadioButton v-model="deliveryType" inputId="dt2" name="delivery" :value="2" :disabled="true"/>
+                            <RadioButton v-model="deliveryType" inputId="dt2" name="delivery" :value="2" :disabled="true" @change="deliveryChange"/>
                             <label for="dt2" class="ml-2">Entrega en domicilio</label>
                         </div>
                     </div>
@@ -35,19 +35,41 @@
                     </div>
                 </div>
                 <div v-if="deliveryType == 2" class="grid formgrid">
-                    <div class="col-12 field mb-4">
+                    <ShippingData v-if="showShippingData" @saveShippingData="refreshReferences" @close="showShippingData=false" :countries="countries"></ShippingData>
+                    <div v-if="!showShippingData" class="col-12 field mb-4">
                         <span class="text-900 text-2xl block font-medium mb-5">Dirección de entrega</span>
                         <Dropdown :options="customerReferences" v-model="selectedReference" placeholder="Selecciona una dirección de envío" optionLabel="name" optionValue="id" showClear class="w-full"></Dropdown>
                         <br>
                         <br>
                         <div class="col-12 flex align-items-center justify-content-center">
-                            <Button v-if="!showShippingData" @click="showShippingData=true" class="flex align-items-center justify-content-center" label="Agregar nueva dirección" icon="pi pi-fw pi-check"></Button>
+                            <Button v-if="!showShippingData && !selectedReference" @click="showShippingData=true" class="flex align-items-center justify-content-center" label="Agregar nueva dirección" icon="pi pi-fw pi-check"></Button>
+                        </div><br><br>
+                        <span v-if="selectedReference" class="text-900 text-2xl block font-medium mb-5">Paqueteria</span>
+                        <Dropdown v-if="selectedReference" :options="carriers" v-model="selectedCarrier" placeholder="Selecciona una paquetería" optionLabel="name" optionValue="name" showClear class="w-full" @change="changeCarrier"></Dropdown><br><br><br>
+                        <div v-if="selectedReference && selectedCarrier" class="grid">
+                            <div class="col-12 lg:col-4">
+                                <span class="text-1500 block font-medium mb-3 font-bold">Servicio</span>
+                                <ul class="py-0 pl-3 m-0 text-600 mb-3">
+                                    <li class="mb-2" v-if="!loading" v-for="(quote, i) in quotations" :key="i"> 
+                                        <RadioButton v-model="selectedService" :inputId="quote.key" name="dynamic" :value="quote.service_level_name" @change="serviceChange"/> 
+                                        <label for="quote.key">{{ quotations[i].service_level_name }}</label>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-12 lg:col-4">
+                                    <span class="text-1500 block font-medium mb-3 font-bold">Entrega</span>
+                                    <ul class="py-0 pl-3 m-0 text-600 mb-3">
+                                        <li class="mb-2" v-if="!blocked" v-for="(quote, i) in quotations" :key="i">{{ quotations[i].days }} días hábiles</li>
+                                    </ul>
+                            </div>
+                            <div class="col-12 lg:col-4">
+                                    <span class="text-1500 block font-medium mb-3 font-bold">Tarifa</span>
+                                    <ul class="py-0 pl-3 m-0 text-600 mb-3">
+                                        <li class="mb-2" v-if="!blocked" v-for="(quote, i) in quotations" :key="i">${{ quotations[i].total_pricing}}</li>
+                                    </ul>
+                            </div>
                         </div>
                     </div>
-                    <ShippingData v-if="showShippingData" @saveShippingData="refreshReferences" @close="showShippingData=false" :countries="countries"></ShippingData>
-                    <br>
-                    <br>
-                    <br>
                 </div>
                 <div class="grid formgrid">
                     <div class="col-12 field mb-4">
@@ -98,7 +120,9 @@
                 <OrderDataProduct @update:flattenedArray="handleUpdate" @total-value="totalValue"></OrderDataProduct>
         <br>
         <div>
-            <span class="text-900 block font-bold text-xl">Total del pedido ${{ total.toFixed(2) }}</span>
+            <span class="text-900 block font-bold text-xl">Total del pedido ${{ total.toFixed(2) }}</span><br>
+            <span v-if="deliveryType == 2" class="text-900 block font-bold text-xl">Envío a domicilio ${{ totalShipment.toFixed(2) }}</span><br>
+            <span class="text-900 block font-bold text-xl">Total a pagar ${{ Number(total.toFixed(2)) + Number(totalShipment.toFixed(2)) }}</span>
         </div>
         <div class="col-12 flex flex-column lg:flex-row justify-content-center align-items-center lg:justify-content-end my-6">
             <Button class="mt-3 lg:mt-0 w-full lg:w-auto flex-order-2 lg:flex-order-1 lg:mr-4" severity="secondary" label="Regresar al carrito" icon="pi pi-fw pi-arrow-left" @click="router.push('/shoppingcart');"></Button>
@@ -124,6 +148,7 @@ import { useCartStore } from '../../stores/cart';
 import { useRouter } from 'vue-router';
 import {OrderData} from '../Cart/Function/OrderData';
 import BlockUI from 'primevue/blockui';
+import Dropdown from 'primevue/dropdown';
 
 const countryService = new CountryService();
 const countries = ref([]);
@@ -135,6 +160,8 @@ const cartStore = useCartStore();
 const router = useRouter();
 const billable = ref<boolean>(false);
 const selectedReference = ref(null);
+const selectedCarrier = ref(null);
+const selectedService = ref(null);
 const customerReferences = ref<any[]>([])
 const deliveryType = ref<number>(1);
 const showShippingData = ref<boolean>(false);
@@ -142,10 +169,25 @@ const useCfdi = ref<any[]>(cfdiData)
 const taxRegime = ref<any[]>(taxReg)
 const flattenedArray = ref<any[]>([]);
 const total = ref<number>(0);
+const totalShipment = ref<number>(0);
 const blocked = ref<boolean>(false);
 const pickup = ref<number>(0);
 const delivery = ref<number>(0);
 const only_online = ref<number>(0);
+const carriers = ref<carriers[]>([]);
+const quotations = ref<any[]>([]);
+const shippingCost = ref<any[]>([]);
+const prices = ref<any[]>([]);
+
+export interface carriers {
+    id?: string;
+    name?: string;
+}
+
+export interface cost {
+    total_pricing?: string;
+    service_level_name?: string;
+}
 
 export interface invoice_data {
     id_customer?: number | null;
@@ -232,6 +274,7 @@ const refresh = async () => {
                 name: x.name.toUpperCase()
             }
         })
+        await getCarriers();
     }catch(error){
         console.log(error)
     }
@@ -255,6 +298,96 @@ const refreshReferences = async () => {
     }
 }
 
+const getCarriers = async () => {
+    const apiKey = 'Ya2dLvWZBfubsqHBIWr_ekFz_6KDRl9sPUrw1JAVLBo';
+    const response = await fetch('https://api-demo.skydropx.com/v1/carriers/', {
+        method: 'GET',
+        headers: {
+            'Authorization': `Token token=${apiKey}`,
+            'Content-Type': 'application/json'
+        }
+    });
+    const data = await response.json();
+    for(let i = 0; i < data.data.length; i++){
+        carriers.value.push(data.data[i].attributes);
+    }
+}
+
+//Obtiene el nombre de la dirección seleccionada
+const selectedAddress = computed(()=> {
+    const selectedOption = customerReferences.value.find(x => x.id === selectedReference.value);
+    return Array(selectedOption);
+});
+
+const changeCarrier = async () => {
+    loading.value = true;
+    blocked.value = true;
+    prices.value = [];
+    const apiKey = 'Ya2dLvWZBfubsqHBIWr_ekFz_6KDRl9sPUrw1JAVLBo';
+    const address = selectedAddress.value.map(x => x.name).toString();
+    const separateAddress = address.split(", ") //Se separan los datos de la dirección para obtener el código postal de destino.
+    const info = await entity.getDimensionsByArticle(flattenedArray.value); //Se obtienen los parámetros de las dimensiones del paquete para poder cotizar el envío.
+    console.log("dimensiones", info);
+    for(let i = 0; i < info.length; i++){
+        shippingCost.value = [];
+        const parameters = JSON.stringify({
+        'zip_from': authStore.zip_code,
+        'zip_to': separateAddress[1],
+        'parcel': {'weight': info[i].weight, 'height': info[i].height, 'width': info[i].width, 'length': info[i].length},
+        'carriers': [{'name': selectedCarrier.value}]
+        });
+        try{
+            const response = await fetch('https://api-demo.skydropx.com/v1/quotations/', {
+            method: 'POST',
+            headers: {
+                'Authorization': `Token token=${apiKey}`,
+                'Content-Type': 'application/json'
+            },
+            body: parameters
+            });
+            quotations.value = await response.json();
+            if(quotations.value.length == 0){
+                toast.add({ severity: 'warn', summary: 'Envío', detail: "No hay servicios disponibles en la paqueteria seleccionada.", life: 7000 });
+                selectedCarrier.value = null;
+            }else{
+                if(quotations.value.length > 0){
+                    for(let j = 0; j < quotations.value.length; j++){
+                        shippingCost.value.push(quotations.value[j].total_pricing);
+                        if(prices.value.length > 0){
+                            prices.value[j] = parseFloat(shippingCost.value[j] ?? "0") + parseFloat(prices.value[j] ?? "0");
+                        }else{
+                            prices.value.push(shippingCost.value[j]);
+                        }
+                        quotations.value[j].total_pricing = prices.value[j];
+                    }
+                }
+            }
+        }catch(error){
+            console.log("error", error)
+        }finally{
+            blocked.value = false;
+            loading.value = false;
+        }
+    }
+}
+
+const serviceChange = () => {
+    for(const quote of quotations.value){
+        if(quote.service_level_name == selectedService.value){
+            totalShipment.value = 0;
+            totalShipment.value = parseFloat(quote.total_pricing);
+        }else{
+            continue;
+        }
+    }
+}
+
+const deliveryChange = () => {
+    quotations.value = undefined;
+    selectedCarrier.value = null;
+    totalShipment.value = 0;
+}
+
 const processPayment = async () => {
     try {
         if(deliveryType.value == 2 && selectedReference.value == null)
@@ -275,15 +408,20 @@ const processPayment = async () => {
                 window.location.href = payment.payment_method.url;
             }
         }else if(cartStore.order.length == 0){
-            let payment_info = []
-            let order = await createOrder(2); //se crea el pedido y se guarda en la tabla 'ecommerce_order' y 'ecommerce_order_item'
-            let url = import.meta.env.VITE_INDEX_ROUTE
-            payment_info = await entity.getPaymentInfo({id_order: order.id, total: total.value.toFixed(2),url:url}); //se obtiene la información del cliente y del pedido
-            let response = await entity.openpayAxios.post('charges/', payment_info[0]) //se envía al api de open pay la información obtenida
-            let status = response.data.status;
-            let update = await axios.post('Comercial/ECommerceOrder/updateOrder/' + response.data.order_id + '/' + response.data.id + '/' + status); //guarda el id_tracking del pedido y actualiza el estatus a pagado o no pagado
-            window.location.href = response.data.payment_method.url; //redirige al cliente a la URL de confirmación
-            cartStore.saveOrder(order.id); //almacena temporalmente el id del pedido y el estatus
+            if(deliveryType.value == 2 && (selectedCarrier.value == null || selectedService.value == null)){
+                toast.add({ severity: 'error', summary: 'Error', detail: "Favor de seleccionar una paqueteria o servicio", life: 7000 });
+            }else{
+                let payment_info = []
+                let order = await createOrder(2); //se crea el pedido y se guarda en la tabla 'ecommerce_order' y 'ecommerce_order_item'
+                let url = import.meta.env.VITE_INDEX_ROUTE
+                let totalPay = total.value + totalShipment.value;
+                payment_info = await entity.getPaymentInfo({id_order: order.id, total: totalPay , url: url}); //se obtiene la información del cliente y del pedido
+                let response = await entity.openpayAxios.post('charges/', payment_info[0]) //se envía al api de open pay la información obtenida
+                let status = response.data.status;
+                let update = await axios.post('Comercial/ECommerceOrder/updateOrder/' + response.data.order_id + '/' + response.data.id + '/' + status); //guarda el id_tracking del pedido y actualiza el estatus a pagado o no pagado
+                window.location.href = response.data.payment_method.url; //redirige al cliente a la URL de confirmación
+                cartStore.saveOrder(order.id); //almacena temporalmente el id del pedido y el estatus
+            }
         }
     } catch (error) {
         try{

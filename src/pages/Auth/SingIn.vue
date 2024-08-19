@@ -131,7 +131,7 @@ const submit = async () => {
             throw "La contraseña debe de contener un numero, una mayuscula y una minuscula"
         let response = await axios.post('Comercial/EComerceUser/CreateUser/'+phone.value+'/'+userBranch.value,entity.value)
         toast.add({ severity: 'success', summary: 'Registrado', detail: "Usuario Registrado con Exito", life: 7500 });
-        authStore.setSession(response.data.id_user,response.data.id_customer,response.data.user, response.data.company, response.data.branch, response.data.branch_name);
+        authStore.setSession(response.data.id_user,response.data.id_customer,response.data.user, response.data.company, response.data.branch, response.data.branch_name, response.data.zip_code);
         router.push('/');
         setTimeout((): void =>{
             window.location.reload();

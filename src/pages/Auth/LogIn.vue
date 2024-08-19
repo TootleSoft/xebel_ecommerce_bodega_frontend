@@ -110,7 +110,7 @@ const submit = async () => {
         let response = await axios.get('Comercial/EComerceUser/GetSession/'+entity.value.email+'/'+entity.value.password)
         toast.add({ severity: 'success', summary: 'Inicio de session', detail: "Credenciales Validadas", life: 7500 });
         console.log(JSON.stringify(response.data))
-        authStore.setSession(response.data.id_user,response.data.id_customer,response.data.user, response.data.company, response.data.branch, response.data.branch_name);
+        authStore.setSession(response.data.id_user,response.data.id_customer,response.data.user, response.data.company, response.data.branch, response.data.branch_name, response.data.zip_code);
         router.push('/');
         setTimeout((): void =>{
             window.location.reload();

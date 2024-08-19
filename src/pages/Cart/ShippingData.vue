@@ -1,9 +1,9 @@
 <template>
     <div class="col-12 field mb-4">
-        <span class="text-900 text-2xl block font-medium mb-5">Agregar direccion</span>
+        <span class="text-900 text-2xl block font-medium mb-5">Agregar dirección</span>
     </div>
     <div class="col-12 lg:col-6 field mb-4">
-        <Dropdown :options="props.countries" v-model="entity.country" placeholder="Pais" optionLabel="name" optionValue="name" showClear class="w-full"></Dropdown>
+        <Dropdown :options="props.countries" v-model="entity.country" placeholder="País" optionLabel="name" optionValue="name" showClear class="w-full"></Dropdown>
     </div>
     <div class="col-12 lg:col-6 field mb-4">
         <input v-model="entity.state" id="Estado" placeholder="Estado" type="text" class="p-inputtext w-full" />
@@ -15,13 +15,13 @@
         <input v-model="entity.suburb" id="Colonia" placeholder="Colonia" type="text" class="p-inputtext w-full" />
     </div>
     <div class="col-12 field mb-4">
-        <input v-model="entity.address" id="Direccion" placeholder="Direccion" type="text" class="p-inputtext w-full" />
+        <input v-model="entity.address" id="Direccion" placeholder="Dirección" type="text" class="p-inputtext w-full" />
     </div>
     <div class="col-12 lg:col-6 field mb-4">
-        <input v-model="entity.postal_code" id="pc" placeholder="Codigo Postal" type="number" class="p-inputtext w-full" />
+        <input v-model="entity.postal_code" id="pc" placeholder="Código Postal" type="number" class="p-inputtext w-full" />
     </div>
     <div class="col-12 flex align-items-center justify-content-center">
-        <Button @click="save" class="flex align-items-center justify-content-center" label="Gurdar Direccion" icon="pi pi-save"></Button>
+        <Button @click="save" class="flex align-items-center justify-content-center" label="Gurdar Dirección" icon="pi pi-save"></Button>
         &nbsp&nbsp&nbsp
         <Button @click="close" class="flex align-items-center justify-content-center" label="Cerrar" icon="pi pi-times"></Button>
     </div>
