@@ -89,7 +89,6 @@ const cartproduct = ref<any[]>([]);
 const branches = ref<any[]>([]);
 const stock = ref<any>();
 const bundles = ref<any[]>([]);
-const items = ref<any[]>([]);
 const array = ref<any[]>([]);
 const products = ref<any[]>([]);
 const loading = ref<boolean>(true);

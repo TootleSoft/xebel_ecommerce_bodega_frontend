@@ -52,7 +52,7 @@
                                 <ul class="py-0 pl-3 m-0 text-600 mb-3">
                                     <li class="mb-2" v-if="!loading" v-for="(quote, i) in quotations" :key="i"> 
                                         <RadioButton v-model="selectedService" :inputId="quote.key" name="dynamic" :value="quote.service_level_name" @change="serviceChange"/> 
-                                        <label for="quote.key">{{ quotations[i].service_level_name }}</label>
+                                        <label for="quote.key">{{ " " + quotations[i].service_level_name }}</label>
                                     </li>
                                 </ul>
                             </div>
@@ -182,11 +182,6 @@ const prices = ref<any[]>([]);
 export interface carriers {
     id?: string;
     name?: string;
-}
-
-export interface cost {
-    total_pricing?: string;
-    service_level_name?: string;
 }
 
 export interface invoice_data {
@@ -350,6 +345,7 @@ const changeCarrier = async () => {
                 toast.add({ severity: 'warn', summary: 'Envío', detail: "No hay servicios disponibles en la paqueteria seleccionada.", life: 7000 });
                 selectedCarrier.value = null;
             }else{
+                //Se suma el costo de las guías a la tarifa de costo de envío
                 if(quotations.value.length > 0){
                     for(let j = 0; j < quotations.value.length; j++){
                         shippingCost.value.push(quotations.value[j].total_pricing);

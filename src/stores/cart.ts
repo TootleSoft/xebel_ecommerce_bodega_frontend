@@ -23,7 +23,6 @@ export interface CartState {
     price_tax?: number;
     id_brand?: number;
     is_inventoriable?: boolean;
-    weight?: number;
     brand?: string;
     fam?: string;
     gro?: string;
@@ -37,6 +36,11 @@ export interface CartState {
     is_bundle?: boolean;
     id_numberItem?: number;
     id_numberBundle?: number;
+    weight?: number;
+    height?: number;
+    width?: number;
+    length?: number;
+    capacitance?: number;
 }
 
 export interface Order {
@@ -62,6 +66,7 @@ export const useCartStore = defineStore({
                 let article: CartState = { ...product };
                 article.quantity = quantity;
                 article.id_branch = id_branch;
+                article.capacitance = article.length * article.width * article.height;
 
                 const index = this.cart.findIndex(item => item.id === article.id && item.subarticle === article.subarticle && item.id_branch === article.id_branch);
                 if (index !== -1) {
