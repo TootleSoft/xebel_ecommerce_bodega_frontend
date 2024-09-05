@@ -69,6 +69,10 @@
                                     </ul>
                             </div>
                         </div>
+                        <br></br>
+                        <!-- <div class="col-12 flex align-items-center justify-content-center">
+                            <Button v-if="!showShippingData" @click="generateShipment" class="flex align-items-center justify-content-center" label="Ver resumen envio" icon="pi pi-fw pi-check"></Button>
+                        </div> -->
                     </div>
                 </div>
                 <div class="grid formgrid">
@@ -149,6 +153,8 @@ import { useRouter } from 'vue-router';
 import {OrderData} from '../Cart/Function/OrderData';
 import BlockUI from 'primevue/blockui';
 import Dropdown from 'primevue/dropdown';
+import { aW } from '@fullcalendar/core/internal-common';
+import { isParameter } from 'typescript';
 
 const countryService = new CountryService();
 const countries = ref([]);
@@ -174,6 +180,8 @@ const blocked = ref<boolean>(false);
 const pickup = ref<number>(0);
 const delivery = ref<number>(0);
 const only_online = ref<number>(0);
+const parcels = ref<Parcel[]>([]); // Array parcels dinámico aqui se guardan las dimensiones del envio
+
 const carriers = ref<carriers[]>([]);
 const quotations = ref<any[]>([]);
 const shippingCost = ref<any[]>([]);
@@ -209,6 +217,73 @@ const invoice_entity = ref<invoice_data>({
     customerUseCfdi: null,
     customerTaxRegime: null,
 });
+//Se declara los campos que solicita de informacion Skydropx
+export interface address_data {
+  province: string | null;
+  city: string | null;
+  name: string | null;
+  zip: string | null;
+  country: string | null;
+  address1: string | null;
+  company: string | null;
+  address2: string | null;
+  phone: string | null;
+  email: string | null;
+  reference?: string | null;
+  contents?: string | null;
+}
+
+const addressShipment = ref<Address>({
+  province: null,
+  city: null,
+  name: null,
+  zip: null,
+  country: null,
+  address1: null,
+  company: null,
+  address2: null,
+  phone: null,
+  email: null,
+  reference: null,
+  contents: null
+});
+
+interface Address {
+  province: string;
+  city: string;
+  name: string;
+  zip: string;
+  country: string;
+  address1: string;
+  company: string;
+  address2: string;
+  phone: string;
+  email: string;
+  reference?: string;
+  contents?: string;
+}
+
+interface Parcel {
+  weight: number;
+  distance_unit: string;
+  mass_unit: string;
+  height: number;
+  width: number;
+  length: number;
+}
+
+interface Carrier {
+  name: string;
+}
+
+interface Shipment {
+  address_from: Address;
+  parcels: Parcel[];
+  address_to: Address;
+  consignment_note_class_code: string;
+  consignment_note_packaging_code: string;
+  carriers: Carrier[];
+}
 
 //Se utiliza para aplanar el arreglo cuando el carrito contenga paquetes y todos los articulos se encuentren en el mismo nivel
 function handleUpdate(value: any[]) {
@@ -253,6 +328,7 @@ const refresh = async () => {
             await entity.newOrder();
         let response = await axios.get('Comercial/EComerceUser/GetReferences/'+authStore.id_customer)
         customerReferences.value = response.data;
+        console.log(`direcciones`,customerReferences.value)
         response = await axios.get('Comercial/EComerceUser/GetInvoiceData/'+authStore.id_customer)
         invoice_entity.value.address = response.data[0].address;
         invoice_entity.value.postal_code = response.data[0].postal_code;
@@ -294,8 +370,9 @@ const refreshReferences = async () => {
 }
 
 const getCarriers = async () => {
-    const apiKey = 'Ya2dLvWZBfubsqHBIWr_ekFz_6KDRl9sPUrw1JAVLBo';
-    const response = await fetch('https://api-demo.skydropx.com/v1/carriers/', {
+    const apiKey = import.meta.env.VITE_TOKEN_SKYDROPX;
+    const urlBase = import.meta.env.VITE_SKYDROPX_BASE_URL;
+    const response = await fetch(urlBase +'/'+'carriers/', {
         method: 'GET',
         headers: {
             'Authorization': `Token token=${apiKey}`,
@@ -303,8 +380,10 @@ const getCarriers = async () => {
         }
     });
     const data = await response.json();
-    for(let i = 0; i < data.data.length; i++){
-        carriers.value.push(data.data[i].attributes);
+    //limitamos el numero de items del array
+    const limitedCarriers = data.data.slice(0,3); //solo tomara los primeros 3 elementos del array
+    for(let i = 0; i < limitedCarriers.length; i++){
+        carriers.value.push(limitedCarriers[i].attributes);
     }
 }
 
@@ -318,7 +397,7 @@ const changeCarrier = async () => {
     loading.value = true;
     blocked.value = true;
     prices.value = [];
-    const apiKey = 'Ya2dLvWZBfubsqHBIWr_ekFz_6KDRl9sPUrw1JAVLBo';
+    const apiKey = import.meta.env.VITE_TOKEN_SKYDROPX;
     const address = selectedAddress.value.map(x => x.name).toString();
     const separateAddress = address.split(", ") //Se separan los datos de la dirección para obtener el código postal de destino.
     const info = await entity.getDimensionsByArticle(flattenedArray.value); //Se obtienen los parámetros de las dimensiones del paquete para poder cotizar el envío.
@@ -348,6 +427,7 @@ const changeCarrier = async () => {
                 //Se suma el costo de las guías a la tarifa de costo de envío
                 if(quotations.value.length > 0){
                     for(let j = 0; j < quotations.value.length; j++){
+                        quotations.value[j].days += 1; //se suma un dia mas a los dias habiles de entrega para dejar un dia de colchon para embalaje
                         shippingCost.value.push(quotations.value[j].total_pricing);
                         if(prices.value.length > 0){
                             prices.value[j] = parseFloat(shippingCost.value[j] ?? "0") + parseFloat(prices.value[j] ?? "0");
@@ -412,10 +492,12 @@ const processPayment = async () => {
                 let url = import.meta.env.VITE_INDEX_ROUTE
                 let totalPay = total.value + totalShipment.value;
                 payment_info = await entity.getPaymentInfo({id_order: order.id, total: totalPay , url: url}); //se obtiene la información del cliente y del pedido
+                console.log(`payment`,JSON.stringify(payment_info, null, 2))
                 let response = await entity.openpayAxios.post('charges/', payment_info[0]) //se envía al api de open pay la información obtenida
                 let status = response.data.status;
                 let update = await axios.post('Comercial/ECommerceOrder/updateOrder/' + response.data.order_id + '/' + response.data.id + '/' + status); //guarda el id_tracking del pedido y actualiza el estatus a pagado o no pagado
                 window.location.href = response.data.payment_method.url; //redirige al cliente a la URL de confirmación
+                let createshipment = await generateShipment();
                 cartStore.saveOrder(order.id); //almacena temporalmente el id del pedido y el estatus
             }
         }
@@ -483,6 +565,190 @@ const createOrder = async (payment_type) => {
     }finally{
 
     }
+}
+//Aqui se crean los nodos que solicita Skydropx para generar las guias de envio
+const generateShipment = async () =>{
+    const info = await entity.getDimensionsByArticle(flattenedArray.value); //Se obtienen los parámetros de las dimensiones del paquete para poder cotizar el envío.
+
+    //Aqui se guardan los parametros de dimenciones en el array parcels y usarlos para el envio
+    if (info && Array.isArray(info)) {
+        parcels.value = info.map((item) => ({
+            weight: item.weight,
+            height: item.height,
+            width: item.width,
+            length: item.length,
+            distance_unit: "CM",
+            mass_unit: "KG"      
+        }));
+    }
+  const shipment: Shipment = {
+    address_from: {
+      province: "Nuevo Leon",
+      city: "Monterrey",
+      name: "Dalal Safar",
+      zip: "64460",
+      country: "MX",
+      address1: "Eduardo Aguirre Pequeño 1302, Mitras Centro, Monterrey",
+      company: "Villa de Cortés Monterrey",
+      address2: "Centro",
+      phone: "8129486399",
+      email: "villa@villacortes.com",
+    },
+      parcels: parcels.value,
+    address_to: {
+      province: addressShipment.value.province,
+      city: addressShipment.value.city,
+      name: addressShipment.value.name,
+      zip: addressShipment.value.zip,
+      country: addressShipment.value.country,
+      address1: addressShipment.value.address1,
+      company: "-",
+      address2: addressShipment.value.address1,
+      phone: addressShipment.value.phone,
+      email: addressShipment.value.email,
+      reference: addressShipment.value.reference,
+      contents: addressShipment.value.contents
+    },
+    consignment_note_class_code: "53131600",
+    consignment_note_packaging_code: "1H1",
+    carriers: [{ name: selectedCarrier.value }]
+  };
+  console.log(`datos envio`,JSON.stringify(shipment, null, 2));
+  const apiKey = import.meta.env.VITE_TOKEN_SKYDROPX;
+
+  try {
+      const shipmentResponse = await createShipment(shipment, apiKey);
+      console.log('Shipment created:', JSON.stringify(shipmentResponse, null, 2));
+
+      // Accede al ID del `shipmentResponse`
+      const shipmentIdString = shipmentResponse.data.relationships.rates.data[0].id; //extraemos el id de la paqueteria seleccionada
+      const shipmentId = +shipmentIdString;
+      // Usa `shipmentId` como argumento para `createLabel`
+      const label = await createLabel(shipmentId);
+      console.log('Created label:', JSON.stringify(label, null, 2));
+        //Obtiene todos los envios generados.
+      const get = await getShipmentsById(shipmentId);
+      console.log('GetShipments:', JSON.stringify(get, null, 2));
+
+  } catch (error) {
+    console.error('Error creating shipment:', error);
+  }
+}
+
+//Este metodo se conecta con Skydropx para crear envios a domicilio
+const createShipment = async (shipment: Shipment, apiKey: string) => { 
+  const urlBase = import.meta.env.VITE_SKYDROPX_BASE_URL;
+  const response = await fetch(urlBase + '/' +'shipments/', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Token token=${apiKey}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(shipment)
+  });
+  if (!response.ok) {
+    throw new Error(`Error: ${response.statusText}`);
+  }
+
+  const data = await response.json();
+  console.log(`data`,data)
+
+  return data;
+}
+
+    // Watcher para escuchar cambios en la selección de direcciones de envio
+    watch(selectedReference, (newVal) => {
+      console.log("Nuevo ID seleccionado:", newVal);
+      // se va al metodo para con esa id poner la direccion que corresponde al cliente en los datos de envio
+      getSelectedReferenceId();
+    });
+
+    // Método que devuelve el ID seleccionado correspondiente a la direccion de envio
+    const getSelectedReferenceId = async  () => {
+      let response = await axios.get('Comercial/EComerceUser/GetCustomerAddress/'+authStore.id_customer+'/'+selectedReference.value)
+        addressShipment.value.province = response.data[0].province;
+        addressShipment.value.city = response.data[0].city;
+        addressShipment.value.name = response.data[0].name;
+        addressShipment.value.zip = response.data[0].zip;
+        addressShipment.value.country = response.data[0].country;
+        addressShipment.value.address1 = response.data[0].address;
+        addressShipment.value.company = response.data[0].company;
+        addressShipment.value.address2 = response.data[0].address;
+        addressShipment.value.phone = response.data[0].phone;
+        addressShipment.value.email = response.data[0].email;
+        addressShipment.value.reference = response.data[0].reference;
+        addressShipment.value.contents = response.data[0].contents;
+        console.log('address:',JSON.stringify(addressShipment.value, null, 2))
+      return selectedReference.value;
+    };
+
+    const getShipments = async (id: number) => {
+    const apiKey = import.meta.env.VITE_TOKEN_SKYDROPX;
+    const urlBase = import.meta.env.VITE_SKYDROPX_BASE_URL;
+    const requets = await fetch(urlBase + '/' +'shipments', {
+        method: 'GET',
+        headers: {
+            'Authorization': `Token token=${apiKey}`,
+            'Content-Type': 'application/json'
+        }
+    });
+    const data = await requets.json();
+    console.log('shipments:',JSON.stringify(data));
+    return data;
+}
+
+const getShipmentsById = async (id: number) => {
+    const apiKey = import.meta.env.VITE_TOKEN_SKYDROPX;
+    const url = `https://api-demo.skydropx.com/v1/shipments/${id}`; // Construye la URL usando el ID
+
+    try {
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Token token=${apiKey}`,
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error(`Error al crear etiqueta revise el mensaje: ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        console.log('spesific shipment:', JSON.stringify(data, null, 2));
+        return data;
+    } catch (error) {
+        console.error('Error:', error);
+        throw error; // Para que quien llame a la función pueda manejar el error
+    }
+};
+
+const createLabel = async (id: number) => {
+    const apiKey = import.meta.env.VITE_TOKEN_SKYDROPX;
+    // Construcción del cuerpo de la solicitud POST
+    const parameters = JSON.stringify({
+        "rate_id": id,  // Aquí se asigna el valor directamente
+        "label_format": "pdf"  // Aquí se asigna el valor directamente
+    });
+        console.log('bodyLabel',JSON.stringify(parameters, null,2));
+        try {
+            const response = await fetch('https://api-demo.skydropx.com/v1/labels', {
+            method: 'POST',
+            headers: {
+                'Authorization': `Token token=${apiKey}`,
+                'Content-Type': 'application/json'
+            },
+            body: parameters
+            });
+            const data = await response.json();
+            console.log('labelCreated:', JSON.stringify(data, null, 2));
+            return data;
+        }catch(error){
+            console.log("error", error)
+        }finally{
+            blocked.value = false;
+            loading.value = false;
+        }
 }
 
 onMounted(async () => {

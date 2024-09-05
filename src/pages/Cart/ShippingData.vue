@@ -3,7 +3,7 @@
         <span class="text-900 text-2xl block font-medium mb-5">Agregar dirección</span>
     </div>
     <div class="col-12 lg:col-6 field mb-4">
-        <Dropdown :options="props.countries" v-model="entity.country" placeholder="País" optionLabel="name" optionValue="name" showClear class="w-full"></Dropdown>
+        <Dropdown :options="props.countries" v-model="entity.country" placeholder="Pais" optionLabel="name" optionValue="code" showClear class="w-full"></Dropdown>
     </div>
     <div class="col-12 lg:col-6 field mb-4">
         <input v-model="entity.state" id="Estado" placeholder="Estado" type="text" class="p-inputtext w-full" />
@@ -16,6 +16,18 @@
     </div>
     <div class="col-12 field mb-4">
         <input v-model="entity.address" id="Direccion" placeholder="Dirección" type="text" class="p-inputtext w-full" />
+    </div>
+    <div class="col-12 lg:col-6 field mb-4">
+        <input v-model="entity.phone" id="phone" placeholder="Telefono" type="text" class="p-inputtext w-full" />
+    </div>
+    <div class="col-12 lg:col-6 field mb-4">
+        <input v-model="entity.email" id="email" placeholder="Correo" type="text" class="p-inputtext w-full" />
+    </div>
+    <div class="col-12 lg:col-6 field mb-4">
+        <input v-model="entity.phone" id="phone" placeholder="Telefono" type="text" class="p-inputtext w-full" />
+    </div>
+    <div class="col-12 lg:col-6 field mb-4">
+        <input v-model="entity.email" id="email" placeholder="Correo" type="text" class="p-inputtext w-full" />
     </div>
     <div class="col-12 lg:col-6 field mb-4">
         <input v-model="entity.postal_code" id="pc" placeholder="Código Postal" type="number" class="p-inputtext w-full" />
@@ -49,12 +61,68 @@ export interface customer_reference {
     country?: string | null;
     state?: string | null;
     municipality?: string | null;
+    phone?: string | null;
+    email?: string | null;
     suburb?: string | null;
     address?: string | null;
+    reference?: string | null;
     created?: Date | null;
     created_by?: string | null;
     modified?: Date | null;
     modified_by?: string | null;
+}
+
+//Se declara los campos que solicita de informacion Skydropx
+export interface address_data {
+  province: string | null;
+  city: string | null;
+  name: string | null;
+  zip: string | null;
+  country: string | null;
+  address1: string | null;
+  company: string | null;
+  address2: string | null;
+  phone: string | null;
+  email: string | null;
+  reference?: string | null;
+  contents?: string | null;
+}
+
+interface Address {
+  province: string;
+  city: string;
+  name: string;
+  zip: string;
+  country: string;
+  address1: string;
+  company: string;
+  address2: string;
+  phone: string;
+  email: string;
+  reference?: string;
+  contents?: string;
+}
+
+interface Parcel {
+  weight: number;
+  distance_unit: string;
+  mass_unit: string;
+  height: number;
+  width: number;
+  length: number;
+}
+
+interface Carrier {
+  name: string;
+}
+
+interface Shipment {
+  address_from: Address;
+  parcels: Parcel[];
+  address_to: Address;
+  consignment_note_class_code: string;
+  consignment_note_packaging_code: string;
+  carriers: Carrier[];
 }
 
 interface Props {
@@ -74,8 +142,11 @@ const entity = ref<customer_reference>({
     country: null,
     state: null,
     municipality: null,
+    phone: null,
+    email: null,
     suburb: null,
     address: null,
+    reference: null,
     created: new Date(),
     created_by: null,
     modified: null,
@@ -88,7 +159,9 @@ const save = async () => {
     try{
         if((entity.value.postal_code == null || entity.value.postal_code == "") || (entity.value.country == null || entity.value.country == "" ) 
         || (entity.value.state == null || entity.value.state == "") || (entity.value.municipality == null || entity.value.municipality == "") 
-        || (entity.value.suburb == null || entity.value.suburb == "") || (entity.value.address == null || entity.value.address == ""))
+        || (entity.value.suburb == null || entity.value.suburb == "") || (entity.value.address == null || entity.value.address == "")
+         || (entity.value.phone == null || entity.value.phone == "") || (entity.value.email == null || entity.value.email == "")
+        || (entity.value.reference == null || entity.value.reference == ""))
             throw "Favor de llenar todos los campos obligatorios"
         console.log(JSON.stringify(entity.value))
         entity.value.postal_code = entity.value.postal_code.toString();
