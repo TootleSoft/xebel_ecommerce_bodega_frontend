@@ -9,7 +9,8 @@
         "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
         "format": "prettier --write \"**/*.{js,vue,d.ts}\"",
         "build-villas": "vite build --mode villas --outDir ./dist/villas",
-        "build-xebel": "vite build --mode xebel --outDir ./dist/xebel"
+        "build-xebel": "vite build --mode xebel --outDir ./dist/xebel",
+        "build-demo-store": "vite build --mode demostore --outDir ./dist/demo-store"
     },
     "dependencies": {
         "@fullcalendar/core": "^6.1.8",
