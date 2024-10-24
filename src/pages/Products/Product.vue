@@ -219,10 +219,10 @@ const refresh = async () => {
 
         // Transformar los datos recibidos a una lista de URLs de imágenes. En caso de no tener imagen cargada traera la de la marca
         images.value = responseImg.data.map(imgObj => [
-            imgObj.image_name_1 ? getImageUrl(imgObj.image_name_1.replace('.jpeg', '')) : imgbrand(product.value[0].barcode, product.value[0].id_brand),
-            imgObj.image_name_2 ? getImageUrl(imgObj.image_name_2.replace('.jpeg', '')) : imgbrand(product.value[0].barcode, product.value[0].id_brand),
-            imgObj.image_name_3 ? getImageUrl(imgObj.image_name_3.replace('.jpeg', '')) : imgbrand(product.value[0].barcode, product.value[0].id_brand),
-            imgObj.image_name_4 ? getImageUrl(imgObj.image_name_4.replace('.jpeg', '')) : imgbrand(product.value[0].barcode, product.value[0].id_brand)
+            imgObj.image_name_1 ? getImageUrl(imgObj.image_name_1.replace('.jpeg', '')) : imgbrand(product.value[0].id + '_' + product.value[0].barcode + '_1', product.value[0].id_brand),
+            imgObj.image_name_2 ? getImageUrl(imgObj.image_name_2.replace('.jpeg', '')) : imgbrand(product.value[0].id + '_' + product.value[0].barcode + '_2', product.value[0].id_brand),
+            imgObj.image_name_3 ? getImageUrl(imgObj.image_name_3.replace('.jpeg', '')) : imgbrand(product.value[0].id + '_' + product.value[0].barcode + '_3', product.value[0].id_brand),
+            imgObj.image_name_4 ? getImageUrl(imgObj.image_name_4.replace('.jpeg', '')) : imgbrand(product.value[0].id + '_' + product.value[0].barcode + '_4', product.value[0].id_brand)
         ]).flat(); // 'flat()' para aplanar el array de arrays
         
         let existence_resposnse = await axios.get('Inventory/EComerce/GetProductExistences/' + route.params.id_article + '/' + route.params.id_subarticle)
