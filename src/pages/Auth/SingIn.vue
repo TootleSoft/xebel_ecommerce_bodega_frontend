@@ -33,16 +33,16 @@
                                 </IconField>
                                 <IconField iconPosition="left">
                                     <InputIcon class="pi pi-phone" />
-                                    <InputText @keyup.enter="submit" v-model="phone" type="number" placeholder="Telefono" class="block mb-3" style="max-width: 320px; min-width: 270px" />
+                                    <InputText @keyup.enter="submit" v-model="phone" type="number" placeholder="Teléfono" class="block mb-3" style="max-width: 320px; min-width: 270px" />
                                 </IconField>
-                                <Dropdown v-model="userBranch" :options="branches" optionValue="id" optionLabel="name" placeholder="Sucursal Prinicpal" style="max-width: 320px; min-width: 270px"></Dropdown>
+                                <Dropdown v-model="userBranch" :options="branches" optionValue="id" optionLabel="name" placeholder="Sucursal Principal" style="max-width: 320px; min-width: 270px"></Dropdown>
                             </div>
                             <div class="button-container mt-4 text-left" style="max-width: 320px; min-width: 270px">
                                 <div class="buttons flex align-items-center gap-3">
                                     <Button type="button" @click="goHome" class="block" severity="danger" outlined style="max-width: 320px; margin-bottom: 32px">Cancelar</Button>
                                     <Button type="button" @click="submit" class="block" style="max-width: 320px; margin-bottom: 32px">Enviar</Button>
                                 </div>
-                                <span class="font-medium text-600">¿Ya tienes cuenta? <a class="font-semibold cursor-pointer text-900 hover:text-primary transition-colors transition-duration-300" @click="goLogin">Inicia Sesion</a></span>
+                                <span class="font-medium text-600">¿Ya tienes cuenta? <a class="font-semibold cursor-pointer text-900 hover:text-primary transition-colors transition-duration-300" @click="goLogin">Iniciar Sesión</a></span>
                             </div>
                         </div>
                     </div>
@@ -128,9 +128,9 @@ const submit = async () => {
         if(entity.value.email != null ? !entity.value.email.includes('@') : true)
             throw "Favor de ingresar un correo valido"
         if(!/[A-Z]/.test(entity.value.password ?? '') || !/[0-9]/.test(entity.value.password ?? '') || !/[a-z]/.test(entity.value.password ?? ''))
-            throw "La contraseña debe de contener un numero, una mayuscula y una minuscula"
+            throw "La contraseña debe de contener un número, una mayúscula y una minúscula"
         let response = await axios.post('Comercial/EComerceUser/CreateUser/'+phone.value+'/'+userBranch.value,entity.value)
-        toast.add({ severity: 'success', summary: 'Registrado', detail: "Usuario Registrado con Exito", life: 7500 });
+        toast.add({ severity: 'success', summary: 'Registrado', detail: "Usuario registrado con éxito", life: 7500 });
         authStore.setSession(response.data.id_user,response.data.id_customer,response.data.user, response.data.company, response.data.branch, response.data.branch_name, response.data.zip_code);
         router.push('/');
         setTimeout((): void =>{

@@ -17,7 +17,7 @@
                     <div class="border-1 border-round border-gray-50">
                         <div class="pt-3 m-3">
                             <div class="form-container text-left " style="max-width: 320px; min-width: 270px">
-                                <h4 class="m-0 mb-2">Iniciar Sesion</h4>
+                                <h4 class="m-0 mb-2">Iniciar Sesión</h4>
                                 <span class="block text-600 font-medium mb-4">Ingresa tus credenciales</span>
                                 <IconField iconPosition="left">
                                     <InputIcon class="pi pi-envelope" />
@@ -33,12 +33,12 @@
                                     <Button type="button" @click="goHome" class="block" severity="danger" outlined style="max-width: 320px; margin-bottom: 32px">Cancelar</Button>
                                     <Button type="button" @click="submit" class="block" style="max-width: 320px; margin-bottom: 32px">Enviar</Button>
                                 </div>
-                                <span class="font-medium text-600">¿No tienes tienes cuenta? <a class="font-semibold cursor-pointer text-900 hover:text-primary transition-colors transition-duration-300" @click="goSingIn">Registrate aqui</a></span>
+                                <span class="font-medium text-600">¿No tienes tienes cuenta? <a class="font-semibold cursor-pointer text-900 hover:text-primary transition-colors transition-duration-300" @click="goSingIn">Registrate aquí</a></span>
                                 <br>
                                 <br>
                                 <br></div>
                             <div class="align-items-center">
-                                <a class="font-semibold cursor-pointer text-900 hover:text-primary transition-colors transition-duration-300" @click="router.push('/auth/recoveryemail');">Olvide mi contraseña</a>
+                                <a class="font-semibold cursor-pointer text-900 hover:text-primary transition-colors transition-duration-300" @click="router.push('/auth/recoveryemail');">Olvidé mi contraseña</a>
                             </div>
                         </div>
                     </div>

@@ -130,8 +130,8 @@
         </div>
         <div class="col-12 flex flex-column lg:flex-row justify-content-center align-items-center lg:justify-content-end my-6">
             <Button class="mt-3 lg:mt-0 w-full lg:w-auto flex-order-2 lg:flex-order-1 lg:mr-4" severity="secondary" label="Regresar al carrito" icon="pi pi-fw pi-arrow-left" @click="router.push('/shoppingcart');"></Button>
-            <Button v-if="only_online == 0 && deliveryType != 2" class="mt-3 lg:mt-0 w-full lg:w-auto flex-order-2 lg:flex-order-1 lg:mr-4" label="Pagar En Sucursal" icon="pi pi-fw pi-wallet" @click="processPaymentStore()"></Button>
-            <Button class="mt-3 lg:mt-0 w-full lg:w-auto flex-order-2 lg:flex-order-1 lg:mr-4" label="Pagar En Linea" icon="pi pi-fw pi-credit-card" @click="processPayment()"></Button>
+            <Button v-if="only_online == 0 && deliveryType != 2" class="mt-3 lg:mt-0 w-full lg:w-auto flex-order-2 lg:flex-order-1 lg:mr-4" label="Pagar en sucursal" icon="pi pi-fw pi-wallet" @click="processPaymentStore()"></Button>
+            <Button class="mt-3 lg:mt-0 w-full lg:w-auto flex-order-2 lg:flex-order-1 lg:mr-4" label="Pagar en línea" icon="pi pi-fw pi-credit-card" @click="processPayment()"></Button>
         </div>
     </div>
     </div>

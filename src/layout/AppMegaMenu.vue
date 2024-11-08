@@ -167,7 +167,7 @@ const search = (event) => {
 //Arreglos para el menu
 const login = ref<any[]>([
     {
-        label: 'Iniciar Sesion',
+        label: 'Iniciar Sesión',
         icon: 'pi pi-users',
         command: () => {
             router.push('/auth/login');
@@ -201,7 +201,7 @@ const user = ref<any[]>([
     //     icon: 'pi pi-cog'
     // },
     {
-        label: 'Cerrar Sesion',
+        label: 'Cerrar Sesión',
         icon: 'pi pi-sign-in',
         command: () => {
             authStore.logout();

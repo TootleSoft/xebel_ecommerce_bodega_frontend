@@ -8,9 +8,9 @@
                     </div>
                     <div class="col-12 hidden md:block flex align-content-center">
                         <div class="bold-text-home md:text-2xl xl:text-6xl flex align-items-center justify-content-center">Descubre nuestros</div>
-                        <div class="cyan-text-home md:text-2xl xl:text-6xl flex align-items-center justify-content-center">increibles productos</div>
-                        <span class="cyan-text-inicio md:text-sm xl:text-2xl flex align-items-center justify-content-center">Descubre la unica variedad de marcas y</span>
-                        <span class="cyan-text-inicio md:text-sm xl:text-2xl flex align-items-center justify-content-center">productos que &nbsp<strong>Villa de Cortes Monterrey</strong></span>
+                        <div class="cyan-text-home md:text-2xl xl:text-6xl flex align-items-center justify-content-center">increíbles productos</div>
+                        <span class="cyan-text-inicio md:text-sm xl:text-2xl flex align-items-center justify-content-center">Descubre la única variedad de marcas y</span>
+                        <span class="cyan-text-inicio md:text-sm xl:text-2xl flex align-items-center justify-content-center">productos que &nbsp<strong>Villa de Cortés Monterrey</strong></span>
                         <span class="cyan-text-inicio md:text-sm xl:text-2xl flex align-items-center justify-content-center">tiene para ti</span>
                         <br>
                         <div class="w-full flex align-items-center justify-content-center">
@@ -100,7 +100,7 @@
 
         <div class="hidden sm:block">
             <div class="flex justify-content-center flex-wrap">
-                <p class="flex align-items-center justify-content-center w-20rem m-2 cyan-text md:text-7xl xl:text-7xl font-bold">¿Quienes</p>
+                <p class="flex align-items-center justify-content-center w-20rem m-2 cyan-text md:text-7xl xl:text-7xl font-bold">¿Quiénes</p>
                 <p class="flex align-items-center justify-content-center w-13rem m-2 md:text-7xl xl:text-7xl font-bold" style="color: #1B2955;">somos?</p>
             </div>
         </div>
@@ -163,7 +163,7 @@
                             <li>Inicio</li>
                             <li>Nuestras marcas</li>
                             <li>Promociones para ti</li>
-                            <li>¿Quienes somos?</li>
+                            <li>¿Quiénes somos?</li>
                             <li>Lo más buscado</li>
                         </ul>
                         <div class="flex align-items-center justify-content-center">
