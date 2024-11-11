@@ -186,6 +186,9 @@ const carriers = ref<carriers[]>([]);
 const quotations = ref<any[]>([]);
 const shippingCost = ref<any[]>([]);
 const prices = ref<any[]>([]);
+const id_tracking = ref<number>(0);
+const id_shipment = ref<number>(0);
+const id_tracking_shipment = ref<number>(0);
 
 export interface carriers {
     id?: string;
