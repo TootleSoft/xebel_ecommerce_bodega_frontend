@@ -489,6 +489,7 @@ const processPayment = async () => {
             }else{
                 let payment_info = []
                 let order = await createOrder(2); //se crea el pedido y se guarda en la tabla 'ecommerce_order' y 'ecommerce_order_item'
+                // let shipmentCreated = saveShimpent(); // se guardan los datos del envio
                 let url = import.meta.env.VITE_INDEX_ROUTE
                 let totalPay = total.value + totalShipment.value;
                 payment_info = await entity.getPaymentInfo({id_order: order.id, total: totalPay , url: url}); //se obtiene la información del cliente y del pedido
@@ -497,8 +498,10 @@ const processPayment = async () => {
                 let status = response.data.status;
                 let update = await axios.post('Comercial/ECommerceOrder/updateOrder/' + response.data.order_id + '/' + response.data.id + '/' + status); //guarda el id_tracking del pedido y actualiza el estatus a pagado o no pagado
                 window.location.href = response.data.payment_method.url; //redirige al cliente a la URL de confirmación
-                let createshipment = await generateShipment();
                 cartStore.saveOrder(order.id); //almacena temporalmente el id del pedido y el estatus
+                if(deliveryType.value == 2){
+                    let createshipment = await generateShipment();
+                }
             }
         }
     } catch (error) {
@@ -566,6 +569,23 @@ const createOrder = async (payment_type) => {
 
     }
 }
+
+// const saveShimpent = async () => {
+//     try {
+//         const entity = {id_shipment: id_shipment.value, id_tracking_shipment: id_tracking_shipment.value}
+//         let response = await axios.post('Inventory/Ecomerce/CreateShipment', entity, {
+//             headers: {
+//                 company: 1,
+//                 branch: 1,
+//                 users: authStore.id_usuario,
+//             }
+//         })
+//         toast.add({severity: 'success', summary: 'Envio', detail: 'Su envio se genero con exito. Recibira pronto un email con mas informacion.', life: 5000});
+//         return response.data;
+//     } catch (error) {
+//         console.log("Error ");
+//     }
+// }
 //Aqui se crean los nodos que solicita Skydropx para generar las guias de envio
 const generateShipment = async () =>{
     const info = await entity.getDimensionsByArticle(flattenedArray.value); //Se obtienen los parámetros de las dimensiones del paquete para poder cotizar el envío.
@@ -621,7 +641,9 @@ const generateShipment = async () =>{
       console.log('Shipment created:', JSON.stringify(shipmentResponse, null, 2));
 
       // Accede al ID del `shipmentResponse`
-      const shipmentIdString = shipmentResponse.data.relationships.rates.data[0].id; //extraemos el id de la paqueteria seleccionada
+      id_tracking_shipment.value = shipmentResponse.data[0].id;
+      console.log(`id_tracking`,id_tracking_shipment.value);
+      const shipmentIdString = shipmentResponse.data.relationships.rates.data[0].id; //extraemos el id de la paqueteria seleccionadas ("rate" dentro de nodo de skydropx)
       const shipmentId = +shipmentIdString;
       // Usa `shipmentId` como argumento para `createLabel`
       const label = await createLabel(shipmentId);
@@ -652,7 +674,7 @@ const createShipment = async (shipment: Shipment, apiKey: string) => {
 
   const data = await response.json();
   console.log(`data`,data)
-
+  toast.add({ severity: 'success', summary: 'Envio generado', detail: 'Revise su correo para ver mas detalles.', life: 5000 });
   return data;
 }
 
@@ -730,7 +752,6 @@ const createLabel = async (id: number) => {
         "rate_id": id,  // Aquí se asigna el valor directamente
         "label_format": "pdf"  // Aquí se asigna el valor directamente
     });
-        console.log('bodyLabel',JSON.stringify(parameters, null,2));
         try {
             const response = await fetch('https://api-demo.skydropx.com/v1/labels', {
             method: 'POST',
@@ -740,9 +761,12 @@ const createLabel = async (id: number) => {
             },
             body: parameters
             });
-            const data = await response.json();
-            console.log('labelCreated:', JSON.stringify(data, null, 2));
-            return data;
+            const request = await response.json();
+            // Accede al ID del numero de rastreo para el envio
+            id_tracking_shipment.value = request.data.attributes.data[0].tracking_number;
+            console.log('labelCreated:', JSON.stringify(request, null, 2));
+            console.log(`id_traking:`,id_tracking_shipment);
+            return request;
         }catch(error){
             console.log("error", error)
         }finally{
