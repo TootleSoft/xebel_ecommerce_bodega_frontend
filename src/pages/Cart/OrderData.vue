@@ -414,7 +414,7 @@ const changeCarrier = async () => {
         'carriers': [{'name': selectedCarrier.value}]
         });
         try{
-            const response = await fetch('https://api-demo.skydropx.com/v1/quotations/', {
+            const response = await fetch('https://api.skydropx.com/v1/quotations/', {
             method: 'POST',
             headers: {
                 'Authorization': `Token token=${apiKey}`,
@@ -642,7 +642,7 @@ const generateShipment = async () =>{
   try {
       const shipmentResponse = await createShipment(shipment, apiKey);
       console.log('Shipment created:', JSON.stringify(shipmentResponse, null, 2));
-
+      
       // Accede al ID del `shipmentResponse`
       id_tracking_shipment.value = shipmentResponse.data[0].id;
       console.log(`id_tracking`,id_tracking_shipment.value);
@@ -724,7 +724,7 @@ const createShipment = async (shipment: Shipment, apiKey: string) => {
 
 const getShipmentsById = async (id: number) => {
     const apiKey = import.meta.env.VITE_TOKEN_SKYDROPX;
-    const url = `https://api-demo.skydropx.com/v1/shipments/${id}`; // Construye la URL usando el ID
+    const url = `https://api.skydropx.com/v1/shipments/${id}`; // Construye la URL usando el ID
 
     try {
         const response = await fetch(url, {
@@ -756,7 +756,7 @@ const createLabel = async (id: number) => {
         "label_format": "pdf"  // Aquí se asigna el valor directamente
     });
         try {
-            const response = await fetch('https://api-demo.skydropx.com/v1/labels', {
+            const response = await fetch('https://api.skydropx.com/v1/labels', {
             method: 'POST',
             headers: {
                 'Authorization': `Token token=${apiKey}`,
