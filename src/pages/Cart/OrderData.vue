@@ -740,7 +740,7 @@ const getShipmentsById = async (id: number) => {
         }
 
         const data = await response.json();
-        console.log('spesific shipment:', JSON.stringify(data, null, 2));
+        console.log('specific shipment:', JSON.stringify(data, null, 2));
         return data;
     } catch (error) {
         console.error('Error:', error);
