@@ -1,6 +1,13 @@
 <template>
     <ProgressSpinner v-if="loading" class="loading-overlay"/>
     <BlockUI :blocked="blocked" fullScreen />
+    <Dialog v-model:visible="dialogVisible" header="Aviso" modal>
+        <p>¿Quiere proceder el pago sin facturar su pedido?</p>
+        <template #footer>
+            <Button label="Si" icon="pi pi-check" @click="continueWithoutBilling"/>
+            <Button label="No" icon="pi pi-times" @click="confirmBilling"/> 
+        </template>
+    </Dialog>
     <div class="card">
         <div class="grid grid-nogutter">
             <!-- Izquierda -->
@@ -79,7 +86,7 @@
                     <div class="col-12 field mb-4">
                         <div class="field-checkbox">
                             <Checkbox name="checkbox-2" v-model="billable" binary inputId="checkbox-2"></Checkbox>
-                            <label for="checkbox-2">¿Desea facturar?</label>
+                            <label for="checkbox-2" style="cursor: pointer">¿Desea facturar?</label>
                         </div>
                     </div>
                     <div v-if="billable" class="grid formgrid col-12">
@@ -129,9 +136,20 @@
             <span class="text-900 block font-bold text-xl">Total a pagar ${{ Number(total.toFixed(2)) + Number(totalShipment.toFixed(2)) }}</span>
         </div>
         <div class="col-12 flex flex-column lg:flex-row justify-content-center align-items-center lg:justify-content-end my-6">
+
             <Button class="mt-3 lg:mt-0 w-full lg:w-auto flex-order-2 lg:flex-order-1 lg:mr-4" severity="secondary" label="Regresar al carrito" icon="pi pi-fw pi-arrow-left" @click="router.push('/shoppingcart');"></Button>
-            <Button v-if="only_online == 0 && deliveryType != 2" class="mt-3 lg:mt-0 w-full lg:w-auto flex-order-2 lg:flex-order-1 lg:mr-4" label="Pagar en sucursal" icon="pi pi-fw pi-wallet" @click="processPaymentStore()"></Button>
-            <Button class="mt-3 lg:mt-0 w-full lg:w-auto flex-order-2 lg:flex-order-1 lg:mr-4" label="Pagar en línea" icon="pi pi-fw pi-credit-card" @click="processPayment()"></Button>
+
+            <Button v-if="only_online == 0 && deliveryType != 2" 
+            class="mt-3 lg:mt-0 w-full lg:w-auto flex-order-2 lg:flex-order-1 lg:mr-4" 
+            label="Pagar En Sucursal" 
+            icon="pi pi-fw pi-wallet" 
+            @click="() => { processPaymentStore(); }"></Button>
+
+            <Button class="mt-3 lg:mt-0 w-full lg:w-auto flex-order-2 lg:flex-order-1 lg:mr-4" 
+            label="Pagar En Linea" 
+            icon="pi pi-fw pi-credit-card" 
+            @click="() => { processPayment(); }"></Button>
+
         </div>
     </div>
     </div>
@@ -155,6 +173,7 @@ import BlockUI from 'primevue/blockui';
 import Dropdown from 'primevue/dropdown';
 import { aW } from '@fullcalendar/core/internal-common';
 import { isParameter } from 'typescript';
+import Dialog from 'primevue/dialog';
 
 const countryService = new CountryService();
 const countries = ref([]);
@@ -186,9 +205,9 @@ const carriers = ref<carriers[]>([]);
 const quotations = ref<any[]>([]);
 const shippingCost = ref<any[]>([]);
 const prices = ref<any[]>([]);
-const id_tracking = ref<number>(0);
-const id_shipment = ref<number>(0);
-const id_tracking_shipment = ref<number>(0);
+const dialogVisible = ref<boolean>(false);
+const optionBilling = ref<boolean>(true);
+const processPaymentType = ref<Number>(0);
 
 export interface carriers {
     id?: string;
@@ -414,7 +433,7 @@ const changeCarrier = async () => {
         'carriers': [{'name': selectedCarrier.value}]
         });
         try{
-            const response = await fetch('https://api.skydropx.com/v1/quotations/', {
+            const response = await fetch('https://api-demo.skydropx.com/v1/quotations/', {
             method: 'POST',
             headers: {
                 'Authorization': `Token token=${apiKey}`,
@@ -466,9 +485,73 @@ const deliveryChange = () => {
     selectedCarrier.value = null;
     totalShipment.value = 0;
 }
+function confirmBilling() { //Esto ya está
+    billable.value = true;
+    dialogVisible.value = false;
+}
+function continueWithoutBilling() {
+    dialogVisible.value = false;
+    optionBilling.value = false;
+
+    if (processPaymentType.value == 1 )
+    {
+        processPaymentStore();
+
+    } else if (processPaymentType.value == 2) {
+        processPayment();
+    }
+}
+function verifyBillableCheckbox() {
+      if (billable.value == false)
+    {
+        dialogVisible.value = true;
+        return false;
+    } else {
+        dialogVisible.value = false;
+        return true;
+    }
+    
+}
+
+const processPaymentStore = async () => {
+    try {
+        processPaymentType.value = 1;
+        const response = verifyBillableCheckbox();
+        if(response == false && optionBilling.value == true)
+        {
+            return false;
+        }
+        let inn = invoiceNotNull();
+        if(billable.value == true){
+            if(inn == false){
+                throw "Favor de llenar todos los datos de facturacion"
+            }
+        }
+        loading.value = true;
+        let order = await createOrder(1); //se crea el pedido y se guarda en la tabla 'ecommerce_order' y 'ecommerce_order_item'
+        cartStore.saveOrder(order.id); //almacena temporalmente el id del pedido y el estatus
+        await entity.newOrderStore();
+        router.push('/confirmation')
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            toast.add({ severity: 'error', summary: 'Error procesando el pago:', detail: error.response?.data, life: 7000 });
+        } else {
+            toast.add({ severity: 'error', summary: 'Error procesando el pago:', detail: error, life: 7000 });
+        }
+    } finally{
+        loading.value = false;
+    }
+};
+
 
 const processPayment = async () => {
     try {
+        processPaymentType.value = 2;
+        const response = verifyBillableCheckbox();
+        if(response == false && optionBilling.value == true)
+        {
+            return false;
+        }
         if(deliveryType.value == 2 && selectedReference.value == null)
             throw "Pedido con envio, favor de seleccionar/crear una direccion de envio"
         let inn = invoiceNotNull();
@@ -492,7 +575,6 @@ const processPayment = async () => {
             }else{
                 let payment_info = []
                 let order = await createOrder(2); //se crea el pedido y se guarda en la tabla 'ecommerce_order' y 'ecommerce_order_item'
-                // let shipmentCreated = saveShimpent(); // se guardan los datos del envio
                 let url = import.meta.env.VITE_INDEX_ROUTE
                 let totalPay = total.value + totalShipment.value;
                 payment_info = await entity.getPaymentInfo({id_order: order.id, total: totalPay , url: url}); //se obtiene la información del cliente y del pedido
@@ -501,10 +583,8 @@ const processPayment = async () => {
                 let status = response.data.status;
                 let update = await axios.post('Comercial/ECommerceOrder/updateOrder/' + response.data.order_id + '/' + response.data.id + '/' + status); //guarda el id_tracking del pedido y actualiza el estatus a pagado o no pagado
                 window.location.href = response.data.payment_method.url; //redirige al cliente a la URL de confirmación
+                let createshipment = await generateShipment();
                 cartStore.saveOrder(order.id); //almacena temporalmente el id del pedido y el estatus
-                if(deliveryType.value == 2){
-                    let createshipment = await generateShipment();
-                }
             }
         }
     } catch (error) {
@@ -529,30 +609,6 @@ const processPayment = async () => {
     }
 };
 
-const processPaymentStore = async () => {
-    try {
-        let inn = invoiceNotNull();
-        if(billable.value == true){
-            if(inn == false){
-                throw "Favor de llenar todos los datos de facturacion"
-            }
-        }
-        loading.value = true;
-        let order = await createOrder(1); //se crea el pedido y se guarda en la tabla 'ecommerce_order' y 'ecommerce_order_item'
-        cartStore.saveOrder(order.id); //almacena temporalmente el id del pedido y el estatus
-        await entity.newOrderStore();
-        router.push('/confirmation')
-    } catch (error) {
-        if (axios.isAxiosError(error)) {
-            toast.add({ severity: 'error', summary: 'Error procesando el pago:', detail: error.response?.data, life: 7000 });
-        } else {
-            toast.add({ severity: 'error', summary: 'Error procesando el pago:', detail: error, life: 7000 });
-        }
-    } finally{
-        loading.value = false;
-    }
-};
-
 const createOrder = async (payment_type) => {
     try{
         console.log(JSON.stringify(payment_type))
@@ -572,23 +628,6 @@ const createOrder = async (payment_type) => {
 
     }
 }
-
-// const saveShimpent = async () => {
-//     try {
-//         const entity = {id_shipment: id_shipment.value, id_tracking_shipment: id_tracking_shipment.value}
-//         let response = await axios.post('Inventory/Ecomerce/CreateShipment', entity, {
-//             headers: {
-//                 company: 1,
-//                 branch: 1,
-//                 users: authStore.id_usuario,
-//             }
-//         })
-//         toast.add({severity: 'success', summary: 'Envio', detail: 'Su envio se genero con exito. Recibira pronto un email con mas informacion.', life: 5000});
-//         return response.data;
-//     } catch (error) {
-//         console.log("Error ");
-//     }
-// }
 //Aqui se crean los nodos que solicita Skydropx para generar las guias de envio
 const generateShipment = async () =>{
     const info = await entity.getDimensionsByArticle(flattenedArray.value); //Se obtienen los parámetros de las dimensiones del paquete para poder cotizar el envío.
@@ -642,11 +681,9 @@ const generateShipment = async () =>{
   try {
       const shipmentResponse = await createShipment(shipment, apiKey);
       console.log('Shipment created:', JSON.stringify(shipmentResponse, null, 2));
-      
+
       // Accede al ID del `shipmentResponse`
-      id_tracking_shipment.value = shipmentResponse.data[0].id;
-      console.log(`id_tracking`,id_tracking_shipment.value);
-      const shipmentIdString = shipmentResponse.data.relationships.rates.data[0].id; //extraemos el id de la paqueteria seleccionadas ("rate" dentro de nodo de skydropx)
+      const shipmentIdString = shipmentResponse.data.relationships.rates.data[0].id; //extraemos el id de la paqueteria seleccionada
       const shipmentId = +shipmentIdString;
       // Usa `shipmentId` como argumento para `createLabel`
       const label = await createLabel(shipmentId);
@@ -661,7 +698,7 @@ const generateShipment = async () =>{
 }
 
 //Este metodo se conecta con Skydropx para crear envios a domicilio
-const createShipment = async (shipment: Shipment, apiKey: string) => { 
+const createShipment = async (shipment: Shipment, apiKey: string) => {
   const urlBase = import.meta.env.VITE_SKYDROPX_BASE_URL;
   const response = await fetch(urlBase + '/' +'shipments/', {
     method: 'POST',
@@ -671,14 +708,14 @@ const createShipment = async (shipment: Shipment, apiKey: string) => {
     },
     body: JSON.stringify(shipment)
   });
+
   if (!response.ok) {
     throw new Error(`Error: ${response.statusText}`);
   }
-
   const data = await response.json();
   console.log(`data`,data)
-  toast.add({ severity: 'success', summary: 'Envio generado', detail: 'Revise su correo para ver mas detalles.', life: 5000 });
   return data;
+
 }
 
     // Watcher para escuchar cambios en la selección de direcciones de envio
@@ -724,7 +761,7 @@ const createShipment = async (shipment: Shipment, apiKey: string) => {
 
 const getShipmentsById = async (id: number) => {
     const apiKey = import.meta.env.VITE_TOKEN_SKYDROPX;
-    const url = `https://api.skydropx.com/v1/shipments/${id}`; // Construye la URL usando el ID
+    const url = `https://api-demo.skydropx.com/v1/shipments/${id}`; // Construye la URL usando el ID
 
     try {
         const response = await fetch(url, {
@@ -755,8 +792,9 @@ const createLabel = async (id: number) => {
         "rate_id": id,  // Aquí se asigna el valor directamente
         "label_format": "pdf"  // Aquí se asigna el valor directamente
     });
+        console.log('bodyLabel',JSON.stringify(parameters, null,2));
         try {
-            const response = await fetch('https://api.skydropx.com/v1/labels', {
+            const response = await fetch('https://api-demo.skydropx.com/v1/labels', {
             method: 'POST',
             headers: {
                 'Authorization': `Token token=${apiKey}`,
@@ -764,12 +802,9 @@ const createLabel = async (id: number) => {
             },
             body: parameters
             });
-            const request = await response.json();
-            // Accede al ID del numero de rastreo para el envio
-            id_tracking_shipment.value = request.data.attributes.data[0].tracking_number;
-            console.log('labelCreated:', JSON.stringify(request, null, 2));
-            console.log(`id_traking:`,id_tracking_shipment);
-            return request;
+            const data = await response.json();
+            console.log('labelCreated:', JSON.stringify(data, null, 2));
+            return data;
         }catch(error){
             console.log("error", error)
         }finally{
