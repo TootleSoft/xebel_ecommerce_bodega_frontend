@@ -113,6 +113,7 @@
   height: auto;
   max-height: 100%;
   object-fit: cover; /* Asegura que la imagen mantenga sus proporciones */
+  border-radius: 40px !important;
 }
 
 .carousel-caption {

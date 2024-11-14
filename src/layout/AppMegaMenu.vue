@@ -13,65 +13,97 @@
     <div class="p-grid crud-demo MegaMenuBackground">
         <div class="col-12">
             <div class="grid formgrid p-fluid">
-                <div class="field col-12 sm:col-8 md:col-2 xl:col-2 flex align-items-center justify-content-center">
+                <div class="field col-12 sm:col-8 md:col-2 xl:col-2 flex align-items-center justify-content-center" style="cursor: pointer;">
                     <img :src="'/src/images/logo/appname-' + (layoutConfig.colorScheme.value === 'light' ? 'dark' : 'light') + '.png'"
-                        class="app-logo-small h-5rem" @click="router.push('/');"/>
+                        class="app-logo-small h-10rem" @click="router.push('/');"/>
                 </div>
+                
+                    
                 <div class="field col-12 sm:col-12 md:col-6 xl:col-6">
                     <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
                     <FloatLabel>
-                        <AutoComplete v-model="serch" @item-select="selectSuggestion" inputId="serch" optionLabel="name"
-                            :suggestions="filteredArticles" @complete="search" class="text-lg custom-border"
-                            v-on:keyup.enter="router.push('/products/s/'+serch)" />
-                        <label for="serch">
-                            <i class="pi pi-search"></i> Buscador por productos...
+                        <AutoComplete
+                            v-model="serch"
+                            @item-select="selectSuggestion"
+                            inputId="serch"
+                            optionLabel="name"
+                            :suggestions="filteredArticles"
+                            @complete="search"
+                            class="text-lg custom-border"
+                            v-on:keyup.enter="router.push('/products/s/'+serch)"
+                        />
+                        <label class="placeholder" for="serch">
+                            Buscador por productos...
                         </label>
+                        <i class="pi pi-search search-icon"></i> <!-- Ícono de búsqueda -->
                     </FloatLabel>
                 </div>
                 <!-- <div class="field col-12 sm:col-12 md:col-1 xl:col-1">
                 </div> -->
                 <div v-if="authStore.id_usuario != undefined" class="field col-2">
                     <br>
-                    <Button icon="pi pi-user" label="Mi Cuenta" severity="contrast" class="label-button-user"  outlined @click="tuser" />
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <Button icon="pi pi-user icon-large" label="Mi Cuenta" severity="contrast" class="label-button-user"  outlined @click="tuser" />
                     <TieredMenu ref="muser" class="tiered-menu-class" id="overlay_tmenu" :model="user" popup />
                 </div>
                 <div v-if="authStore.id_usuario == undefined" class="field col-2">
                     <br>
-                    <Button class="label-button-user" icon="pi pi-user" label="Ingresar" severity="contrast" outlined
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <Button class="label-button-user" icon="pi pi-user icon-large" label="Ingresar" severity="contrast" outlined
                         @click="tlogin" />
                     <TieredMenu ref="mlogin" class="tiered-menu-class" id="overlay_tmenu" :model="login" popup />
                 </div>
                 <div class="field col-2">
                     <br>
-                    <Button class="label-button-user" @click="shoppingCart" icon="pi pi-shopping-cart"
-                        :label="`Carrito (${cartStore.cart.length})`" severity="contrast" outlined />
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <Button class="label-button-user" @click="shoppingCart" icon="pi pi-shopping-cart icon-large"
+                        :label="`Mi Carrito (${cartStore.cart.length})`" severity="contrast" outlined />
                 </div>
 
                 <!-- <div class="field col-12 sm:col-12 md:col-1 xl:col-1">
                         <Button icon="pi pi-bell" label='Alertas' severity="contrast" outlined/>
                     </div> -->
-                <div class="field col-12 sm:col-12 md:col-12 xl:col-12">
+                <div class="field-nav col-12 sm:col-12 md:col-12 xl:col-12">
                     <Menubar :model="items" class="MegaMenuBar">
+
                         <template #item="{item}">
-                            <a v-if="item.to == '#finalcontacto'"
-                                class="flex align-items-center cursor-pointer px-3 py-2 overflow-hidden relative font-semibold text-lg uppercase"
-                                style="border-radius: 2rem" @click="scrollToFinalContacto()">
+
+                            <a v-if="item.to == '#finalcontacto'" 
+                                class="flex align-items-center px-3 py-2 overflow-hidden relative font-semibold text-lg uppercase"
+                                @click="scrollToFinalContacto()">
                                 <span class="MegaMenuText">{{ item.label }}</span>
                             </a>
+
                             <a v-else-if="item.root && item.items_type == 0"
-                                class="flex align-items-center cursor-pointer px-3 py-2 overflow-hidden relative font-semibold text-lg uppercase"
-                                style="border-radius: 2rem" @click="navigateToExternal(item.to)">
+                                class="flex align-items-center px-3 py-2 overflow-hidden relative font-semibold text-lg uppercase"
+                                @click="navigateToExternal(item.to)">
                                 <span class="MegaMenuText">{{ item.label }}</span>
                             </a>
+
                             <a v-else-if="item.root"
-                                class="flex align-items-center cursor-pointer px-3 py-2 overflow-hidden relative font-semibold text-lg uppercase"
-                                style="border-radius: 2rem" @click="router.push(item.to)">
+                                class="flex align-items-center px-3 py-2 overflow-hidden relative font-semibold text-lg uppercase"
+                                @click="router.push(item.to)">
                                 <span class="MegaMenuText">{{ item.label }}</span>
                             </a>
+
                             <a v-else class="flex align-items-center p-3 cursor-pointer mb-2 gap-3"
                                 @click="router.push(item.to)">
-                                <span>{{ item.label }}</span>
+                                <span class="text-submenu">{{ item.label }}</span>
                             </a>
+
                         </template>
                     </Menubar>
                 </div>
@@ -213,10 +245,132 @@ const user = ref<any[]>([
     },
 ]);
 </script>
-<style>
-.custom-border .p-inputtext {
-  border-color:  #11BACC; /* Cambia #ff0000 por el color de tu preferencia */
+<style scoped>
+
+.MegaMenuBar a:not(.cursor-pointer) {
+  background-color: white !important;
+  cursor: pointer;
 }
+a {
+    background-color: transparent !important;
+}
+a:hover {
+    background-color: white !important;
+}
+a:active {
+    background-color: white !important;
+}
+.text-submenu {
+    font-weight: bold;
+    padding: 0px;
+}
+.text-submenu:active {
+    color: #0eabbd !important;
+}
+.text-submenu:hover {
+    color: white;
+}
+a.flex.cursor-pointer:hover {
+    color: white;
+    background-color: #0eabbd !important;
+    padding: 0px;
+}
+a.flex.cursor-pointer-nav:active {
+    color: white;
+    background-color: white !important;
+    padding: 0px;
+}
+
+.field-nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.MegaMenuBar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 1200px;
+}
+.MegaMenuBar .p-menubar-list {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+.MegaMenuText {
+    font-weight: 800;
+}
+.MegaMenuText:hover {
+    color: #11BACC;
+}
+.placeholder {
+    color: #aaaaaf;
+    font-weight: bold;
+    font-size: 1.3rem;
+    padding-left: 10px;
+}
+.custom-border .p-inputtext {
+    background-color: #ffffff !important; /* Fondo blanco para el campo de entrada */
+    font-size: 1.4rem;
+    padding-left: 15px;
+    padding-right: 40px;
+    height: 50px;
+    border-radius: 8px; /* Bordes redondeados */
+    border: 1px solid #ddd; /* Color de borde suave */
+    font-style: italic !important;
+}
+
+.custom-border .p-inputtext:hover {
+    border-color: #ccc; /* Color de borde en hover */
+    background-color: #fff !important; /* Fondo blanco en hover */
+}
+
+.custom-border .p-inputtext:focus {
+    border-color: #007bff; /* Color de borde cuando está enfocado */
+    background-color: #fff !important; /* Fondo blanco cuando está enfocado */
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.25); /* Sombra suave al enfocarse */
+}
+
+.custom-border .p-float-label {
+    font-size: 1rem;
+    color: #666;
+}
+
+/* Agregar un fondo blanco específico cuando el campo no tiene foco */
+.custom-border .p-inputtext:not(:focus) {
+    background-color: #fff !important; /* Asegura que el fondo siempre sea blanco */
+}
+.icon-large {
+    font-size: 1.5rem;
+}
+.search-icon {
+    position: absolute;
+    right: 20px; /* Ubica el ícono hacia la derecha */
+    top: 50%;
+    transform: translateY(-50%);
+    color: #11bacc; /* Color azul del ícono */
+    pointer-events: none; /* No permite hacer clic en el ícono */
+    font-size: 1.4rem; /* Tamaño del ícono */
+}
+/* Ajusta el tamaño del label (texto de ayuda) */
+.custom-border .p-float-label {
+    font-size: 1rem; /* Tamaño de la etiqueta flotante */
+    color: #666; /* Color del texto de la etiqueta */
+}
+
+/* Cambia el color al pasar el mouse sobre el campo de búsqueda */
+.custom-border .p-inputtext:hover {
+    border-color: white; /* Color más oscuro cuando el campo está en hover */
+    
+}
+
+/* Cuando el campo está enfocado */
+/* .custom-border .p-inputtext:focus {
+    border-color: #007bff;  Color de borde cuando se hace foco 
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.25); 
+} */
+
 .tiered-menu-class {
   border: none;
 }

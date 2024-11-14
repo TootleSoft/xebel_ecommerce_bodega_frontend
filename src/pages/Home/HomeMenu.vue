@@ -2,25 +2,35 @@
     <div class="card">
         <div class="hidden sm:block">
             <div class="grid">
-                <div class="col-5 flex align-content-center flex-wrap">
-                    <div class="bold-text md:text-6xl flex align-items-center justify-content-center w-full">
-                        <img :src="'/src/images/villas_custom/diente.jpg'" class="hidden md:block w-8rem"/>
-                    </div>
-                    <div class="col-12 hidden md:block flex align-content-center">
-                        <div class="bold-text-home md:text-2xl xl:text-6xl flex align-items-center justify-content-center">Descubre nuestros</div>
-                        <div class="cyan-text-home md:text-2xl xl:text-6xl flex align-items-center justify-content-center">increíbles productos</div>
-                        <span class="cyan-text-inicio md:text-sm xl:text-2xl flex align-items-center justify-content-center">Descubre la única variedad de marcas y</span>
-                        <span class="cyan-text-inicio md:text-sm xl:text-2xl flex align-items-center justify-content-center">productos que &nbsp<strong>Villa de Cortés Monterrey</strong></span>
-                        <span class="cyan-text-inicio md:text-sm xl:text-2xl flex align-items-center justify-content-center">tiene para ti</span>
-                        <br>
-                        <div class="w-full flex align-items-center justify-content-center">
-                            <Button ref="mlogin" @click="tlogin" label="Registrate para comprar" class="button"
-                                rounded></Button>
-                        </div>
-                    </div>
+                <div class="col-6 flex align-content-center flex-wrap" style="padding: 0px ">
+
+
+<div class="col-12 flex justify-content-center" style="padding-top: 0px;">
+  <div class="text-container">
+        <!--Los textos principales-->
+        <div class="bold-text-home text-center md:text-4xl xl:text-6xl flex-wrap justify-center">
+            <div class="w-full md:text-7xl xl:text-8xl" style="text-align: left;">Descubre</div>
+            <div class="w-full md:text-7xl xl:text-8xl" style="text-align: left;">nuestros</div>
+            <div class="w-full md:text-7xl xl:text-8xl" style="color: #11BACC; text-align: left">increíbles</div>
+            <div class="w-full md:text-7xl xl:text-8xl" style="color: #11BACC; text-align: left">productos.</div>
+        </div>
+        <!--La descripción adicional-->
+        <div class="container-cyan-text-inicio">
+            <span class="cyan-text-inicio text-center md:text-sm xl:text-2xl w-full">Descubre la única variedad de marcas y </span>
+            <span class="cyan-text-inicio text-center md:text-sm xl:text-2xl w-full">productos que <strong>Villa de Cortés Monterrey </strong></span>
+            <span class="cyan-text-inicio text-center md:text-sm xl:text-2xl w-full">tiene para ti.</span>
+        </div>
+        <br>
+    <div class="w-full flex justify-center items-center">
+        <Button ref="mlogin" @click="tlogin" label="Registrate para comprar" class="button" rounded></Button>
+    </div>
+  </div>
+</div>
+
+
                 </div>
-                <div class="col-7">
-                    <BasicImageCarusell />
+                <div class="col-6" >
+                    <BasicImageCarusell class="image-with-shadow" />
                 </div>
             </div>
         </div>
@@ -289,17 +299,27 @@ const products2 = ref([
 
 </script>
 <style lang="scss" scoped>
+.text-container {
+    width: 50%;
+    text-align: left;
+    margin: 0 auto;
+}
+.image-with-shadow {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1); 
+    border-radius: 40px !important; 
+}
 .cyan-text {
   color: #11BACC;
-  font-size:450%;
+  font-size: 450%;
   font-family: 'Poppins', sans-serif;
   text-align: justify; /* Justifica el texto */
   line-height: 2cm; /* Altura de línea específica */
-  font-weight:900;
+  font-weight: 900;
 }
 .cyan-text2 {
   color: #11BACC;
-  font-size:150%;
+  font-size: 150%;
   font-family: Poppins;
   text-align: justify; /* Justifica el texto */
   line-height: 1.1cm; /* Altura de línea específica */
@@ -318,12 +338,15 @@ const products2 = ref([
   text-align: justify; /* Justifica el texto */
   line-height: 1.1cm; /* Altura de línea específica */
 }
+.container-cyan-text-inicio {
+    margin-top: 30px;
+}
 .cyan-text-inicio {
   color: #11BACC;
-  font-size:100%;
+  font-size: 100%;
   font-family: Poppins;
-  text-align: justify; /* Justifica el texto */
-  line-height: 200%; /* Altura de línea específica */
+  text-align: left; /* Alineación a la izquierda */
+  line-height: 1.5; /* Un poco más de espacio entre las líneas de texto */
 }
 .container {
     display: flex;
@@ -385,24 +408,22 @@ const products2 = ref([
     line-height: 2.1cm; /* Altura de línea específica */
 }
 
-.bold-text-home {
-    font-weight:800;
-    font-size:1cm;
-    font-family: Poppins;
-    color: #1B2955;
-    line-height: 150%; /* Altura de línea específica */
-}
-
 .cyan-text-home {
   color: #11BACC;
-  font-size:450%;
+  font-size: 80px !important;
   font-family: 'Poppins', sans-serif;
-  text-align: justify; /* Justifica el texto */
-  line-height: 150%; /* Altura de línea específica */
-  font-weight:900;
+  text-align: left; /* Alineación a la izquierda */
+  line-height: 1.2; /* Menos espacio entre renglones */
+  font-weight: 900;
 }
 
-
+.bold-text-home {
+  font-weight: 800;
+  font-size: 80px !important;
+  font-family: Poppins;
+  color: #1B2955;
+  line-height: 1.2; /* Menos espacio entre renglones */
+}
 
 .centered-text {
   display:flex;
