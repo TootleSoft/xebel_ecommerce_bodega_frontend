@@ -311,42 +311,39 @@ const products2 = ref([
 }
 .cyan-text {
   color: #11BACC;
-  font-size: 450%;
-  font-family: 'Poppins', sans-serif;
+  font-size:450%;
+  font-family: Montsemibold;
   text-align: justify; /* Justifica el texto */
   line-height: 2cm; /* Altura de línea específica */
-  font-weight: 900;
+  font-weight:800;
 }
 .cyan-text2 {
   color: #11BACC;
-  font-size: 150%;
-  font-family: Poppins;
+  font-size:150%;
+  font-family: Montserrat;
   text-align: justify; /* Justifica el texto */
   line-height: 1.1cm; /* Altura de línea específica */
 }
 .cyan-text3 {
   color: #11BACC;
   font-size:50px;
-  font-family: Poppins;
+  font-family: Montserrat;
   text-align: justify; /* Justifica el texto */
   line-height: 0.8cm; /* Altura de línea específica */
 }
 .cyan-text4 {
   color: #11BACC;
   font-size:200%;
-  font-family: Poppins;
+  font-family: Montserrat;
   text-align: justify; /* Justifica el texto */
   line-height: 1.1cm; /* Altura de línea específica */
 }
-.container-cyan-text-inicio {
-    margin-top: 30px;
-}
 .cyan-text-inicio {
   color: #11BACC;
-  font-size: 100%;
-  font-family: Poppins;
-  text-align: left; /* Alineación a la izquierda */
-  line-height: 1.5; /* Un poco más de espacio entre las líneas de texto */
+  font-size:100%;
+  font-family: Montserrat;
+  text-align: justify; /* Justifica el texto */
+  line-height: 200%; /* Altura de línea específica */
 }
 .container {
     display: flex;
@@ -401,29 +398,31 @@ const products2 = ref([
 
 
 .bold-text {
-    font-weight:800;
+    font-weight:400;
     font-size:1cm;
-    font-family: Poppins;
+    font-family: Montsemibold;
     color: #1B2955;
     line-height: 2.1cm; /* Altura de línea específica */
 }
 
-.cyan-text-home {
-  color: #11BACC;
-  font-size: 80px !important;
-  font-family: 'Poppins', sans-serif;
-  text-align: left; /* Alineación a la izquierda */
-  line-height: 1.2; /* Menos espacio entre renglones */
-  font-weight: 900;
+.bold-text-home {
+    font-weight:400;
+    font-size:1cm;
+    font-family: Montsemibold;
+    color: #1B2955;
+    line-height: 150%; /* Altura de línea específica */
 }
 
-.bold-text-home {
-  font-weight: 800;
-  font-size: 80px !important;
-  font-family: Poppins;
-  color: #1B2955;
-  line-height: 1.2; /* Menos espacio entre renglones */
+.cyan-text-home {
+  color: #11BACC;
+  font-size:450%;
+  font-family: 'Montsemibold', sans-serif;
+  text-align: justify; /* Justifica el texto */
+  line-height: 150%; /* Altura de línea específica */
+  font-weight:400;
 }
+
+
 
 .centered-text {
   display:flex;
@@ -529,24 +528,6 @@ const products2 = ref([
   .social-icons i {
     font-size: 1.5rem; /* Reducir tamaño de los íconos en pantallas pequeñas */
   }
-}
-
-@font-face {
-    font-family: 'Poppins';
-    font-style: normal;
-    font-weight: 400;
-    src: local('Poppins Regular'), local('Poppins-Regular'),
-        url('/src/assets/layout/fonts/poppins-v20-latin-regular.woff2') format('woff2'),
-        url('/src/assets/layout/fonts/poppins-v20-latin-regular.woff') format('woff');
-}
-
-@font-face {
-    font-family: 'Poppins';
-    font-style: normal;
-    font-weight: 700;
-    src: local('Poppins Bold'), local('Poppins-Bold'),
-        url('/src/assets/layout/fonts/poppins-v20-latin-700.woff2') format('woff2'),
-        url('/src/assets/layout/fonts/poppins-v20-latin-700.woff') format('woff');
 }
 
 .full-width-sm-index {
