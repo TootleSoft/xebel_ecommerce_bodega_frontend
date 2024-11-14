@@ -41,20 +41,24 @@
                 :src="imgroute(item.id, item.barcode, item.id_brand)"
                 class="h-15rem shadow-5 border-round"
                 @click="navigateToProduct(item)"
+                style="font-family: Montbold !important;"
               />
             </div>
           </div>
+          
           <div
-            class="flex align-items-center justify-content-center cursor-pointer px-3 py-2 overflow-hidden relative font-semibold text-lg uppercase"
+            class="flex align-items-center justify-content-center cursor-pointer px-3 py-2 overflow-hidden relative text-lg uppercase"
+          >
+            <span class="text-l text-900 mb-3 text-500" style="color: #0eacbe !important; font-family: Montbold !important;">{{ "$"+item.ecomerce_offer_price .toFixed(2) }}</span>
+          </div>
+          <div
+            class="flex align-items-center justify-content-center cursor-pointer px-3 py-2 overflow-hidden relative text-lg uppercase"
+            style="font-family: Montbold !important"
           >
             {{ item.name }}
           </div>
-          <div
-            class="flex align-items-center justify-content-center cursor-pointer px-3 py-2 overflow-hidden relative font-semibold text-lg uppercase"
-          >
-            <span class="text-l text-900 mb-3 text-red-500">{{ "$"+item.ecomerce_offer_price .toFixed(2) }}</span>
-          </div>
-        </div></swiper-slide>
+        </div>
+      </swiper-slide>
     </swiper>
   </div>
 </template>

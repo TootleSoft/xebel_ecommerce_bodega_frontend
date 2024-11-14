@@ -11,8 +11,8 @@
         <div class="bold-text-home text-center md:text-4xl xl:text-6xl flex-wrap justify-center">
             <div class="w-full md:text-7xl xl:text-8xl" style="text-align: left;">Descubre</div>
             <div class="w-full md:text-7xl xl:text-8xl" style="text-align: left;">nuestros</div>
-            <div class="w-full md:text-7xl xl:text-8xl" style="color: #11BACC; text-align: left">increíbles</div>
-            <div class="w-full md:text-7xl xl:text-8xl" style="color: #11BACC; text-align: left">productos.</div>
+            <div class="w-full md:text-7xl xl:text-8xl" style="text-align: left; color: #11bacc !important">increíbles</div>
+            <div class="w-full md:text-7xl xl:text-8xl" style="text-align: left; color: #11bacc !important">productos.</div>
         </div>
         <!--La descripción adicional-->
         <div class="container-cyan-text-inicio">
@@ -55,9 +55,9 @@
 
         <div class="hidden sm:block">
             <div class="flex justify-content-center flex-wrap">
-                <div class="flex align-items-center justify-content-center w-16rem m-2 cyan-text md:text-7xl xl:text-7xl font-bold">
-                    Nuestras</div> 
-                <div class="flex align-items-center justify-content-center w-15rem m-2 md:text-7xl xl:text-7xl font-bold" style="color: #1B2955;">marcas</div>
+                <div class="flex align-items-center justify-content-center w-16rem m-2 cyan-text md:text-7xl xl:text-7xl" style="font-family: Montbold;">
+                    Nuestras  </div> 
+                <div class="flex align-items-center justify-content-center w-15rem m-2 md:text-7xl xl:text-7xl" style="color: #1B2955; font-family: Montbold; margin-left: 30px !important;">marcas.</div>
                 <!-- <div class="cyan-text xl:text-7xl flex align-items-center justify-content-center w-4rem h-4rem">Nuestras</div>
                 <div class="bold-text xl:text-7xl flex align-items-center justify-content-center w-4rem h-4rem">marcas</div> -->
             </div>
@@ -66,42 +66,47 @@
 
         <div class="hidden sm:block">
             <div class="flex justify-content-center flex-wrap">
-                <div class="flex align-items-center justify-content-center w-25rem m-2 cyan-text md:text-7xl xl:text-7xl font-bold">
+                <div class="flex align-items-center justify-content-center w-22rem m-2 cyan-text md:text-7xl xl:text-7xl font-bold" style="font-family: Montbold;">
                     Promociones</div> 
-                <div class="flex align-items-center justify-content-center w-13rem m-2 md:text-7xl xl:text-7xl font-bold" style="color: #1B2955;">para ti</div>
+                <div class="flex align-items-center justify-content-center w-18rem m-2 md:text-7xl xl:text-7xl" style="color: #1B2955; font-family: Montbold">para ti</div>
             </div>
         </div>
         <div class="block sm:hidden">
             <div class="flex justify-content-center align-items-center flex-wrap">
-                <div class="flex align-items-center justify-content-center w-15rem m-2 cyan-text text-5xl font-bold">
+                <div class="flex align-items-center justify-content-center w-15rem m-2 cyan-text text-7xl" style="font-family: Montbold;">
                     Promociones</div> 
-                <div class="flex align-items-center justify-content-center w-8rem m-2 text-5xl font-bold" style="color: #1B2955;">para ti</div>
+                <div class="flex align-items-center justify-content-center w-8rem m-2 text-7xl" style="color: #1B2955; font-family: Montbold;">para ti</div>
             </div>
         </div>
+        <div class="full-screen-container">
+            <BasicBundleCarusell />
+        </div>
         
-        <BasicBundleCarusell />
 
         <div class="hidden sm:block">
             <div class="flex justify-content-center flex-wrap">
-                <div class="flex align-items-center justify-content-center w-13rem m-2 cyan-text md:text-7xl xl:text-7xl font-bold">
-                    Ofertas</div>
-                <div class="flex align-items-center justify-content-center w-13rem m-2 md:text-7xl xl:text-7xl font-bold" style="color: #1B2955;">para ti</div>
+                <div class="flex align-items-center justify-content-center w-10rem m-2 cyan-text md:text-7xl xl:text-7xl" style="font-family: Montbold;">
+                    Ofertas </div>
+                <div class="flex align-items-center justify-content-center w-18rem m-2 md:text-7xl xl:text-7xl" style="color: #1B2955; font-family: Montbold;"> para ti</div>
             </div>
         </div>
         <div class="block sm:hidden">
             <div class="flex align-items-center justify-content-center flex-wrap">
-                <div class="flex align-items-center justify-content-center w-10rem m-2 cyan-text text-5xl font-bold">
+                <div class="flex align-items-center justify-content-center w-14rem m-2 cyan-text text-5xl" style="font-family: Montbold;">
                     Ofertas</div>
-                <div class="flex align-items-center justify-content-center w-8rem m-2 text-5xl font-bold" style="color: #1B2955;">para ti</div>
+                <div class="flex align-items-center justify-content-center w-8rem m-2 text-7xl" style="color: #1B2955; font-family: Montbold;">para ti</div>
             </div>
         </div>
-        <BasicOffertsCarusell />
+        <div class="col-12">
+
+            <BasicOffertsCarusell />
+        </div>
 
         <div class="block sm:hidden">
             <div class="flex align-items-center justify-content-center flex-wrap">
-                <div class="flex align-items-center justify-content-center w-10rem m-2 cyan-text text-5xl font-bold">
+                <div class="flex align-items-center justify-content-center w-10rem m-2 cyan-text text-5xl" style="font-family: Montbold;">
                     Nuestras</div> 
-                <div class="flex align-items-center justify-content-center w-10rem m-2 text-5xl font-bold" style="color: #1B2955;">marcas</div>
+                <div class="flex align-items-center justify-content-center w-10rem m-2 text-5xl" style="color: #1B2955; font-family: Montbold;">marcas</div>
                 <!-- <div class="cyan-text xl:text-7xl flex align-items-center justify-content-center w-4rem h-4rem">Nuestras</div>
                 <div class="bold-text xl:text-7xl flex align-items-center justify-content-center w-4rem h-4rem">marcas</div> -->
             </div>
@@ -110,8 +115,8 @@
 
         <div class="hidden sm:block">
             <div class="flex justify-content-center flex-wrap">
-                <p class="flex align-items-center justify-content-center w-20rem m-2 cyan-text md:text-7xl xl:text-7xl font-bold">¿Quiénes</p>
-                <p class="flex align-items-center justify-content-center w-13rem m-2 md:text-7xl xl:text-7xl font-bold" style="color: #1B2955;">somos?</p>
+                <p class="flex align-items-center justify-content-center w-22rem m-2 cyan-text md:text-7xl xl:text-7xl" style="font-family: Montbold;">¿Quiénes</p>
+                <p class="flex align-items-center justify-content-center w-13rem m-2 md:text-7xl xl:text-7xl" style="color: #1B2955; font-family: Montbold;">somos?</p>
             </div>
         </div>
         <!-- <div class="container">
@@ -136,15 +141,15 @@
                 <BasicImageCarusell2 />
             </div>
             <div class="col-6 hidden sm:block">
-                <p class="bold-text xl:text-8xl font-bold-800 text-left">Más de 30 años a tu</p>
+                <p class="bold-text xl:text-8xl font-bold-800 text-left" style="font-family: Montbold;">Más de 30 años a tu</p>
                 <br>
                 <p class="cyan-text xl:text-8xl text-left">servicio.</p>
                 <br>
-                <p class="cyan-text4 xl:text-2xl text-left"> De <strong>Ciudad de México a Monterrey</strong>, llevamos
+                <p class="cyan-text4 xl:text-2xl text-left" style="font-family: Montsemibold;"> De <strong>Ciudad de México a Monterrey</strong>, llevamos
                     más de 30 años brindando soluciones a los
                     profesionistas de la industria dental. </p>
                     <br>
-                <p class="cyan-text4 xl:text-2xl text-left">En <strong>Villa de Cortés Monterrey</strong> somos una
+                <p class="cyan-text4 xl:text-2xl text-left" style="font-family: Montsemibold;">En <strong>Villa de Cortés Monterrey</strong> somos una
                     empresa mexicana líder en venta de insumos
                     dentales y ofreciéndote la mejor calidad y
                     proveedores del mercado. </p>
@@ -299,6 +304,12 @@ const products2 = ref([
 
 </script>
 <style lang="scss" scoped>
+.full-screen-container {
+  display: flex;
+  justify-content: center; /* Centra el contenido horizontalmente */
+  align-items: center;     /* Centra el contenido verticalmente */
+  width: 100%;             /* Asegura que ocupe el 100% del ancho de la ventana */
+}
 .text-container {
     width: 50%;
     text-align: left;
@@ -411,6 +422,7 @@ const products2 = ref([
     font-family: Montsemibold;
     color: #1B2955;
     line-height: 150%; /* Altura de línea específica */
+    line-height: 5rem;
 }
 
 .cyan-text-home {
