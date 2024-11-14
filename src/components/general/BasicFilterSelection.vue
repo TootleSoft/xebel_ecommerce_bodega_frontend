@@ -10,7 +10,7 @@
             <Button v-if="!ViewMoreLess && allcategories.length > 5" label=" Ver Mas" link @click="viewmore"/>
             <Button v-if="ViewMoreLess" label=" Ver Menos" link @click="viewless"/>
     </div>
-</template>
+</template> 
 
 <script setup lang="ts">
 import { ref, watch, onMounted } from 'vue';
@@ -58,3 +58,74 @@ onMounted(()=>{
 })
 
 </script>
+
+<style scoped>
+.card {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin: 20px;
+}
+
+h1.text-900 {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #333;
+}
+
+label {
+    font-size: 1rem;
+    margin-left: 8px;
+    color: #11bacc;
+    font-weight: bold;
+}
+
+button {
+    margin-top: 15px;
+    padding: 10px 20px;
+    background-color: #0eabbd;
+    color: white;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+button:hover {
+    background-color: #009b99;
+}
+
+button:focus {
+    outline: none;
+}
+
+.flex {
+    display: flex;
+    align-items: center;
+}
+
+.align-items-center {
+    align-items: center;
+}
+
+.mb-4 {
+    margin-bottom: 1rem;
+}
+
+.text-base {
+    font-size: 1rem;
+}
+
+.text-900 {
+    font-weight: bold;
+}
+
+.checkbox {
+    margin-right: 10px;
+}
+
+br {
+    margin-bottom: 15px;
+}
+</style>

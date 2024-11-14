@@ -13,7 +13,7 @@
                         <div class=" full-width-sm-index">
                         <div class="p-3 flex justify-content-center align-items-center flex-wrap">
                             <div class="justify-content-center align-items-center flex">
-                                <span class="w-full text-8xl">
+                                <span class="w-full text-8xl" style="font-weight: 800; font-family: 'Poppins';">
                                     {{ pagetitle }}
                                 </span>
                             </div>
@@ -24,10 +24,15 @@
                 <div class="field hidden sm:block col-2">
                     <!-- Definitivamente hacerlo componente -->
                     <span v-if="is_search==true" class="text-900 font-medium text-4xl mb-4">{{ pagetitle }}</span>
-                    <br>
-                    <span class="text-900 font-medium text-xs mb-4">{{ products.length }} Productos Relacionados</span>
-                    <br>
-                    <br>
+                        <br>
+                    <span class="text-900 font-medium text-md mb-4" 
+                    style="font-weight: 800 !important;
+                    color: #11BACC !important;
+                    padding-left: 20px !important;
+                    "
+                    >{{ products.length }} Productos Relacionados</span>
+                        <br>
+                        <br>
                     <BasicFilterSelection @v-model="getcategories" :key="componentKey" :allcategories="subgroups"
                         filtername="Filtro por Grupos" :selected="categoryselection"/>
                     <BasicFilterSelection @v-model="getfilterprices" :key="componentKey" :allcategories="priceorder"
@@ -52,12 +57,12 @@
                         <br>
                         <!-- Agregar paginator obligatorio -->
                         <BasicProductGrid :allproducts="products" :pagesize="40" :pagetitle="pagetitle"
-                            :key="productsKey" />
+                            :key="productsKey"/>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </div> 
 </template>
 
 <script setup lang="ts">

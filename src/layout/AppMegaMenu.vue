@@ -246,7 +246,6 @@ const user = ref<any[]>([
 ]);
 </script>
 <style scoped>
-
 .MegaMenuBar a:not(.cursor-pointer) {
   background-color: white !important;
   cursor: pointer;
@@ -311,13 +310,13 @@ a.flex.cursor-pointer-nav:active {
     padding-left: 10px;
 }
 .custom-border .p-inputtext {
-    background-color: #ffffff !important; /* Fondo blanco para el campo de entrada */
+    background-color: #ffffff !important;
     font-size: 1.4rem;
     padding-left: 15px;
     padding-right: 40px;
     height: 50px;
-    border-radius: 8px; /* Bordes redondeados */
-    border: 1px solid #ddd; /* Color de borde suave */
+    border-radius: 8px;
+    border: 1px solid #ddd;
     font-style: italic !important;
 }
 
@@ -327,11 +326,24 @@ a.flex.cursor-pointer-nav:active {
 }
 
 .custom-border .p-inputtext:focus {
-    border-color: #007bff; /* Color de borde cuando está enfocado */
-    background-color: #fff !important; /* Fondo blanco cuando está enfocado */
-    box-shadow: 0 0 8px rgba(0, 123, 255, 0.25); /* Sombra suave al enfocarse */
+    border-color: #007bff;
+    background-color: #fff !important;
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.25);
 }
-
+@media (max-width: 760px) {
+    .custom-border .p-inputtext {
+        width: 80%; /* Hace que la barra de búsqueda ocupe el 80% del contenedor */
+        max-width: 350px; /* Limita el ancho máximo para que no ocupe toda la pantalla */
+        margin: 0 auto; /* Centra la barra de búsqueda en la pantalla */
+        font-size: 1.2rem; /* Ajusta el tamaño de la fuente para pantallas pequeñas */
+        padding-left: 10px; /* Reduce el padding izquierdo para mejorar la estética */
+        padding-right: 30px; /* Reduce el padding derecho */
+        height: 45px; /* Ajusta la altura del input */
+    }
+    .field.col-12.sm\:col-12.md\:col-6.xl\:col-6 {
+        text-align: center; /* Centra la barra de búsqueda dentro del contenedor */
+    }
+} 
 .custom-border .p-float-label {
     font-size: 1rem;
     color: #666;
@@ -346,7 +358,7 @@ a.flex.cursor-pointer-nav:active {
 }
 .search-icon {
     position: absolute;
-    right: 20px; /* Ubica el ícono hacia la derecha */
+    right: 15px; /* Ubica el ícono hacia la derecha */
     top: 50%;
     transform: translateY(-50%);
     color: #11bacc; /* Color azul del ícono */
