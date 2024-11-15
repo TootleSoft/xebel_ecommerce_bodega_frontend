@@ -36,7 +36,7 @@
     >
       <swiper-slide v-for="(item, i) in products" :key="i"><div class="surface-border border-round m-2 p-3">
           <div class="mb-3 flex align-items-center justify-content-center">
-            <div class="relative mx-auto">
+            <div class="relative mx-auto" style="font-family: 'Montserrat' !important">
               <img 
                 :src="imgroute(item.id, item.barcode, item.id_brand)"
                 class="h-15rem shadow-5 border-round"
@@ -49,14 +49,13 @@
           <div
             class="flex align-items-center justify-content-center cursor-pointer px-3 py-2 overflow-hidden relative text-lg uppercase"
           >
-            <span class="text-l text-900 mb-3 text-500" style="color: #0eacbe !important; font-family: Montbold !important;">{{ "$"+item.ecomerce_offer_price .toFixed(2) }}</span>
+            <span class="text-l mb-3 " style="color: #0eacbe !important; font-family: Montbold !important; font-size: 1.8rem">{{ "$"+item.ecomerce_offer_price .toFixed(2) }}</span>
           </div>
           <div
-            class="flex align-items-center justify-content-center cursor-pointer px-3 py-2 overflow-hidden relative text-lg uppercase"
-            style="font-family: Montbold !important"
-          >
-            {{ item.name }}
-          </div>
+  class="flex align-items-center justify-content-center cursor-pointer px-3 py-2 overflow-hidden relative text-lg uppercase"
+  style="font-family: MontExtraBold !important; width: 100%; text-align: center; font-size: 1rem !important">
+  {{ item.name }}
+</div>
         </div>
       </swiper-slide>
     </swiper>

@@ -1,10 +1,10 @@
 <template>
     <div v-if="!loading" class="card">
         <div class="grid mb-7">
-            <!-- Imagen y descripción del producto -->
             <div class="col-12 lg:col-5">
                 <div class="flex">
-                    <div class="flex flex-column w-2 justify-content-between" :style="{ rowGap: '1rem' }">
+                    <div class="flex flex-column w-2 justify-content-between" :style="{ rowGap: '1rem' }"
+                    >
                         <img v-for="(image, i) in images" :alt="`Image ${i}`" :key="i" :src="image"
                             class="w-full cursor-pointer border-2 border-transparent transition-colors transition-duration-150 border-round"
                             :class="{ 'border-primary': selectedImageIndex === i }" @click="setSelectedImageIndex(i)" />
@@ -16,109 +16,143 @@
                 </div>
             </div>
             
-            <!-- Detalles del producto y botones de cantidad y agregar al carrito -->
-            <div class="col-12 lg:col-3 py-3 lg:pl-8" style="border: 1px solid blue">
-                <div v-if="!loading" class="flex align-items-center text-2xl mr-4" style="font-family: 'MontExtraBold' !important; color: #1b2955; font-size: 2.4rem !important; ">
-                    {{product[0].name}} &nbsp &nbsp <i class="pi text-2xl cursor-pointer"
-                        :class="{ 'pi-heart text-600': !liked, 'pi-heart-fill text-orange-500': liked }"
-                        @click="liked = !liked"></i>
-                </div>
-
-                <div class="flex align-items-center mb-5">
-                    <span v-if="!loading && !product[0].original_price"
-                        class="block" style="font-family: 'Montbold'; font-size: 2rem; color: #0eabbd;">${{product[0].price_tax.toFixed(2)}}</span>
-                    <span v-if="!loading && product[0].original_price"
-                        class="text-900 font-medium text-lg block line-through" style="font-family: 'Montserrat';">${{product[0].original_price.toFixed(2)}}</span>
-                    &nbsp &nbsp
-                    <span v-if="!loading && product[0].original_price"
-                        class="text-900 font-medium text-lg block text-red-500" style="font-family: 'Montserrat';">${{product[0].price_tax.toFixed(2)}}</span>
-                </div>
-                
-                <div class="mb-3 ml-4" style="font-family: 'MontExtraBold' !important; font-size: 1.2rem;">CANTIDAD</div>
-
-                <!-- Fila de los dos primeros botones (Cantidad y Agregar al carrito) -->
-                <div class="flex flex-wrap justify-between mb-3"">
-    <!-- Botón de cantidad -->
-    <div class="flex-1 p-0 mr-2">
-        <InputNumber showButtons buttonLayout="horizontal" :min="1" :max="stock == 0 ? 1 : stock"
-            inputClass="w-full text-center py-2 px-1 border-transparent outline-none shadow-none"
-            v-model="quantity" class="border-1 surface-border border-round"
-            decrementButtonClass="p-button-text text-600 hover:text-primary py-1 px-1"
-            incrementButtonClass="p-button-text text-600 hover:text-primary py-1 px-1"
-            incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus"
-            style="font-family: 'Montserrat'; height: 50px; line-height: 50px;">
-        </InputNumber>
+            <div class="col-12 lg:col-3 py-3 lg:pl-8">
+    <div v-if="!loading" class="flex align-items-center text-4xl pt-4 mb-2 pr-1" style="font-family: 'MontExtraBold'; color: #1b2955 !important; font-size: 3.4rem !important;">
+        {{product[0].name}} &nbsp &nbsp <i class="pi text-2xl cursor-pointer"
+            :class="{ 'pi-heart text-600': !liked, 'pi-heart-fill text-orange-500': liked }"
+            @click="liked = !liked"></i>
     </div>
+    <div class="flex align-items-center mb-5">
+        <span v-if="!loading && !product[0].original_price"
+            class="text-900 font-medium text-lg block" style="color: #0eabbd !important; font-family: 'MontExtraBold'; font-size: 3rem !important">${{product[0].price_tax.toFixed(2)}}</span>
+        <span v-if="!loading && product[0].original_price"
+            class="text-900 font-medium text-lg block line-through" style="color: #0eabbd !important;font-family: 'MontExtraBold'; font-size: 3rem !important">${{product[0].original_price.toFixed(2)}}</span>
+        &nbsp &nbsp
+        <span v-if="!loading && product[0].original_price"
+            class="text-900 font-medium text-lg block text-red-500" style="color: #0eabbd !important;font-family: 'MontExtraBold'; font-size: 3rem !important">${{product[0].price_tax.toFixed(2)}}</span>
+    </div>
+    
+    <div class="font-bold text-900 mb-2 ml-5" style="font-family: 'Montbold'; font-size: 1.4rem">CANTIDAD</div>
+    <!-- Contenedor Flex para colocar el InputNumber y el Button en la misma fila -->
+    <div class="flex align-items-center mb-2">
+    <!-- InputNumber de cantidad -->
+    <InputNumber showButtons buttonLayout="horizontal" :min="1" :max="stock == 0 ? 1 : stock"
+        inputClass="w-8rem text-center py-2 px-1 border-transparent outline-none shadow-none"
+        v-model="quantity" class="border-1 surface-border border-round mr-4"
+        decrementButtonClass="p-button-text text-600 hover:text-primary py-1 px-1"
+        incrementButtonClass="p-button-text text-600 hover:text-primary py-1 px-1"
+        incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus" 
+        style="font-family: 'Montsemibold';
+                height: 60px;
+                border-radius: 60px !important"
+        
+        ></InputNumber>
 
-    <!-- Botón de añadir al carrito -->
-    <div class="flex-1 p-0 ml-2">
-        <Button @click="addToCart(false)" :disabled="(dissableNoStock == 1 && stock <= 0) || product[0].is_only_store == true"
-            label="Añadir al carrito" class="w-full cart-btn" style="font-family: 'Montsemibold'; height: 50px;">
-        </Button>
+    <!-- Botón Agregar al carrito -->
+    <Button @click="addToCart(false)" 
+            :disabled="(dissableNoStock == 1 && stock <= 0) || product[0].is_only_store == true" 
+            label="Agregar al carrito" 
+            class="w-auto border-round" 
+            style="font-family: 'Montsemibold'; 
+                   border-radius: 60px !important; 
+                   background: linear-gradient(to right, #193a62, #1099af); 
+                   color: white; 
+                   padding: 10px 20px; 
+                   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+                   height: 60px;">
+    </Button>
+</div>
+    <!-- Botón Comprar ahora -->
+    <div class="col-12">
+        <Button @click="addToCart(true)" :disabled="(dissableNoStock == 1 && stock <= 0) || product[0].is_only_store == true" 
+        label="Comprar ahora" 
+        class="w-full" 
+        style="font-family: 'Montsemibold';
+                border-radius: 80px !important;
+                background: linear-gradient(to right, #193a62, #1099af);
+                color: white;
+                padding: 10px 20px;
+                box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                height: 60px;
+        "></Button>
     </div>
 </div>
 
-                <!-- Fila del botón "Añadir al carrito y Pagar Ahora", que ocupa todo el ancho -->
-                <div class="col-12 p-1">
-                    <Button @click="addToCart(true)" :disabled="(dissableNoStock == 1 && stock <= 0) || product[0].is_only_store == true"
-                        label="Comprar Ahora" class="w-full cart-btn" style="font-family: 'Montsemibold'; justify-text: center;"></Button>
+<!-- Div azul ajustado para ocupar 6 columnas -->
+<div class="col-12 lg:col-4 py-3 lg:pl-6 mt-5">
+    <div class="font-bold text-900" style="font-family: Montsemibold;">Sucursal</div>
+    <div class="flex">
+        <div class="field col-12 h-3rem">
+            <Dropdown v-model="selectedBranch" :options="existence" optionValue="id_branch"
+                optionLabel="branch_name" placeholder="Seleccione una Sucursal" class="w-full" style="font-family: 'Montserrat';"/>
+        </div>
+    </div>
+
+    <div v-if="!loading && product[0].is_attributable" class="font-bold text-900">Atributos</div>
+    <div v-if="!loading && product[0].is_attributable" class="flex">
+        <div v-for="sa in save_atributes" :key="sa.id_attribute" class="field col-6 h-2rem">
+            <label class="h-2rem" style="font-family: 'Montserrat';">{{ GetName(sa) }}</label>
+            <br>
+            <Dropdown v-model="item_attributes[sa.id_attribute - 1]" :options="atts[sa.id_attribute - 1]"
+                optionValue="id_serie" optionLabel="name" class="w-full" @change="changeSubarticle" style="font-family: 'Montserrat'">
+            </Dropdown>
+        </div>
+    </div>
+    <br><br><br>
+    <TabView>
+        <TabPanel header="Descripción" style="font-family: 'Montserrat' !important;">
+            <div class="text-900 font-bold text-3xl mb-4 mt-2" style="font-family: 'Montsemibold';">Descripción del producto</div>
+            <p class="line-height-3 text-600 p-0 mx-0 mt-0 mb-4" v-if="!loading" style="font-family: 'Montserrat';">
+                {{ product[0].key_name }}
+            </p>
+        </TabPanel>
+        <TabPanel header="Detalles" style="font-family: 'Montserrat' !important;">
+            <div class="grid">
+                <div class="col-12 lg:col-6">
+                    <span class="text-900 block font-medium mb-3 font-bold" style="font-family: 'Montbold';">SKU</span>
+                    <ul class="py-0 pl-3 m-0 text-600 mb-3">
+                        <li class="mb-2" v-if="!loading" style="font-family: 'Montserrat';">{{product[0].barcode}}</li>
+                    </ul>
+                </div>
+                <div class="col-12 lg:col-6">
+                    <span class="text-900 block font-medium mb-3 font-bold" style="font-family: 'Montbold';">Medidas</span>
+                    <ul class="py-0 pl-3 m-0 text-600 mb-3" style="font-family: 'Montserrat';">
+                        <li class="mb-2" v-if="!loading">Peso: {{product[0].weight}} g</li>
+                        <li class="mb-2" v-if="!loading">Largo: {{product[0].height}} cm</li>
+                        <li class="mb-2" v-if="!loading">Ancho: {{product[0].width}} cm</li>
+                        <li class="mb-2" v-if="!loading">Alto: {{product[0].length}} cm</li>
+                    </ul>
+                </div>
+                <div class="col-12 lg:col-6">
+                    <span class="text-900 block font-medium mb-3 font-bold" style="font-family: 'Montbold';">Marca</span>
+                    <ul class="py-0 pl-3 m-0 text-600 mb-3">
+                        <li class="mb-2" v-if="!loading" style="font-family: 'Montserrat'">{{product[0].brand}}
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-12 lg:col-6">
+                    <span class="text-900 block font-medium mb-3 font-bold" style="font-family: 'Montbold">Categorias y Subcategorias</span>
+                    <ul class="py-0 pl-3 m-0 text-600 mb-3">
+                        <li class="mb-2" v-if="!loading" style="font-family: 'Montserrat">{{product[0].fam}}</li>
+                        <li class="mb-2" v-if="!loading" style="font-family: 'Montserrat">{{product[0].gro}}</li>
+                        <li class="mb-2" v-if="!loading" style="font-family: 'Montserrat">{{product[0].sgro}}</li>
+                    </ul>
                 </div>
             </div>
-            
-            <!-- Información adicional del producto -->
-            <div class="col-12 lg:col-4 py-3 lg:pl-6" style="border: 1px solid red">
-                <div class="font-bold text-900" style="font-family: Montsemibold;">Sucursal</div>
-                <div class="flex">
-                    <div class="field col-12 h-3rem">
-                        <Dropdown v-model="selectedBranch" :options="existence" optionValue="id_branch"
-                            optionLabel="branch_name" placeholder="Seleccione una Sucursal" class="w-full" style="font-family: 'Montserrat';"/>
-                    </div>
-                </div>
+        </TabPanel>
+    </TabView>
+</div>
 
-                <div v-if="!loading && product[0].is_attributable" class="font-bold text-900">Atributos</div>
-                <div v-if="!loading && product[0].is_attributable" class="flex">
-                    <div v-for="sa in save_atributes" :key="sa.id_attribute" class="field col-6 h-2rem">
-                        <label class=" h-2rem" style="font-family: 'Montserrat';">{{ GetName(sa) }}</label>
-                        <br>
-                        <Dropdown v-model="item_attributes[sa.id_attribute - 1]" :options="atts[sa.id_attribute - 1]"
-                            optionValue="id_serie" optionLabel="name" class="w-full" @change="changeSubarticle" style="font-family: 'Montserrat'">
-                        </Dropdown>
-                    </div>
-                </div>
 
-                <TabView>
-                    <TabPanel header="Descripción" style="font-family: 'Montserrat';">
-                        <div class="text-900 font-bold text-3xl mb-4 mt-2" style="font-family: 'Montsemibold';">Descripción del producto</div>
-                        <p class="line-height-3 text-600 p-0 mx-0 mt-0 mb-4" v-if="!loading" style="font-family: 'Montserrat';">
-                            {{ product[0].key_name }}
-                        </p>
-                    </TabPanel>
-                    <TabPanel header="Detalles" style="font-family: 'Montserrat';">
-                        <div class="grid">
-                            <div class="col-12 lg:col-6">
-                                <span class="text-900 block font-medium mb-3 font-bold" style="font-family: 'Montbold';">SKU</span>
-                                <ul class="py-0 pl-3 m-0 text-600 mb-3">
-                                    <li class="mb-2" v-if="!loading" style="font-family: 'Montserrat';">{{product[0].barcode}}</li>
-                                </ul>
-                            </div>
-                            <div class="col-12 lg:col-6">
-                                <span class="text-900 block font-medium mb-3 font-bold" style="font-family: 'Montbold';">Medidas</span>
-                                <ul class="py-0 pl-3 m-0 text-600 mb-3" style="font-family: 'Montserrat';">
-                                    <li class="mb-2" v-if="!loading">Peso: {{product[0].weight}} g</li>
-                                    <li class="mb-2" v-if="!loading">Largo: {{product[0].height}} cm</li>
-                                    <li class="mb-2" v-if="!loading">Ancho: {{product[0].width}} cm</li>
-                                    <li class="mb-2" v-if="!loading">Alto: {{product[0].length}} cm</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </TabPanel>
-                </TabView>
-            </div>
+           
         </div>
 
         <TabView>
-            <TabPanel header="Productos relacionados" style="font-family: 'Montserrat';">
-                <div class="card" style="font-family: 'Montserrat';">
+            <TabPanel header="Productos relacionados">
+                <div class="card">
                     <RelatedProductCarusell :value="relateds" />
                 </div>
             </TabPanel>
@@ -338,29 +372,6 @@ onMounted(async () => {
 
 </script>
 <style>
-.cart-btn {
-  background: linear-gradient(140deg, #193a62, #1099af) !important; 
-  /*background: linear-gradient(120deg, #008080, #00bcd4);  Degradado desde teal a azul */
-  color: white; /* Color de texto blanco */
-  border-radius: 40px; /* Bordes redondeados */
-  padding: 12px 20px; /* Espaciado interno */
-  font-size: 1rem; /* Tamaño de la fuente */
-  font-family: 'Montsemibold' !important;
-  text-transform: uppercase; /* Texto en mayúsculas */
-  transition: background 0.3s ease; /* Transición suave en el fondo */
-}
-
-/* Efecto de hover para los botones */
-.cart-btn:hover {
-  background: linear-gradient(90deg, #006f6f, #008c9e); /* Cambio de color en hover */
-  cursor: pointer;
-}
-
-/* Desactivar el botón */
-.cart-btn:disabled {
-  background: #b0b0b0; /* Fondo gris para los botones deshabilitados */
-  cursor: not-allowed;
-}
 .custom-dropdown .p-dropdown {
   height: 2rem; /* Ajusta la altura del Dropdown */
 }

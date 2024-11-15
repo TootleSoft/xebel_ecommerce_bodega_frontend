@@ -1,8 +1,8 @@
 <template>
     <div class="card">
         <div class="flex flex-column align-items-center mb-6">
-            <div class="text-900 text-4xl mb-4 font-medium">Tu total en el carrito es ${{total.toFixed(2)}}</div>
-            <Button label="Pagar" @click="router.push('/orderdata')"/>
+            <div class="text-900 text-4xl mb-4 font-medium" style="font-family: 'Montserrat';">Tu total en el carrito es ${{total.toFixed(2)}}</div>
+            <Button label="Pagar" @click="router.push('/orderdata')" style="font-family: 'Montserrat';"/>
         </div>
         <ul class="list-none p-0 m-0">
             <ShoppingCartProduct></ShoppingCartProduct>
@@ -23,7 +23,7 @@
                     <span class="text-xl text-900 font-bold text-3xl">${{ total.toFixed(2) }}</span>
                 </li>
                 <li class="flex justify-content-end">
-                    <Button label="Pagar" @click="router.push('/orderdata')"></Button>
+                    <Button label="Pagar" @click="router.push('/orderdata')" style="font-family: 'Montserrat';"></Button>
                 </li>
             </ul>
         </div>

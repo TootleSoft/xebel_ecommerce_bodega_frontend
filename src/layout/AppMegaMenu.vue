@@ -3,7 +3,7 @@
     <div class="full-width">
         <div class="p-3 flex justify-content-between lg:justify-content-center align-items-center flex-wrap">
             <div class="align-items-center hidden lg:flex">
-                <span class="line-height-4" style="font-family: 'Montserrat';">
+                <span class="line-height-4" style="font-family: 'Montbold';">
                     <i class="pi pi-box"></i>
                     Recuerda que tenemos envíos a todo México
                 </span>
@@ -247,17 +247,17 @@ const user = ref<any[]>([
 </script>
 <style scoped>
 .MegaMenuBar a:not(.cursor-pointer) {
-  background-color: white !important;
+  background-color: #fefeff !important;
   cursor: pointer;
 }
 a {
     background-color: transparent !important;
 }
 a:hover {
-    background-color: white !important;
+    background-color: #fefeff !important;
 }
 a:active {
-    background-color: white !important;
+    background-color: #fefeff !important;
 }
 .text-submenu {
     font-weight: bold;
@@ -267,16 +267,16 @@ a:active {
     color: #0eabbd !important;
 }
 .text-submenu:hover {
-    color: white;
+    color: #fefeff;
 }
 a.flex.cursor-pointer:hover {
-    color: white;
+    color: #fefeff;
     background-color: #0eabbd !important;
     padding: 0px;
 }
 a.flex.cursor-pointer-nav:active {
-    color: white;
-    background-color: white !important;
+    color: #fefeff;
+    background-color: #fefeff !important;
     padding: 0px;
 }
 
@@ -317,7 +317,7 @@ a.flex.cursor-pointer-nav:active {
     height: 50px;
     border-radius: 8px;
     border: 1px solid #ddd;
-    font-style: italic !important;
+    font-style: 'MontItalic' !important;
 }
 
 .custom-border .p-inputtext:hover {
