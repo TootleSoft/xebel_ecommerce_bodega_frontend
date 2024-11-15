@@ -1,32 +1,71 @@
 <template>
     <div class="card">
-        <div class="flex flex-column align-items-center mb-6">
-            <div class="text-900 text-4xl mb-4 font-medium" style="font-family: 'Montserrat';">Tu total en el carrito es ${{total.toFixed(2)}}</div>
-            <Button label="Pagar" @click="router.push('/orderdata')" style="font-family: 'Montserrat';"/>
-        </div>
+        <div class="flex flex-column align-items-center mb-6 p-4" style="border: 1px solid #ddd; border-radius: 10px;">
+    <!-- Texto del total en el carrito -->
+    <div class="text-3xl text-900 mb-4 font-medium" style="font-family: 'Montbold';">
+        Tu total en el carrito es ${{ total.toFixed(2) }}
+    </div>
+
+    <!-- Botón de Pagar -->
+    <Button label="Pagar" @click="router.push('/orderdata')" 
+        style="font-family: 'Montbold';
+               background: linear-gradient(to right, #193a62, #1099af);
+               color: white;
+               border-radius: 40px;
+               padding: 12px 24px;
+               box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+               font-weight: 600;
+               border: none; 
+               width: 100%; /* Hacer que el botón ocupe el 100% del contenedor */
+               max-width: 320px; /* Limitar el ancho máximo del botón para evitar que se estire demasiado en pantallas grandes */
+               display: flex;
+               align-items: center;
+               justify-content: center;
+    ">
+    </Button>
+</div>
         <ul class="list-none p-0 m-0">
             <ShoppingCartProduct></ShoppingCartProduct>
         </ul>
-        <div class="flex">
-            <div class="w-12rem hidden md:block"></div>
-            <ul class="list-none py-0 pr-0 pl-0 md:pl-5 mt-6 mx-0 mb-0 flex-auto">
-                <li class="flex justify-content-between mb-4">
-                    <span class="text-xl text-900 font-semibold">Subtotal</span>
-                    <span class="text-xl text-900">${{subtotal.toFixed(2)}}</span>
-                </li>
-                <li class="flex justify-content-between mb-4">
-                    <span class="text-xl text-900 font-semibold">Impuestos</span>
-                    <span class="text-xl text-900">${{taxes.toFixed(2)}}</span>
-                </li>
-                <li class="flex justify-content-between border-top-1 surface-border mb-4 pt-4">
-                    <span class="text-xl text-900 font-bold text-3xl">Total</span>
-                    <span class="text-xl text-900 font-bold text-3xl">${{ total.toFixed(2) }}</span>
-                </li>
-                <li class="flex justify-content-end">
-                    <Button label="Pagar" @click="router.push('/orderdata')" style="font-family: 'Montserrat';"></Button>
-                </li>
-            </ul>
-        </div>
+        <div class="flex flex-column md:flex-row p-4" style="border: 1px solid #ddd;">
+    <!-- Espacio en el lado izquierdo para alineación (solo en pantallas medianas y mayores) -->
+    <div class="w-full md:w-12rem"></div>
+
+    <!-- Contenedor de la lista de precios -->
+    <ul class="list-none py-0 pr-0 pl-0 md:pl-5 mt-6 mx-0 mb-0 flex-auto">
+        <!-- Subtotal -->
+        <li class="flex justify-content-between mb-4">
+            <span class="text-xl text-900 font-bold" style="font-family: 'Montbold'">Subtotal</span>
+            <span class="text-xl text-900" style="font-family: 'Montserrat';">${{subtotal.toFixed(2)}}</span>
+        </li>
+
+        <!-- Impuestos -->
+        <li class="flex justify-content-between mb-4">
+            <span class="text-xl text-900 font-semibold" style="font-family: 'Montbold'">Impuestos</span>
+            <span class="text-xl text-900" style="font-family: 'Montserrat'">${{taxes.toFixed(2)}}</span>
+        </li>
+
+        <!-- Total -->
+        <li class="flex justify-content-between border-top-1 surface-border mb-4 pt-4">
+            <span class="text-3xl text-900 font-bold" style="font-family: 'Montbold'">Total</span>
+            <span class="text-3xl text-900 font-bold" style="font-family: 'Montbold'">${{ total.toFixed(2) }}</span>
+        </li>
+
+        <!-- Botón de Pagar -->
+        <li class="flex justify-content-end">
+            <Button label="Pagar" @click="router.push('/orderdata')" 
+                style="font-family: 'Montserrat'; 
+                    background: linear-gradient(to right, #193a62, #1099af);
+                    color: white;
+                    border-radius: 40px;
+                    padding: 12px 24px;
+                    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+                    font-weight: 600;
+                    border: none;">
+            </Button>
+        </li>
+    </ul>
+</div>
     </div>
 </template>
 

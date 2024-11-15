@@ -91,7 +91,9 @@
         </div>
     </div>
 
-    <div v-if="!loading && product[0].is_attributable" class="font-bold text-900">Atributos</div>
+    <div v-if="!loading && product[0].is_attributable" class="font-bold text-900 mt-4"
+    style="font-family: 'Montsemibold'"
+    >Atributos</div>
     <div v-if="!loading && product[0].is_attributable" class="flex">
         <div v-for="sa in save_atributes" :key="sa.id_attribute" class="field col-6 h-2rem">
             <label class="h-2rem" style="font-family: 'Montserrat';">{{ GetName(sa) }}</label>
@@ -102,6 +104,7 @@
         </div>
     </div>
     <br><br><br>
+    <br>
     <TabView>
         <TabPanel header="Descripción" style="font-family: 'Montserrat' !important;">
             <div class="text-900 font-bold text-3xl mb-4 mt-2" style="font-family: 'Montsemibold';">Descripción del producto</div>

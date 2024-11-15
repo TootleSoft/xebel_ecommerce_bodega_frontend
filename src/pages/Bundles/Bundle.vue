@@ -1,5 +1,4 @@
 <template>
-    <br>
     <div class="card">
         <div class="grid mb-7">
             <div class="col-12 lg:col-5">
@@ -10,12 +9,77 @@
                     </div>
                 </div>
             </div>
+            
+            <div class="col-12 lg:col-3 py-3 lg:pl-6">
+                <div v-if="!loading" class="flex align-items-center text-2xl font-medium text-900 mb-4" style="font-family: 'MontExtraBold'; color: #1b2955 !important; font-size: 3rem !important"> {{
+                            products[0].name }} &nbsp &nbsp <i class="pi text-2xl cursor-pointer"
+                        :class="{ 'pi-heart text-600': !liked, 'pi-heart-fill text-orange-500': liked }"
+                        @click="liked = !liked"></i></div>
+                <div class="flex align-items-center mb-5">
+                    <span v-if="!loading" class="text-900 font-medium text-lg block" style="font-family: 'Montbold'; color: #0eabbd !important; font-size: 3rem !important"> ${{ products[0].price_tax.toFixed(2)
+                        }}</span>
+                    <!-- <span v-if="!loading" class="text-900 font-medium text-lg block line-through"></span>
+                    &nbsp &nbsp
+                    <span v-if="!loading" class="text-900 font-medium text-lg block text-red-500"></span> -->
+                </div>
+                <div class="font-bold text-900 mb-3" style="font-family: 'Montserrat'; font-size: 1.2rem !important">Stock</div>
+                <div class="flex align-items-center mb-5" style="font-family: 'Montserrat';">
+                    <label v-if="stock != undefined && stock > 0" class="w-full text-lg text-green-500" style="font-size: 1.6rem !important">{{ stock }}
+                        Disponible</label>
+                    <label v-if="stock != undefined && stock <= 0" class="w-full text-lg text-red-500" style="font-size: 1.6rem !important">{{ stock }}
+                        Disponible</label>
+                </div>
+                <div class="font-bold text-900 mb-2 ml-5" style="font-family: 'Montbold'; font-size: 1.4rem">CANTIDAD</div>
+
+                <div class="flex flex-column sm:flex-row sm:align-items-center sm:justify-content-between">
+                    <InputNumber showButtons buttonLayout="horizontal" :min="0"
+                        inputClass="w-8rem text-center py-2 px-1 border-transparent outline-none shadow-none"
+                        v-model="quantity" class="border-1 surface-border border-round mr-4"
+                        decrementButtonClass="p-button-text text-600 hover:text-primary py-1 px-1"
+                        incrementButtonClass="p-button-text text-600 hover:text-primary py-1 px-1"
+                        incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus"
+                        style="font-family: 'Montsemibold';
+                        height: 60px;
+                        border-radius: 60px !important"
+                        ></InputNumber>
+
+                        <Button @click="addToCart" label="Agregar al carrito" class="w-full"
+                        style="font-family: 'Montsemibold'; 
+                        border-radius: 60px !important; 
+                        background: linear-gradient(to right, #193a62, #1099af); 
+                        color: white; 
+                        padding: 10px 20px; 
+                        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+                        height: 60px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;"></Button>
+                </div>
+                <br>
+                
+                    
+                <div class="col-12">
+                    <Button label="Pagar Ahora" class="w-full"
+                    style="font-family: 'Montsemibold';
+                    border-radius: 80px !important;
+                    background: linear-gradient(to right, #193a62, #1099af);
+                    color: white;
+                    padding: 10px 20px;
+                    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    height: 60px;"
+                    ></Button>
+                </div>
+            </div>
+
             <div class="col-12 lg:col-4 py-3 lg:pl-6">
-                <div class="font-bold text-900">Sucursal</div>
+                <div class="font-bold text-900" style="font-family: 'Montbold';">Sucursal</div>
                 <div class="flex">
-                    <div class="field col-12 h-3rem">
+                    <div class="field col-12 h-3rem" style="font-family: 'Montserrat'">
                         <Dropdown v-model="selectedBranch" :options="branches" optionValue="id_branch" optionLabel="branch_name"
-                            placeholder="Seleccione una Sucursal" class="w-full" />
+                            placeholder="Seleccione una Sucursal" class="w-full" style="font-family: 'Montserrat'" />
                     </div>
                 </div>
                 <br>
@@ -23,80 +87,46 @@
                 <br>
                 <TabView>
                     <TabPanel header="Descripción">
-                        <div class="text-900 font-bold text-3xl mb-4 mt-2">Descripción del paquete</div>
-                        <p class="line-height-3 text-600 p-0 mx-0 mt-0 mb-4" v-if="!loading">
+                        <div class="text-900 font-bold text-3xl mb-4 mt-2" style="font-family: 'Montserrat'">Descripción del paquete</div>
+                        <p class="line-height-3 text-600 p-0 mx-0 mt-0 mb-4" style="font-family: 'Montserrat'" v-if="!loading">
                             {{ products[0].key_name }}
                         </p>
                     </TabPanel>
                     <TabPanel header="Detalles">
                         <div class="grid">
                             <div class="col-12 lg:col-2">
-                                <span class="text-900 block font-medium mb-3 font-bold">Cantidad</span>
+                                <span class="text-900 block font-medium mb-3 font-bold" style="font-family: 'Montbold';">CANTIDAD</span>
                                 <ul class="py-0 pl-3 m-0 text-600 mb-3">
-                                    <li class="mb-2" v-if="!loading" v-for="(product, i) in products" :key="i">{{
+                                    <li class="mb-2" v-if="!loading" v-for="(product, i) in products" :key="i"
+                                    style="font-family: 'Montserrat';">{{
                             products[i].quantity }}</li>
                                 </ul>
                             </div>
                             <div class="col-12 lg:col-2">
-                                <span class="text-900 block font-medium mb-3 font-bold">P.U.</span>
+                                <span class="text-900 block font-medium mb-3 font-bold" style="font-family: 'Montbold'">P.U.</span>
                                 <ul class="py-0 pl-3 m-0 text-600 mb-3">
-                                    <li class="mb-2" v-if="!loading" v-for="(product, i) in products" :key="i">${{
+                                    <li class="mb-2" v-if="!loading" v-for="(product, i) in products" :key="i"
+                                    style="font-family: 'Montserrat';">${{
                             products[i].unit_price.toFixed(2) }}</li>
                                 </ul>
                             </div>
                             <div class="col-12 lg:col-2">
-                                <span class="text-900 block font-medium mb-3 font-bold">SKU</span>
+                                <span class="text-900 block font-medium mb-3 font-bold" style="font-family: 'Montbold';">SKU</span>
                                 <ul class="py-0 pl-3 m-0 text-600 mb-3">
-                                    <li class="mb-2" v-if="!loading" v-for="(product, i) in products" :key="i">{{
+                                    <li class="mb-2" v-if="!loading" v-for="(product, i) in products" :key="i" style="font-family: 'Montserrat';">{{
                             products[i].barcode }}</li>
                                 </ul>
                             </div>
                             <div class="col-12 lg:col-6">
-                                <span class="text-900 block font-medium mb-3 font-bold">Nombre</span>
+                                <span class="text-900 block font-medium mb-3 font-bold" style="font-family: 'Montbold';">NOMBRE</span>
                                 <ul class="py-0 pl-3 m-0 text-600 mb-3">
-                                    <li class="mb-2" v-if="!loading" v-for="(product, i) in products" :key="i">{{
+                                    <li class="mb-2" v-if="!loading" v-for="(product, i) in products" :key="i" style="font-family: 'Montserrat';">{{
                             products[i].article_name }}</li>
                                 </ul>
                             </div>
                         </div>
                     </TabPanel>
                 </TabView>
-            </div>
-            <div class="col-12 lg:col-2 py-3 lg:pl-6">
-                <div v-if="!loading" class="flex align-items-center text-2xl font-medium text-900 mb-4"> {{
-                            products[0].name }} &nbsp &nbsp <i class="pi text-2xl cursor-pointer"
-                        :class="{ 'pi-heart text-600': !liked, 'pi-heart-fill text-orange-500': liked }"
-                        @click="liked = !liked"></i></div>
-                <div class="flex align-items-center mb-5">
-                    <span v-if="!loading" class="text-900 font-medium text-lg block"> ${{ products[0].price_tax.toFixed(2)
-                        }}</span>
-                    <!-- <span v-if="!loading" class="text-900 font-medium text-lg block line-through"></span>
-                    &nbsp &nbsp
-                    <span v-if="!loading" class="text-900 font-medium text-lg block text-red-500"></span> -->
-                </div>
-                <div class="font-bold text-900 mb-3">Stock</div>
-                <div class="flex align-items-center mb-5">
-                    <label v-if="stock != undefined && stock > 0" class="w-full text-lg text-green-500">{{ stock }}
-                        Disponible</label>
-                    <label v-if="stock != undefined && stock <= 0" class="w-full text-lg text-red-500">{{ stock }}
-                        Disponible</label>
-                </div>
-                <div class="font-bold text-900 mb-3">Cantidad</div>
-                <div class="flex flex-column sm:flex-row sm:align-items-center sm:justify-content-between">
-                    <InputNumber showButtons buttonLayout="horizontal" :min="0"
-                        inputClass="w-2rem text-center py-2 px-1 border-transparent outline-none shadow-none"
-                        v-model="quantity" class="border-1 surface-border border-round"
-                        decrementButtonClass="p-button-text text-600 hover:text-primary py-1 px-1"
-                        incrementButtonClass="p-button-text text-600 hover:text-primary py-1 px-1"
-                        incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus"></InputNumber>
-                </div>
-                <br>
-                <div class="col-12">
-                    <Button @click="addToCart" label="Añadir al carrito" class="w-full"></Button>
-                </div>
-                <div class="col-12">
-                    <Button label="Pagar Ahora" class="w-full"></Button>
-                </div>
             </div>
         </div>
     </div>

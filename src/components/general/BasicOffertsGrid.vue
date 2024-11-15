@@ -9,7 +9,7 @@
                             optionLabel="name" :suggestions="suggest" @complete="search"
                             v-on:keyup.enter="filteredsearch(filterproductname)">
                         </AutoComplete>
-                        <label for="filter">
+                        <label for="filter" style="font-family: 'Montserrat';">
                             <i class="pi pi-filter"></i> Búsqueda Filtrada en {{ pagetitle }}
                         </label>
                     </FloatLabel>
@@ -18,32 +18,51 @@
         </div>
         <div v-for="(product, i) in products.slice(first / 10 * pagesize, first / 10 * pagesize + pagesize)" :key="i"
             class="col-12 md:col-5 lg:col-3 mb-5 lg:mb-4">
-            <div class="mb-3 relative">
+            <div class="mb-4 relative">
                 <img :src="imgroute(product.id, product.barcode, product.id_brand)" class="w-full h-auto shadow-8" :alt="String(i)" @click="router.push('/product/'+product.id+'/'+product.id_subarticle)"/>
-                <Button type="button"
-                    class="border-1 border-white border-round py-2 px-3 absolute bg-black-alpha-30 text-white inline-flex align-items-center justify-content-center hover:bg-teal-400 transition-colors transition-duration-300 cursor-pointer"
-                    :style="{ bottom: '1rem', left: '1rem', width: 'calc(100% - 2rem)' }"
-                    @click="addCart(product.id, product.id_subarticle, product.quantity, i)">
-                    <i class="pi pi-shopping-cart mr-3 text-base"></i>
-                    <span class="text-base">Agregar al carrito</span>
-                </Button>
+                
             </div>
-            <div class="flex flex-column align-items-center">
-                <span class="text-l text-900 font-bold mb-3">{{ product.name }}</span>
-                <span class="text-l text-900 mb-3 line-through">{{ "$" + product.unit_price.toFixed(2)}}</span>
-                <span class="text-l text-900 mb-3 text-red-500">{{ "$" + product.ecomerce_offer_price.toFixed(2)}}</span>
-                <span class="text-l text-900 mb-3 font-medium">{{ product.barcode }}</span>
-                <div class="col-12 align-items-center">
-                    <div class="grid formgrid p-fluid">
-                        <div class="col-3"></div>
-                        <InputNumber showButtons buttonLayout="horizontal" :min="1"
-                        inputClass="w-2rem text-center py-2 px-1 border-transparent outline-none shadow-none"
-                        v-model="product.quantity" class="border-1 surface-border border-round col-6"
-                        decrementButtonClass="p-button-text text-600 hover:text-primary py-1 px-1"
-                        incrementButtonClass="p-button-text text-600 hover:text-primary py-1 px-1"
-                        incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus"></InputNumber>
-                        <div class="col-3"></div>
-                    </div>
+            <div class="flex flex-column align-items-center justify-content-center">
+                <span class="text-l text-900 font-bold mb-3"  style="color: #0eabbd !important; font-family: 'MontExtraBold'; font-size: 1.6rem !important; text-align: center;">{{ product.name }}</span>
+                <span class="text-l text-900 mb-3 line-through" style="color: red !important; font-family: 'Montserrat';">{{ "$" + product.unit_price.toFixed(2)}}</span>
+
+                <span class="text-l text-900 mb-3 text-red-500" style="color: green !important; font-family: 'Montbold'; font-size: 1.6rem !important;">{{ "$" + product.ecomerce_offer_price.toFixed(2)}}</span>
+                <span class="text-l text-900 mb-3 font-medium" style="font-family: 'Montserrat' !important;">{{ product.barcode }}</span>
+                
+                <div class="col-12 flex justify-center items-center">
+                <div class="flex flex-wrap md:w-10/12 p-fluid">
+                
+                <!-- Columna para InputNumber -->
+                <div class="col-6 md:w-6/12">
+                    <InputNumber 
+                    showButtons 
+                    buttonLayout="horizontal" 
+                    :min="1"
+                    inputClass="w-full text-center py-3 px-2 border-transparent outline-none shadow-none"
+                    v-model="product.quantity" 
+                    class="border-1 surface-border border-round w-full"
+                    decrementButtonClass="p-inputnumber-button text-600 hover:text-primary py-1 px-2"
+                    incrementButtonClass="p-inputnumber-button text-600 hover:text-primary py-1 px-2"
+                    incrementButtonIcon="pi pi-plus" 
+                    decrementButtonIcon="pi pi-minus"
+                    />
+                </div>
+                
+                <!-- Columna para Botón "Agregar al carrito" -->
+                <div class="col-6 md:w-6/12">
+                    <Button 
+                    type="button"
+                    class="carrito-btn border-1 border-white border-round py-3 px-4 w-full flex items-center justify-center"
+                    :style="{ width: '100%' }"
+                    :disabled="(dissableNoStock == 1 && product.stock <= 0) || product.existence == 'SOLO DE VENTA EN TIENDA'"
+                    @click="addCart(product.id, product.id_subarticle, product.quantity, i)"
+                    >
+                    <i class="pi pi-shopping-cart mr-3 text-base"></i>
+                    <span class="text-base" style="font-family: Montserrat;">Agregar al carrito</span>
+                    </Button>
+                </div>
+                
+                </div>
                 </div>
             </div>
         </div>
@@ -128,6 +147,42 @@ const imgroute = (id, sku, brand) => {
 <style lang="scss" scoped>
     .line-through {
     text-decoration: line-through;
+}
+
+/* Estilos para el botón de "Agregar al carrito" */
+.carrito-btn {
+    background: linear-gradient(140deg, #193a62, #1099af) !important; /* Degradado verde oscuro a verde claro */
+    border-radius: 50px !important; /* Bordes más redondeados */
+    height: 52px;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.carrito-btn:hover {
+    background: linear-gradient(145deg, #193a62, #1099af) !important; /* Degradado con tonos más oscuros para el hover */
+    transform: translateY(-2px); /* Leve movimiento de elevación al hacer hover */
+    cursor: pointer;
+}
+
+.carrito-btn:disabled {
+    background-color: #6c757d !important; /* Gris para el estado deshabilitado */
+    cursor: not-allowed; /* Cambia el cursor al pasar sobre el botón cuando está deshabilitado */
+}
+
+/* Estilos para los botones de InputNumber (incremento y decremento) */
+.p-inputnumber-button {
+    background-color: transparent !important; /* Fondo transparente */
+    color: white; /* Texto blanco */
+    border-radius: 8px; /* Bordes redondeados */
+    border: none;
+    transition: background-color 0.3s ease;
+}
+
+.p-inputnumber-button:hover {
+    background-color: #0056b3 !important; /* Azul oscuro en hover */
+}
+
+.p-inputnumber-button:disabled {
+    background-color: transparent; /* Gris para los botones deshabilitados */
 }
 
 </style>
