@@ -21,8 +21,8 @@
                 </div>
 
                 <!-- Filtro en pantallas grandes -->
-                <div class="field hidden sm:block col-2">
-                    <span class="text-900 font-medium text-xs mb-4">{{ products.length }} Productos Relacionados</span>
+                <div class="field hidden sm:block col-2" >
+                    <span class="text-900 font-medium text-xs mb-4" style="font-family: 'Montbold';">{{ products.length }} Productos Relacionados</span>
                     <BasicFilterSelection @v-model="getfilterprices" :key="componentKey" :allcategories="priceorder" filtername="Filtro por Precios" pickone :selected="filterpriceselection"/>
                 </div>
 
@@ -219,7 +219,7 @@ const getfilterprices = (model) =>{
 
 /* Estilo de las imágenes de los productos */
 .product-image {
-    max-height: 200px;
+    max-height: 350px;
     object-fit: cover;
     border-radius: 8px;
 }

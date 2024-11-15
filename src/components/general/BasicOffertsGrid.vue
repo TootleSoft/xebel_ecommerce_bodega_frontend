@@ -18,51 +18,62 @@
         </div>
         <div v-for="(product, i) in products.slice(first / 10 * pagesize, first / 10 * pagesize + pagesize)" :key="i"
             class="col-12 md:col-5 lg:col-3 mb-5 lg:mb-4">
-            <div class="mb-4 relative">
+            <div class="mb-4 relative" style="height: 360px;">
                 <img :src="imgroute(product.id, product.barcode, product.id_brand)" class="w-full h-auto shadow-8" :alt="String(i)" @click="router.push('/product/'+product.id+'/'+product.id_subarticle)"/>
                 
             </div>
-            <div class="flex flex-column align-items-center justify-content-center">
-                <span class="text-l text-900 font-bold mb-3"  style="color: #0eabbd !important; font-family: 'MontExtraBold'; font-size: 1.6rem !important; text-align: center;">{{ product.name }}</span>
+            <div class="flex flex-column align-items-center justify-content-center" >
+
+                <span class="text-l text-900 font-bold mb-3" 
+                style="color: #0eabbd !important; 
+                        font-family: 'MontExtraBold'; 
+                        font-size: 1.6rem !important; 
+                        text-align: center;
+                        line-height: 1.5; /* Espacio entre líneas */
+                        display: block; /* Asegura que el span sea un bloque */
+                        min-height: 6rem; /* Asegura que ocupe al menos 3 líneas de altura */
+                        overflow: hidden;">{{ product.name }}</span>
+
                 <span class="text-l text-900 mb-3 line-through" style="color: red !important; font-family: 'Montserrat';">{{ "$" + product.unit_price.toFixed(2)}}</span>
 
                 <span class="text-l text-900 mb-3 text-red-500" style="color: green !important; font-family: 'Montbold'; font-size: 1.6rem !important;">{{ "$" + product.ecomerce_offer_price.toFixed(2)}}</span>
+
                 <span class="text-l text-900 mb-3 font-medium" style="font-family: 'Montserrat' !important;">{{ product.barcode }}</span>
                 
                 <div class="col-12 flex justify-center items-center">
-                <div class="flex flex-wrap md:w-10/12 p-fluid">
-                
-                <!-- Columna para InputNumber -->
-                <div class="col-6 md:w-6/12">
-                    <InputNumber 
-                    showButtons 
-                    buttonLayout="horizontal" 
-                    :min="1"
-                    inputClass="w-full text-center py-3 px-2 border-transparent outline-none shadow-none"
-                    v-model="product.quantity" 
-                    class="border-1 surface-border border-round w-full"
-                    decrementButtonClass="p-button-text text-600 hover:text-primary py-1 px-1"
-                    incrementButtonClass="p-button-text text-600 hover:text-primary py-1 px-1"
-                    incrementButtonIcon="pi pi-plus" 
-                    decrementButtonIcon="pi pi-minus"
-                    />
-                </div>
-                
-                <!-- Columna para Botón "Agregar al carrito" -->
-                <div class="col-6 md:w-6/12">
-                    <Button 
-                    type="button"
-                    class="carrito-btn border-1 border-white border-round py-3 px-4 w-full flex items-center justify-center"
-                    :style="{ width: '100%' }"
-                    :disabled="(dissableNoStock == 1 && product.stock <= 0) || product.existence == 'SOLO DE VENTA EN TIENDA'"
-                    @click="addCart(product.id, product.id_subarticle, product.quantity, i)"
-                    >
-                    <i class="pi pi-shopping-cart mr-3 text-base"></i>
-                    <span class="text-base" style="font-family: Montserrat;">Agregar al carrito</span>
-                    </Button>
-                </div>
-                
-                </div>
+                    <div class="flex flex-wrap md:w-10/12 p-fluid">
+                    
+                    <!-- Columna para InputNumber -->
+                    <div class="col-6 md:w-6/12">
+                        <InputNumber 
+                        showButtons 
+                        buttonLayout="horizontal" 
+                        :min="1"
+                        inputClass="w-full text-center py-3 px-2 border-transparent outline-none shadow-none"
+                        v-model="product.quantity" 
+                        class="border-1 surface-border border-round w-full"
+                        decrementButtonClass="p-button-text text-600 hover:text-primary py-1 px-1"
+                        incrementButtonClass="p-button-text text-600 hover:text-primary py-1 px-1"
+                        incrementButtonIcon="pi pi-plus" 
+                        decrementButtonIcon="pi pi-minus"
+                        />
+                    </div>
+                    
+                    <!-- Columna para Botón "Agregar al carrito" -->
+                    <div class="col-6 md:w-6/12">
+                        <Button 
+                        type="button"
+                        class="carrito-btn border-1 border-white border-round py-3 px-4 w-full flex items-center justify-center"
+                        :style="{ width: '100%' }"
+                        :disabled="(dissableNoStock == 1 && product.stock <= 0) || product.existence == 'SOLO DE VENTA EN TIENDA'"
+                        @click="addCart(product.id, product.id_subarticle, product.quantity, i)"
+                        >
+                        <i class="pi pi-shopping-cart mr-3 text-base"></i>
+                        <span class="text-base" style="font-family: Montserrat;">Agregar al carrito</span>
+                        </Button>
+                    </div>
+                    
+                    </div>
                 </div>
             </div>
         </div>

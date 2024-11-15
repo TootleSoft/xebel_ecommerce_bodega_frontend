@@ -1,7 +1,7 @@
 <template>
     <div class="grid -mt-3 -ml-3 -mr-3">
             <div class="col-12">
-                <div class="grid formgrid p-fluid" >
+                <div class="grid formgrid p-fluid">
                     <div class="field col-12 sm:col-12 md:col-8 xl:col-8"></div>
                     <div class="field col-12 sm:col-12 md:col-4 xl:col-4" style="font-family: Montserrat;">
                         <FloatLabel>
@@ -14,8 +14,8 @@
                     </div>
                 </div>
             </div>
-            <div v-for="(product, i) in products.slice(first/10*pagesize,first/10*pagesize+pagesize)" :key="i" class="col-12 md:col-5 lg:col-3 mb-5 lg:mb-0" style="padding-bottom: 30px !important">
-                <div class="mb-1 relative" >
+            <div v-for="(product, i) in products.slice(first/10*pagesize,first/10*pagesize+pagesize)" :key="i" class="col-12 md:col-5 lg:col-3 mb-5 lg:mb-0" style="padding-bottom: 30px !important;">
+                <div class="mb-1 relative" style="height: 360px">
                     <!-- <img :src="'/demo/images/ecommerce/product-list/product-list-4-1.png'" class="w-full" :alt="String(i)" @click="router.push('/product/'+product.id+'/'+product.id_subarticle)"/> -->
                     <img :src="imgroute(product.id, product.barcode, product.id_brand)" class="w-full h-auto shadow-8" :alt="String(i)" @click="router.push('/product/'+product.id+'/'+product.id_subarticle)" 
                     style="box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2) !important;"
@@ -38,28 +38,64 @@
                     
 
                 </div>
-                <div class="flex flex-column align-items-center justify-content-center">
-                    <!-- <span class="text-l mb-3"por si quieren meter marca del producto
-                    style="font-family: 'MontExtraBold' !important;">
-                    {{  product.label }}
-                    </span>  -->
-                    <span class="text-l mb-3" 
-                        style="color: #0eabbd !important; font-family: 'MontExtraBold' !important; font-size: 1.4rem !important; text-align: center;">
-                        {{ product.description }}
-                    </span>
+                
+                <div class="flex flex-column align-items-center justify-content-center" style="height: 250px; overflow: hidden;">
+    <!-- <span class="text-l mb-3" por si quieren meter marca del producto -->
+    <span class="text-l mb-3" 
+        style="
+            color: #0eabbd !important; 
+            font-family: 'MontExtraBold' !important; 
+            font-size: 1.4rem !important; 
+            text-align: center; 
+            display: inline-block; 
+            line-height: 1.5em; 
+            min-height: 4.5em;  /* Al menos 3 renglones de altura */
+            padding: 0.5em 0;
+            height: 4.5em; /* Establece una altura fija para el span */
+        ">
+        {{ product.description }}
+    </span>
 
-                    <span v-if="!product.original_price" class="text-l mb-3" style="color: #0eabbd !important; font-family: 'Montbold'; font-size: 1.6rem !important;">{{ "$"+product.price_tax.toFixed(2) }}</span>
+    <!-- Contenedor de precios con altura fija -->
+    <div class="price-container" style="height: 120px; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between; align-items: center; text-align: center;">
+        <div>
+            <!-- Precio con descuento (si tiene) -->
+            <span v-if="product.original_price" 
+                class="text-l mb-2 line-through" 
+                style="color: red !important; font-family: 'Montserrat'; font-size: 1.4rem;">
+                {{ "$" + product.original_price.toFixed(2) }}
+            </span>
+        </div>
 
-                    <span v-if="product.original_price" class="text-l mb-3 line-through" 
-                    style="color: red !important; font-family: 'Montserrat';"
-                    >{{ "$"+product.original_price.toFixed(2) }}</span>
+        <div>
+            <!-- Precio con impuesto (si no hay precio original) -->
+            <span v-if="!product.original_price" 
+                class="text-l mb-2" 
+                style="color: #0eabbd !important; font-family: 'Montbold'; font-size: 1.6rem !important;">
+                {{ "$" + product.price_tax.toFixed(2) }}
+            </span>
+        </div>
 
-                    <span v-if="product.original_price" class="text-l mb-3"
-                    style="color: green !important; font-family: 'Montbold'; font-size: 1.6rem !important;">{{ "$"+product.price_tax.toFixed(2) }}</span>
+        <div>
+            <!-- Precio con descuento (si tiene) en verde, más grande -->
+            <span v-if="product.original_price" 
+                class="text-l mb-3" 
+                style="color: green !important; font-family: 'Montbold'; font-size: 1.8rem !important;">
+                {{ "$" + product.price_tax.toFixed(2) }}
+            </span>
+        </div>
 
-                    <span class="text-l text-900 mb-3" style="font-family: 'Montserrat' !important;">{{ product.barcode }}</span>
+        <div>
+            <!-- Código de barras -->
+            <span class="text-l text-900 mb-3" 
+                style="font-family: 'Montserrat' !important; font-size: 1.4rem;">
+                {{ product.barcode }}
+            </span>
+        </div>
+    </div>
+</div>
 
-                    <div class="col-12 align-items-center">
+                <div class="col-12 align-items-center">
                         <div class="grid formgrid p-fluid grid-nogutter align-items-center">
                             
                             <!-- Columna para InputNumber -->
@@ -78,7 +114,6 @@
                                     decrementButtonIcon="pi pi-minus"
                                 />
                             </div>
-                            
                             <!-- Columna para Botón "Agregar al carrito" -->
                             <div class="col-12 md:col-6">
                                 <Button
@@ -94,7 +129,6 @@
                                 
                             </div>
                         </div>
-                </div>
             </div>
             <br></br>
             <div class="field col-12 sm:col-12 md:col-12 xl:col-12">
@@ -186,6 +220,44 @@ onMounted(() => {
 })
 </script>
 <style>
+/* Contenedor general para los precios */
+.price-container {
+  display: flex;
+  flex-direction: column; /* Asegura que los elementos se apilen verticalmente */
+  align-items: flex-start; /* Alinea los elementos al inicio (izquierda) */
+  gap: 0.0rem; /* Espacio entre los elementos (renglones) */
+  margin-bottom: 1rem; /* Espacio en la parte inferior del contenedor */
+}
+.price-container span {
+  display: block; /* Asegura que cada span ocupe su propio renglón */
+  min-height: 1em; /* Asegura que cada span tenga un renglón de altura como mínimo */
+  line-height: 0em; /* Alinea el texto verticalmente dentro del span */
+  padding: 0.5em 0; /* Un poco de padding para dar espacio dentro */
+}
+/* Estilos para el precio original (tachado) */
+.price-container .line-through {
+  text-decoration: line-through;
+}
+/* Estilos para el precio con descuento (en verde y más grande) */
+.price-container .price-discount {
+  color: green;
+  font-size: 1rem !important; /* Tamaño de fuente más grande */
+  font-family: 'Montbold';
+}
+
+
+/* Estilo para el precio normal (sin descuento) */
+.price-container .price-tax {
+  color: #0eabbd;
+  font-family: 'Montbold';
+  font-size: 1rem; /* Tamaño de fuente medio */
+}
+/* Estilo para el código de barras */
+.price-container .barcode {
+  font-family: 'Montserrat';
+  font-size: 1rem !important;
+  color: #333;
+}
 /* Estilos para el botón de "Agregar al carrito" */
 .carrito-btn {
     background: linear-gradient(140deg, #193a62, #1099af) !important; /* Degradado verde oscuro a verde claro */
