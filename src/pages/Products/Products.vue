@@ -13,7 +13,7 @@
                         <div class=" full-width-sm-index">
                         <div class="p-3 flex justify-content-center align-items-center flex-wrap">
                             <div class="justify-content-center align-items-center flex">
-                                <span class="w-full text-8xl" style="font-weight: 800; font-family: 'Poppins';">
+                                <span class="w-full text-8xl" style="font-weight: 900; font-family: 'MontExtraBold';">
                                     {{ pagetitle }}
                                 </span>
                             </div>
@@ -23,16 +23,17 @@
                 </div>
                 <div class="field hidden sm:block col-2">
                     <!-- Definitivamente hacerlo componente -->
-                    <span v-if="is_search==true" class="text-900 font-medium text-4xl mb-4">{{ pagetitle }}</span>
+                    <span v-if="is_search==true" class="text-900 font-medium text-4xl mb-4" style="font-family: 'MontExtraBold';">{{ pagetitle }}</span>
                         <br>
                     <span class="text-900 font-medium text-md mb-4" 
-                    style="font-weight: 800 !important;
+                    style="font-family: 'Montbold';
                     color: #11BACC !important;
                     padding-left: 20px !important;
                     "
                     >{{ products.length }} Productos Relacionados</span>
                         <br>
                         <br>
+                        
                     <BasicFilterSelection @v-model="getcategories" :key="componentKey" :allcategories="subgroups"
                         filtername="Filtro por Grupos" :selected="categoryselection"/>
                     <BasicFilterSelection @v-model="getfilterprices" :key="componentKey" :allcategories="priceorder"
@@ -40,7 +41,7 @@
                 </div>
                 <div class="field block sm:hidden col-12">
                     <Sidebar v-model:visible="visible">
-                        <span class="text-900 font-medium text-4xl mb-4">{{ pagetitle }}</span>
+                        <span class="text-900 font-medium text-4xl mb-4" style="font-family: 'MontExtraBold';">{{ pagetitle }}</span>
                         <br>
                         <span class="text-900 font-medium text-xs mb-4">{{ products.length }} Productos Relacionados</span>
                         <br>
@@ -207,7 +208,7 @@ onMounted(async () => {
         cursor: pointer;
         z-index: 999;
         box-shadow: -0.25rem 0 1rem rgba(0, 0, 0, 0.15);
-
+        
         i {
             font-size: 2rem;
             line-height: inherit;

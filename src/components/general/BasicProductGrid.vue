@@ -3,7 +3,7 @@
             <div class="col-12">
                 <div class="grid formgrid p-fluid" >
                     <div class="field col-12 sm:col-12 md:col-8 xl:col-8"></div>
-                    <div class="field col-12 sm:col-12 md:col-4 xl:col-4">
+                    <div class="field col-12 sm:col-12 md:col-4 xl:col-4" style="font-family: Montserrat;">
                         <FloatLabel>
                             <AutoComplete v-model="filterproductname" @item-select="selectSuggestion" inputId="filter" optionLabel="description" :suggestions="suggest" @complete="search" v-on:keyup.enter="filteredserch(filterproductname)">
                             </AutoComplete>
@@ -39,22 +39,25 @@
 
                 </div>
                 <div class="flex flex-column align-items-center justify-content-center">
-
-                    <span class="text-l text-900 font-bold mb-3" 
-                        style="color: #0eabbd !important; font-weight: 800 !important; font-size: 1.4rem !important; text-align: center;">
+                    <!-- <span class="text-l mb-3"por si quieren meter marca del producto
+                    style="font-family: 'MontExtraBold' !important;">
+                    {{  product.label }}
+                    </span>  -->
+                    <span class="text-l mb-3" 
+                        style="color: #0eabbd !important; font-family: 'MontExtraBold' !important; font-size: 1.4rem !important; text-align: center;">
                         {{ product.description }}
                     </span>
 
-                    <span v-if="!product.original_price" class="text-l text-900 mb-3" style="color: #0eabbd !important; font-weight: 800; font-size: 1.2rem !important;">{{ "$"+product.price_tax.toFixed(2) }}</span>
+                    <span v-if="!product.original_price" class="text-l mb-3" style="color: #0eabbd !important; font-family: 'Montbold'; font-size: 1.6rem !important;">{{ "$"+product.price_tax.toFixed(2) }}</span>
 
-                    <span v-if="product.original_price" class="text-l text-900 mb-3 line-through" 
-                    style="color: red !important;"
+                    <span v-if="product.original_price" class="text-l mb-3 line-through" 
+                    style="color: red !important; font-family: 'Montserrat';"
                     >{{ "$"+product.original_price.toFixed(2) }}</span>
 
-                    <span v-if="product.original_price" class="text-l text-900 mb-3 text-red-500"
-                    style="color: green !important; font-weight: 800 !important; font-size: 1.2rem !important;">{{ "$"+product.price_tax.toFixed(2) }}</span>
+                    <span v-if="product.original_price" class="text-l mb-3"
+                    style="color: green !important; font-family: 'Montbold'; font-size: 1.6rem !important;">{{ "$"+product.price_tax.toFixed(2) }}</span>
 
-                    <span class="text-l text-900 mb-3 font-medium">{{ product.barcode }}</span>
+                    <span class="text-l text-900 mb-3" style="font-family: 'Montserrat' !important;">{{ product.barcode }}</span>
 
                     <div class="col-12 align-items-center">
                         <div class="grid formgrid p-fluid grid-nogutter align-items-center">
@@ -85,7 +88,7 @@
                                     :style="{ width: '100%' }"
                                     @click="addCart(product.id, product.id_subarticle, product.quantity, i)"
                                 >
-                                    <span class="text-base font-semibold">Agregar al carrito</span>
+                                    <span class="text-base" style="font-family: Montserrat !important;">Agregar al carrito</span>
                                 </Button>
                             </div>
                                 

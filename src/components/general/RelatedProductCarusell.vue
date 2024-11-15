@@ -32,17 +32,18 @@
     >
       <swiper-slide v-for="(item, i) in relatedItems" :key="i"><div class="shadow-5 surface-border border-round m-2 p-3">
           <div class="mb-3 flex align-items-center justify-content-center">
-            <div class="relative mx-auto">
+            <div class="relative mx-auto" style="font-family: 'Montsemibold';">
               <img 
                 :src="imgroute(item.id, item.barcode, item.id_brand)"
-                class="h-15rem"
+                class="h-14rem"
                 @click="navigateToProduct(item)"
+                style="font-family: 'Montsemibold';"
               />
             </div>
           </div>
           <div
             class="flex align-items-center justify-content-center cursor-pointer px-3 py-2 overflow-hidden relative font-semibold text-lg uppercase"
-          >
+          style="font-family: 'Montsemibold'">
             {{ item.article_name }}
           </div>
         </div></swiper-slide>

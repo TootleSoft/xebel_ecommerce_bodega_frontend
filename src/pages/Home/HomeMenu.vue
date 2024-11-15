@@ -9,10 +9,10 @@
   <div class="text-container">
         <!--Los textos principales-->
         <div class="bold-text-home text-center md:text-4xl xl:text-6xl flex-wrap justify-center">
-            <div class="w-full md:text-7xl xl:text-8xl" style="text-align: left;">Descubre</div>
-            <div class="w-full md:text-7xl xl:text-8xl" style="text-align: left;">nuestros</div>
-            <div class="w-full md:text-7xl xl:text-8xl" style="text-align: left; color: #11bacc !important">increíbles</div>
-            <div class="w-full md:text-7xl xl:text-8xl" style="text-align: left; color: #11bacc !important">productos.</div>
+            <div class="w-full md:text-7xl xl:text-8xl" style="text-align: left; font-family: Montbold;">Descubre</div>
+            <div class="w-full md:text-7xl xl:text-8xl" style="text-align: left; font-family: Montbold;">nuestros</div>
+            <div class="w-full md:text-7xl xl:text-8xl" style="text-align: left; color: #11bacc !important; font-family: Montbold;">increíbles</div>
+            <div class="w-full md:text-7xl xl:text-8xl" style="text-align: left; color: #11bacc !important; font-family: Montbold;">productos.</div>
         </div>
         <!--La descripción adicional-->
         <div class="container-cyan-text-inicio">
@@ -57,7 +57,7 @@
             <div class="flex justify-content-center flex-wrap">
                 <div class="flex align-items-center justify-content-center w-16rem m-2 cyan-text md:text-7xl xl:text-7xl" style="font-family: Montbold;">
                     Nuestras  </div> 
-                <div class="flex align-items-center justify-content-center w-15rem m-2 md:text-7xl xl:text-7xl" style="color: #1B2955; font-family: Montbold; margin-left: 30px !important;">marcas.</div>
+                <div class="flex align-items-center justify-content-center w-15rem m-2 md:text-7xl xl:text-7xl" style="color: #1B2955; font-family: Montbold; margin-left: 30px !important;">marcas</div>
                 <!-- <div class="cyan-text xl:text-7xl flex align-items-center justify-content-center w-4rem h-4rem">Nuestras</div>
                 <div class="bold-text xl:text-7xl flex align-items-center justify-content-center w-4rem h-4rem">marcas</div> -->
             </div>
@@ -141,9 +141,10 @@
                 <BasicImageCarusell2 />
             </div>
             <div class="col-6 hidden sm:block">
-                <p class="bold-text xl:text-8xl font-bold-800 text-left" style="font-family: Montbold;">Más de 30 años a tu</p>
-                <br>
-                <p class="cyan-text xl:text-8xl text-left">servicio.</p>
+                <p class="bold-text xl:text-8xl font-bold-800 text-left" style="font-family: Montbold;">Más de 30 </p>
+                <p class="bold-text xl:text-8xl font-bold-800 text-left" style="font-family: Montbold;">años a tu</p>
+                
+                <p class="cyan-text xl:text-8xl text-left" style="font-family: Montbold">servicio.</p>
                 <br>
                 <p class="cyan-text4 xl:text-2xl text-left" style="font-family: Montsemibold;"> De <strong>Ciudad de México a Monterrey</strong>, llevamos
                     más de 30 años brindando soluciones a los
@@ -158,11 +159,11 @@
         <footer id="finalcontacto" class="flex flex- footer justify-content-center align-items-center">
                 <div class="footer-content">
                     <div class="footer-column">
-                        <h3 class="font-bold-800 xl:text-4xl">Contacto</h3>
-                        <p class="font-bold xl:text-2xl"> (81) 2948-6399</p>
-                        <p class="line-height-1 w-15">Eduardo Aguirre Pequeño</p>
-                        <p class="line-height-1 w-15">1302, Mitras Centro, Monterrey,</p>
-                        <p class="line-height-1 w-15">Nuevo Léon, México. CP. 64460</p>
+                        <h3 class="font-bold-800 xl:text-4xl" style="font-family: 'Montbold';">Contacto</h3>
+                        <p class="font-bold xl:text-2xl" style="font-family: 'Montsemibold';"> (81) 2948-6399</p>
+                        <p class="line-height-1 w-15" style="font-family: 'Montserrat';">Eduardo Aguirre Pequeño</p>
+                        <p class="line-height-1 w-15" style="font-family: 'Montserrat';">1302, Mitras Centro, Monterrey,</p>
+                        <p class="line-height-1 w-15" style="font-family: 'Montserrat';">Nuevo Léon, México. CP. 64460</p>
                         <span class="social-icons">
                             <a href="https://www.facebook.com/villadcmty" target="_blank" class="social-icon">
                                 <i class="pi pi-facebook"></i>
@@ -173,27 +174,27 @@
                         </span>
                     </div>
                     <div class="footer-column hidden sm:block">
-                        <h3 class="font-bold-800 xl:text-4xl">Villa de Cortés Monterrey</h3>
+                        <h3 class="font-bold-800 xl:text-4xl" style="font-family: 'Montbold';">Villa de Cortés Monterrey</h3>
                         <ul>
-                            <li>Inicio</li>
-                            <li>Nuestras marcas</li>
-                            <li>Promociones para ti</li>
-                            <li>¿Quiénes somos?</li>
-                            <li>Lo más buscado</li>
+                            <li style="font-family: 'Montserrat';">Inicio</li>
+                            <li style="font-family: 'Montserrat';">Nuestras marcas</li>
+                            <li style="font-family: 'Montserrat';">Promociones para ti</li>
+                            <li style="font-family: 'Montserrat';">¿Quiénes somos?</li>
+                            <li style="font-family: 'Montserrat';">Lo más buscado</li>
                         </ul>
                         <div class="flex align-items-center justify-content-center">
-                            <p>Equipos Dentales Villa de Cortés Monterrey 2024 © All rights reserved.</p>
+                            <p style="font-family: 'Montserrat';">Equipos Dentales Villa de Cortés Monterrey 2024 © All rights reserved.</p>
                         </div>
                     </div>
                     <div class="footer-column hidden sm:block">
-                        <h3 class="font-bold-800 xl:text-4xl">Tienda</h3>
-                        <p class="line-height-1 w-15">Equipos Dentales</p>
-                        <p class="line-height-1 w-15">Instrumental</p>
-                        <p class="line-height-1 w-15">Laboratorio</p>
-                        <p class="line-height-1 w-15">Ortodoncia</p>
-                        <p class="line-height-1 w-15">Unidades</p>
-                        <p class="line-height-1 w-15">Uniformes</p>
-                        <p class="line-height-1 w-15">Otros</p>
+                        <h3 class="font-bold-800 xl:text-4xl" style="font-family: 'Montbold';">Tienda</h3>
+                        <p class="line-height-1 w-15" style="font-family: 'Montserrat';">Equipos Dentales</p>
+                        <p class="line-height-1 w-15" style="font-family: 'Montserrat';">Instrumental</p>
+                        <p class="line-height-1 w-15" style="font-family: 'Montserrat';">Laboratorio</p>
+                        <p class="line-height-1 w-15" style="font-family: 'Montserrat';">Ortodoncia</p>
+                        <p class="line-height-1 w-15" style="font-family: 'Montserrat';">Unidades</p>
+                        <p class="line-height-1 w-15" style="font-family: 'Montserrat';">Uniformes</p>
+                        <p class="line-height-1 w-15" style="font-family: 'Montserrat';">Otros</p>
                     </div>
                 </div>
             </footer>
@@ -422,7 +423,7 @@ const products2 = ref([
     font-family: Montsemibold;
     color: #1B2955;
     line-height: 150%; /* Altura de línea específica */
-    line-height: 5rem;
+    line-height: 6rem;
 }
 
 .cyan-text-home {

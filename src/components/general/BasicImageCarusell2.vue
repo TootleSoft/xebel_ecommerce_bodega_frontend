@@ -1,4 +1,5 @@
 <template>
+  <div class="container">
     <!-- <div class="card">
       <Carousel
         :value="carouselItems"
@@ -43,6 +44,8 @@
         </div>
       </swiper-slide>
     </swiper>
+  </div>
+
   </template>
   
   <script lang="ts" setup>
@@ -103,6 +106,13 @@
   </script>
   
   <style lang="scss" scoped>
+.container {
+  background-color: white;
+  border-radius: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra externa */
+  /* También puedes ajustar el valor de la sombra según el efecto que quieras */
+  padding: 20px;  /* Asegura un poco de espacio dentro del contenedor */
+}
   /* Estilos adicionales si los necesitas */
   .custom-carousel .p-carousel {
   width: 100%;

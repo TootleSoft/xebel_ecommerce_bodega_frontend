@@ -3,7 +3,7 @@
     <div class="full-width">
         <div class="p-3 flex justify-content-between lg:justify-content-center align-items-center flex-wrap">
             <div class="align-items-center hidden lg:flex">
-                <span class="line-height-4">
+                <span class="line-height-4" style="font-family: 'Montserrat';">
                     <i class="pi pi-box"></i>
                     Recuerda que tenemos envíos a todo México
                 </span>
@@ -36,8 +36,8 @@
                             class="text-lg custom-border"
                             v-on:keyup.enter="router.push('/products/s/'+serch)"
                         />
-                        <label class="placeholder" for="serch">
-                            Buscador por productos...
+                        <label class="placeholder" for="serch" style="font-weight: 200 !important; font-family: 'MontItalic' !important;">
+                            Buscador de productos...
                         </label>
                         <i class="pi pi-search search-icon"></i> <!-- Ícono de búsqueda -->
                     </FloatLabel>
@@ -60,7 +60,7 @@
                     <br>
                     <br>
                     <Button class="label-button-user" icon="pi pi-user icon-large" label="Ingresar" severity="contrast" outlined
-                        @click="tlogin" />
+                        @click="tlogin" style="font-family: 'Montsemibold';"/>
                     <TieredMenu ref="mlogin" class="tiered-menu-class" id="overlay_tmenu" :model="login" popup />
                 </div>
                 <div class="field col-2">
@@ -70,7 +70,7 @@
                     <br>
                     <br>
                     <Button class="label-button-user" @click="shoppingCart" icon="pi pi-shopping-cart icon-large"
-                        :label="`Mi Carrito (${cartStore.cart.length})`" severity="contrast" outlined />
+                        :label="`Mi Carrito (${cartStore.cart.length})`" severity="contrast" outlined style="font-family: 'Montsemibold';" />
                 </div>
 
                 <!-- <div class="field col-12 sm:col-12 md:col-1 xl:col-1">
@@ -84,24 +84,24 @@
                             <a v-if="item.to == '#finalcontacto'" 
                                 class="flex align-items-center px-3 py-2 overflow-hidden relative font-semibold text-lg uppercase"
                                 @click="scrollToFinalContacto()">
-                                <span class="MegaMenuText">{{ item.label }}</span>
+                                <span class="MegaMenuText" style="font-family: 'Montbold';">{{ item.label }}</span>
                             </a>
 
                             <a v-else-if="item.root && item.items_type == 0"
                                 class="flex align-items-center px-3 py-2 overflow-hidden relative font-semibold text-lg uppercase"
                                 @click="navigateToExternal(item.to)">
-                                <span class="MegaMenuText">{{ item.label }}</span>
+                                <span class="MegaMenuText" style="font-family: 'Montbold'">{{ item.label }}</span>
                             </a>
 
                             <a v-else-if="item.root"
                                 class="flex align-items-center px-3 py-2 overflow-hidden relative font-semibold text-lg uppercase"
                                 @click="router.push(item.to)">
-                                <span class="MegaMenuText">{{ item.label }}</span>
+                                <span class="MegaMenuText" style="font-family: 'Montbold';">{{ item.label }}</span>
                             </a>
 
                             <a v-else class="flex align-items-center p-3 cursor-pointer mb-2 gap-3"
                                 @click="router.push(item.to)">
-                                <span class="text-submenu">{{ item.label }}</span>
+                                <span class="text-submenu" style="font-family: 'Montserrat';">{{ item.label }}</span>
                             </a>
 
                         </template>

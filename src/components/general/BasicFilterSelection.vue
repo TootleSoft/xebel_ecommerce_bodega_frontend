@@ -70,7 +70,7 @@ onMounted(()=>{
 
 h1.text-900 {
     font-size: 1.25rem;
-    font-weight: bold;
+    font-family: 'Montbold';
     color: #333;
 }
 
@@ -78,7 +78,7 @@ label {
     font-size: 1rem;
     margin-left: 8px;
     color: #11bacc;
-    font-weight: bold;
+    font-family: 'Montsemibold';
 }
 
 button {
@@ -89,7 +89,7 @@ button {
     border-radius: 4px;
     border: none;
     cursor: pointer;
-    font-weight: bold;
+    font-family: 'Montserrat';
 }
 
 button:hover {
