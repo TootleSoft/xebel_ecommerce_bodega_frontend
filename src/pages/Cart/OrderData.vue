@@ -91,7 +91,7 @@
                     </div>
                     <div v-if="billable" class="grid formgrid col-12">
                         <div class="col-12 lg:col-6 field mb-4">
-                            <Dropdown :options="countries" v-model="invoice_entity.country" placeholder="Pais" optionLabel="name" optionValue="name" showClear class="w-full"></Dropdown>
+                            <Dropdown :options="countries" v-model="invoice_entity.country" placeholder="País" optionLabel="name" optionValue="name" showClear class="w-full"></Dropdown>
                         </div>
                         <div class="col-12 lg:col-6 field mb-4">
                             <input v-model="invoice_entity.state" id="Estado" placeholder="Estado" type="text" class="p-inputtext w-full" />
@@ -103,10 +103,10 @@
                             <input v-model="invoice_entity.suburb" id="Colonia" placeholder="Colonia" type="text" class="p-inputtext w-full" />
                         </div>
                         <div class="col-12 field mb-4">
-                            <input v-model="invoice_entity.address" id="Direccion" placeholder="Direccion" type="text" class="p-inputtext w-full" />
+                            <input v-model="invoice_entity.address" id="Direccion" placeholder="Dirección" type="text" class="p-inputtext w-full" />
                         </div>
                         <div class="col-12 lg:col-6 field mb-4">
-                            <input v-model="invoice_entity.postal_code" id="pc" placeholder="Codigo Postal" type="number" class="p-inputtext w-full" />
+                            <input v-model="invoice_entity.postal_code" id="pc" placeholder="Código Postal" type="number" class="p-inputtext w-full" />
                         </div>
                         <div class="col-12 lg:col-6 field mb-4">
                             <input v-model="invoice_entity.rfc" id="rfc" placeholder="RFC" type="text" class="p-inputtext w-full" />
@@ -115,10 +115,10 @@
                             <Dropdown :options="useCfdi" v-model="invoice_entity.customerUseCfdi" placeholder="Uso CFDI" optionLabel="Descripcion" optionValue="c_UsoCFDI" showClear class="w-full"></Dropdown>
                         </div>
                         <div class="col-12 lg:col-6 field mb-4">
-                            <Dropdown :options="taxRegime" v-model="invoice_entity.customerTaxRegime" placeholder="Regimen Fiscal" optionLabel="Descripcion" optionValue="c_RegimenFiscal" showClear class="w-full"></Dropdown>                        
+                            <Dropdown :options="taxRegime" v-model="invoice_entity.customerTaxRegime" placeholder="Régimen Fiscal" optionLabel="Descripcion" optionValue="c_RegimenFiscal" showClear class="w-full"></Dropdown>                        
                         </div>
                         <div class="col-12 flex align-items-center justify-content-center">
-                            <Button  @click="saveShippingData" class="flex align-items-center justify-content-center" label="Guardar/Modificar Datos de Facturacion" icon="pi pi-fw pi-save"></Button>
+                            <Button  @click="saveShippingData" class="flex align-items-center justify-content-center" label="Guardar/Modificar Datos de facturación" icon="pi pi-fw pi-save"></Button>
                         </div>
                     </div>
                 </div>
@@ -141,12 +141,12 @@
 
             <Button v-if="only_online == 0 && deliveryType != 2" 
             class="mt-3 lg:mt-0 w-full lg:w-auto flex-order-2 lg:flex-order-1 lg:mr-4" 
-            label="Pagar En Sucursal" 
+            label="Pagar en sucursal" 
             icon="pi pi-fw pi-wallet" 
             @click="() => { processPaymentStore(); }"></Button>
 
             <Button class="mt-3 lg:mt-0 w-full lg:w-auto flex-order-2 lg:flex-order-1 lg:mr-4" 
-            label="Pagar En Linea" 
+            label="Pagar en línea" 
             icon="pi pi-fw pi-credit-card" 
             @click="() => { processPayment(); }"></Button>
 
@@ -524,7 +524,7 @@ const processPaymentStore = async () => {
         let inn = invoiceNotNull();
         if(billable.value == true){
             if(inn == false){
-                throw "Favor de llenar todos los datos de facturacion"
+                throw "Favor de llenar todos los datos de facturación"
             }
         }
         loading.value = true;
@@ -745,19 +745,19 @@ const createShipment = async (shipment: Shipment, apiKey: string) => {
     };
 
     const getShipments = async (id: number) => {
-    const apiKey = import.meta.env.VITE_TOKEN_SKYDROPX;
-    const urlBase = import.meta.env.VITE_SKYDROPX_BASE_URL;
-    const requets = await fetch(urlBase + '/' +'shipments', {
-        method: 'GET',
-        headers: {
-            'Authorization': `Token token=${apiKey}`,
-            'Content-Type': 'application/json'
-        }
-    });
-    const data = await requets.json();
-    console.log('shipments:',JSON.stringify(data));
-    return data;
-}
+        const apiKey = import.meta.env.VITE_TOKEN_SKYDROPX;
+        const urlBase = import.meta.env.VITE_SKYDROPX_BASE_URL;
+        const requets = await fetch(urlBase + '/' +'shipments', {
+            method: 'GET',
+            headers: {
+                'Authorization': `Token token=${apiKey}`,
+                'Content-Type': 'application/json'
+            }
+        });
+        const data = await requets.json();
+        console.log('shipments:',JSON.stringify(data));
+        return data;
+    }
 
 const getShipmentsById = async (id: number) => {
     const apiKey = import.meta.env.VITE_TOKEN_SKYDROPX;
