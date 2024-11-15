@@ -3,17 +3,17 @@
     <div class="hidden sm:block">
         <div class="grid">
             <div class="col-5 flex align-content-center flex-wrap">
-                <div class="bold-text-home md:text-2xl xl:text-6xl flex align-items-center justify-content-center w-full">Nosotros</div>
+                <div class="bold-text-home md:text-2xl xl:text-6xl flex align-items-center justify-content-center w-full" style="font-family: 'MontExtraBold';">Nosotros</div>
                 <div class="bold-text md:text-6xl flex align-items-center justify-content-center w-full">
                     <img :src="'/src/images/villas_custom/IconoNosotros.jpg'" class="hidden md:block w-10rem"/>
                 </div>
-                    <span class="cyan-text-inicio md:text-sm xl:text-xl w-full">Comenzando en Ciudad de México y ahora expandiéndonos a Monterrey y a toda la república, somos una empresa mexicana líder en ventas de insumos dentales con <strong>más de 30 años de experiencia.</strong></span>
+                    <span class="cyan-text-inicio md:text-sm xl:text-xl w-full" style="font-family: 'Montserrat';">Comenzando en Ciudad de México y ahora expandiéndonos a Monterrey y a toda la república, somos una empresa mexicana líder en ventas de insumos dentales con <strong>más de 30 años de experiencia.</strong></span>
                     <br>
-                    <span class="cyan-text-inicio md:text-sm xl:text-xl w-full">Nuestro propósito es brindar soluciones a los profesionistas de la industria dental, ofreciendo a nuestros clientes la mejor variedad y calidad en <strong>equipos y productos dentales.</strong></span>
+                    <span class="cyan-text-inicio md:text-sm xl:text-xl w-full" style="font-family: 'Montserrat';">Nuestro propósito es brindar soluciones a los profesionistas de la industria dental, ofreciendo a nuestros clientes la mejor variedad y calidad en <strong>equipos y productos dentales.</strong></span>
                     <br>
-                    <span class="cyan-text-inicio md:text-sm xl:text-xl w-full">Tenemos exclusivos proveedores internacionales en México.</span>
+                    <span class="cyan-text-inicio md:text-sm xl:text-xl w-full" style="font-family: 'Montserrat';">Tenemos exclusivos proveedores internacionales en México.</span>
                     <br>
-                    <span class="cyan-text-inicio md:text-sm xl:text-xl w-full">Nosotros somos <strong>Villa de Cortés Monterrey.</strong></span>
+                    <span class="cyan-text-inicio md:text-sm xl:text-xl w-full" style="font-family: 'Montserrat';">Nosotros somos <strong>Villa de Cortés Monterrey.</strong></span>
                 </div>
             <div class="col-7">
                 <BasicAboutCarusell />
@@ -27,13 +27,13 @@
                 <div class="bold-text md:text-6xl flex align-items-center justify-content-center w-full">
                     <img :src="'/src/images/villas_custom/IconoNosotros.jpg'" class="w-10rem"/>
                 </div>
-                    <span class="cyan-text-inicio md:text-sm xl:text-xl w-full">Comenzando en Ciudad de México y ahora expandiéndonos a Monterrey y a toda la república, somos una empresa mexicana líder en ventas de insumos dentales con <strong>más de 30 años de experiencia.</strong></span>
+                    <span class="cyan-text-inicio md:text-sm xl:text-xl w-full" style="font-family: 'Montserrat';">Comenzando en Ciudad de México y ahora expandiéndonos a Monterrey y a toda la república, somos una empresa mexicana líder en ventas de insumos dentales con <strong>más de 30 años de experiencia.</strong></span>
                     <br>
-                    <span class="cyan-text-inicio md:text-sm xl:text-xl w-full">Nuestro propósito es brindar soluciones a los profesionistas de la industria dental, ofreciendo a nuestros clientes la mejor variedad y calidad en <strong>equipos y productos dentales.</strong></span>
+                    <span class="cyan-text-inicio md:text-sm xl:text-xl w-full" style="font-family: 'Montserrat';">Nuestro propósito es brindar soluciones a los profesionistas de la industria dental, ofreciendo a nuestros clientes la mejor variedad y calidad en <strong>equipos y productos dentales.</strong></span>
                     <br>
-                    <span class="cyan-text-inicio md:text-sm xl:text-xl w-full">Tenemos exclusivos proveedores internacionales en México.</span>
+                    <span class="cyan-text-inicio md:text-sm xl:text-xl w-full" style="font-family: 'Montserrat';">Tenemos exclusivos proveedores internacionales en México.</span>
                     <br>
-                    <span class="cyan-text-inicio md:text-sm xl:text-xl w-full">Nosotros somos <strong>Villa de Cortés Monterrey.</strong></span>
+                    <span class="cyan-text-inicio md:text-sm xl:text-xl w-full" style="font-family: 'Montserrat';">Nosotros somos <strong>Villa de Cortés Monterrey.</strong></span>
                 </div>
             <div class="col-12">
                 <BasicAboutCarusell />

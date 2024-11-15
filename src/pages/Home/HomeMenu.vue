@@ -52,12 +52,11 @@
                 </div>
             </div>
         </div> -->
-
         <div class="hidden sm:block">
             <div class="flex justify-content-center flex-wrap">
-                <div class="flex align-items-center justify-content-center w-16rem m-2 cyan-text md:text-7xl xl:text-7xl" style="font-family: Montbold;">
-                    Nuestras  </div> 
-                <div class="flex align-items-center justify-content-center w-15rem m-2 md:text-7xl xl:text-7xl" style="color: #1B2955; font-family: Montbold; margin-left: 30px !important;">marcas</div>
+                <div class="flex align-items-center justify-content-center w-16rem m-2 cyan-text md:text-7xl xl:text-7xl font-bold" style="font-family: Montbold;">
+                    Nuestras</div> 
+                <div class="flex align-items-center justify-content-center w-18rem m-2 md:text-7xl xl:text-7xl font-bold" style="color: #1B2955; font-family: 'Montbold'">marcas</div>
                 <!-- <div class="cyan-text xl:text-7xl flex align-items-center justify-content-center w-4rem h-4rem">Nuestras</div>
                 <div class="bold-text xl:text-7xl flex align-items-center justify-content-center w-4rem h-4rem">marcas</div> -->
             </div>
@@ -66,16 +65,16 @@
 
         <div class="hidden sm:block">
             <div class="flex justify-content-center flex-wrap">
-                <div class="flex align-items-center justify-content-center w-22rem m-2 cyan-text md:text-7xl xl:text-7xl font-bold" style="font-family: Montbold;">
+                <div class="flex align-items-center justify-content-center w-25rem m-2 cyan-text md:text-7xl xl:text-7xl font-bold" style="font-family: 'Montbold';">
                     Promociones</div> 
-                <div class="flex align-items-center justify-content-center w-18rem m-2 md:text-7xl xl:text-7xl" style="color: #1B2955; font-family: Montbold">para ti</div>
+                <div class="flex align-items-center justify-content-center w-15rem m-2 md:text-7xl xl:text-7xl font-bold" style="color: #1B2955; font-family: 'Montbold'">para ti</div>
             </div>
         </div>
         <div class="block sm:hidden">
             <div class="flex justify-content-center align-items-center flex-wrap">
-                <div class="flex align-items-center justify-content-center w-15rem m-2 cyan-text text-7xl" style="font-family: Montbold;">
+                <div class="flex align-items-center justify-content-center w-15rem m-2 cyan-text text-5xl font-bold" style="font-family: 'Montbold';">
                     Promociones</div> 
-                <div class="flex align-items-center justify-content-center w-8rem m-2 text-7xl" style="color: #1B2955; font-family: Montbold;">para ti</div>
+                <div class="flex align-items-center justify-content-center w-10rem m-2 text-5xl font-bold" style="color: #1B2955; font-family: 'Montbold'">para ti</div>
             </div>
         </div>
         <div class="full-screen-container">
@@ -85,16 +84,16 @@
 
         <div class="hidden sm:block">
             <div class="flex justify-content-center flex-wrap">
-                <div class="flex align-items-center justify-content-center w-10rem m-2 cyan-text md:text-7xl xl:text-7xl" style="font-family: Montbold;">
+                <div class="flex align-items-center justify-content-center w-13rem m-2 cyan-text md:text-7xl xl:text-7xl font-bold" style="font-family: Montbold;">
                     Ofertas </div>
-                <div class="flex align-items-center justify-content-center w-18rem m-2 md:text-7xl xl:text-7xl" style="color: #1B2955; font-family: Montbold;"> para ti</div>
+                <div class="flex align-items-center justify-content-center w-15rem m-2 md:text-6xl xl:text-7xl font-bold" style="color: #1B2955; font-family: Montbold"> para ti</div>
             </div>
         </div>
         <div class="block sm:hidden">
             <div class="flex align-items-center justify-content-center flex-wrap">
-                <div class="flex align-items-center justify-content-center w-14rem m-2 cyan-text text-5xl" style="font-family: Montbold;">
+                <div class="flex align-items-center justify-content-center w-10rem m-2 cyan-text text-5xl font-bold" style="font-family: 'Montbold'">
                     Ofertas</div>
-                <div class="flex align-items-center justify-content-center w-8rem m-2 text-7xl" style="color: #1B2955; font-family: Montbold;">para ti</div>
+                <div class="flex align-items-center justify-content-center w-10rem m-2 text-5xl font-bold" style="color: #1B2955; font-family: 'Montbold'">para ti</div>
             </div>
         </div>
         <div class="col-12">
@@ -104,9 +103,9 @@
 
         <div class="block sm:hidden">
             <div class="flex align-items-center justify-content-center flex-wrap">
-                <div class="flex align-items-center justify-content-center w-10rem m-2 cyan-text text-5xl" style="font-family: Montbold;">
+                <div class="flex align-items-center justify-content-center w-10rem m-2 cyan-text text-5xl font-bold">
                     Nuestras</div> 
-                <div class="flex align-items-center justify-content-center w-10rem m-2 text-5xl" style="color: #1B2955; font-family: Montbold;">marcas</div>
+                <div class="flex align-items-center justify-content-center w-10rem m-2 text-5xl font-bold" style="color: #1B2955;">marcas</div>
                 <!-- <div class="cyan-text xl:text-7xl flex align-items-center justify-content-center w-4rem h-4rem">Nuestras</div>
                 <div class="bold-text xl:text-7xl flex align-items-center justify-content-center w-4rem h-4rem">marcas</div> -->
             </div>
@@ -115,8 +114,8 @@
 
         <div class="hidden sm:block">
             <div class="flex justify-content-center flex-wrap">
-                <p class="flex align-items-center justify-content-center w-22rem m-2 cyan-text md:text-7xl xl:text-7xl" style="font-family: Montbold;">¿Quiénes</p>
-                <p class="flex align-items-center justify-content-center w-13rem m-2 md:text-7xl xl:text-7xl" style="color: #1B2955; font-family: Montbold;">somos?</p>
+                <p class="flex align-items-center justify-content-center w-20rem m-2 cyan-text md:text-7xl xl:text-7xl font-bold" style="font-family: 'Montbold'">¿Quiénes</p>
+                <p class="flex align-items-center justify-content-center w-15rem m-2 md:text-7xl xl:text-7xl font-bold" style="color: #1B2955; font-family: 'Montbold'">somos?</p>
             </div>
         </div>
         <!-- <div class="container">

@@ -41,8 +41,8 @@
                     inputClass="w-full text-center py-3 px-2 border-transparent outline-none shadow-none"
                     v-model="product.quantity" 
                     class="border-1 surface-border border-round w-full"
-                    decrementButtonClass="p-inputnumber-button text-600 hover:text-primary py-1 px-2"
-                    incrementButtonClass="p-inputnumber-button text-600 hover:text-primary py-1 px-2"
+                    decrementButtonClass="p-button-text text-600 hover:text-primary py-1 px-1"
+                    incrementButtonClass="p-button-text text-600 hover:text-primary py-1 px-1"
                     incrementButtonIcon="pi pi-plus" 
                     decrementButtonIcon="pi pi-minus"
                     />
