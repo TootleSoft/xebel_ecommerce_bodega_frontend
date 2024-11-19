@@ -104,7 +104,7 @@
         </div>
     </div>
     <br><br><br>
-    <br>
+    <br> 
     <TabView>
         <TabPanel header="Descripción" style="font-family: 'Montserrat' !important;">
             <div class="text-900 font-bold text-3xl mb-4 mt-2" style="font-family: 'Montsemibold';">Descripción del producto</div>

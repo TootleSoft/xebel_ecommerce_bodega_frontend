@@ -13,13 +13,13 @@
     <div class="p-grid crud-demo MegaMenuBackground">
         <div class="col-12">
             <div class="grid formgrid p-fluid">
-                <div class="field col-12 sm:col-8 md:col-2 xl:col-2 flex align-items-center justify-content-center" style="cursor: pointer;">
+                <div class="field col-12 sm:col-5 md:col-3 xl:col-2 flex align-items-center justify-content-center" style="cursor: pointer;">
                     <img :src="'/src/images/logo/appname-' + (layoutConfig.colorScheme.value === 'light' ? 'dark' : 'light') + '.png'"
                         class="app-logo-small h-10rem" @click="router.push('/');"/>
                 </div>
                 
                     
-                <div class="field col-12 sm:col-12 md:col-6 xl:col-6">
+                <div class="field col-12 sm:col-12 md:col-4 xl:col-6">
                     <br>
                     <br>
                     <br>

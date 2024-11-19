@@ -1,5 +1,5 @@
 <template>
-  <div class="card col-12" style="margin-left: 600px;">
+  <div class="card col-12">
     <swiper
       :autoHeight="true"
       :rewind="true"
