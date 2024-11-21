@@ -45,7 +45,7 @@
         style="
             color: #0eabbd !important; 
             font-family: 'MontExtraBold' !important; 
-            font-size: 1.4rem !important; 
+            font-size: 1.2rem !important; 
             text-align: center; 
             display: inline-block; 
             line-height: 1.5em; 
@@ -62,7 +62,7 @@
             <!-- Precio con descuento (si tiene) -->
             <span v-if="product.original_price" 
                 class="text-l mb-2 line-through" 
-                style="color: red !important; font-family: 'Montserrat'; font-size: 1.4rem;">
+                style="color: red !important; font-family: 'Montserrat'; font-size: 1.2rem;">
                 {{ "$" + product.original_price.toFixed(2) }}
             </span>
         </div>
@@ -71,7 +71,7 @@
             <!-- Precio con impuesto (si no hay precio original) -->
             <span v-if="!product.original_price" 
                 class="text-l mb-2" 
-                style="color: #0eabbd !important; font-family: 'Montbold'; font-size: 1.6rem !important;">
+                style="color: #0eabbd !important; font-family: 'Montbold'; font-size: 1.4rem !important;">
                 {{ "$" + product.price_tax.toFixed(2) }}
             </span>
         </div>
@@ -80,7 +80,7 @@
             <!-- Precio con descuento (si tiene) en verde, más grande -->
             <span v-if="product.original_price" 
                 class="text-l mb-3" 
-                style="color: green !important; font-family: 'Montbold'; font-size: 1.8rem !important;">
+                style="color: green !important; font-family: 'Montbold'; font-size: 1.4rem !important;">
                 {{ "$" + product.price_tax.toFixed(2) }}
             </span>
         </div>
@@ -88,7 +88,7 @@
         <div>
             <!-- Código de barras -->
             <span class="text-l text-900 mb-3" 
-                style="font-family: 'Montserrat' !important; font-size: 1.4rem;">
+                style="font-family: 'Montserrat' !important; font-size: 1.2rem;">
                 {{ product.barcode }}
             </span>
         </div>

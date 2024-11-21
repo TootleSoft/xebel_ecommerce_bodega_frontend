@@ -1,6 +1,6 @@
 <template>
     <div class="col-12 field mb-4">
-        <span class="text-900 text-2xl block font-medium mb-5">Agregar dirección</span>
+        <span class="text-900 text-2xl block font-medium mb-5" style="font-family: 'Montsemibold'">Agregar dirección</span>
     </div>
     <div class="col-12 lg:col-6 field mb-4">
         <Dropdown :options="props.countries" v-model="entity.country" placeholder="Pais" optionLabel="name" optionValue="code" showClear class="w-full"></Dropdown>
@@ -33,9 +33,9 @@
         <input v-model="entity.postal_code" id="pc" placeholder="Código Postal" type="number" class="p-inputtext w-full" />
     </div>
     <div class="col-12 flex align-items-center justify-content-center">
-        <Button @click="save" class="flex align-items-center justify-content-center" label="Gurdar Dirección" icon="pi pi-save"></Button>
+        <Button @click="save" class="flex align-items-center justify-content-center" label="Gurdar Dirección" icon="pi pi-save" style="font-family: 'Montserrat'"></Button>
         &nbsp&nbsp&nbsp
-        <Button @click="close" class="flex align-items-center justify-content-center" label="Cerrar" icon="pi pi-times"></Button>
+        <Button @click="close" class="flex align-items-center justify-content-center" label="Cerrar" icon="pi pi-times" style="font-family: 'Montserrat'"></Button>
     </div>
 </template>
 

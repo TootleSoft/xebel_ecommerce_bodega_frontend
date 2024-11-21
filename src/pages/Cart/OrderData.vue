@@ -4,27 +4,26 @@
     <Dialog v-model:visible="dialogVisible" header="Aviso" modal>
         <p>¿Quiere proceder el pago sin facturar su pedido?</p>
         <template #footer>
-            <Button label="Si" icon="pi pi-check" @click="continueWithoutBilling"/>
-            <Button label="No" icon="pi pi-times" @click="confirmBilling"/> 
+            <Button label="Si" icon="pi pi-check" @click="continueWithoutBilling" class="p-button-success"/>
+            <Button label="No" icon="pi pi-times" @click="confirmBilling" class="p-button-danger"/> 
         </template>
     </Dialog>
-    <div class="card">
+    <div class="card p-4 shadow-2 border-round">
         <div class="grid grid-nogutter">
             <!-- Izquierda -->
             <div class="col-12 px-4 mt-4 md:mt-6 md:px-6">
-                <span class="text-900 block font-bold text-xl">Detalle del pedido</span>
-
+                <span class="text-900 block font-bold text-xl" style="font-family: 'Montsemibold';">Detalle del pedido</span>
             </div>
             <div class="col-12 lg:col-6 h-full px-4 py-4 md:px-6">
-                <div class="card flex justify-content-center">
-                    <div class="flex flex-wrap gap-3">
+                <div class="card flex justify-content-center p-3 shadow-2 border-round">
+                    <div class="flex flex-wrap gap-3" style="font-family: 'Montserrat';">
                         <div v-if="pickup == 1" class="flex align-items-center">
                             <RadioButton v-model="deliveryType" inputId="dt1" name="delivery" :value="1" @change="deliveryChange"/>
                             <label for="dt1" class="ml-2">Entrega en Sucursal</label>
                         </div>
                         <div v-if="pickup == 0" class="flex align-items-center">
                             <RadioButton v-model="deliveryType" inputId="dt1" name="delivery" :value="1" :disabled="true" @change="deliveryChange"/>
-                            <label for="dt1" class="ml-2">Entrega en Sucursal</label>
+                            <label for="dt1" class="ml-2 text-gray-500">Entrega en Sucursal</label>
                         </div>
                         <div v-if="delivery == 1" class="flex align-items-center">
                             <RadioButton v-model="deliveryType" inputId="dt2" name="delivery" :value="2" @change="deliveryChange"/>
@@ -32,69 +31,66 @@
                         </div>
                         <div v-if="delivery == 0" class="flex align-items-center">
                             <RadioButton v-model="deliveryType" inputId="dt2" name="delivery" :value="2" :disabled="true" @change="deliveryChange"/>
-                            <label for="dt2" class="ml-2">Entrega en domicilio</label>
+                            <label for="dt2" class="ml-2 text-gray-500">Entrega en domicilio</label>
                         </div>
                     </div>
                 </div>
                 <div v-if="deliveryType == 1" class="grid formgrid">
                     <div class="col-12 field mb-6">
-                        <span class="text-900 text-2xl block font-medium mb-5">Los productos se entregarán en la sucursal seleccionada en cada uno.</span>
+                        <span class="text-900 text-2xl block font-medium mb-5" style="font-family: 'Montserrat';">Los productos se entregarán en la sucursal seleccionada en cada uno.</span>
                     </div>
                 </div>
                 <div v-if="deliveryType == 2" class="grid formgrid">
                     <ShippingData v-if="showShippingData" @saveShippingData="refreshReferences" @close="showShippingData=false" :countries="countries"></ShippingData>
                     <div v-if="!showShippingData" class="col-12 field mb-4">
                         <span class="text-900 text-2xl block font-medium mb-5">Dirección de entrega</span>
-                        <Dropdown :options="customerReferences" v-model="selectedReference" placeholder="Selecciona una dirección de envío" optionLabel="name" optionValue="id" showClear class="w-full"></Dropdown>
-                        <br>
-                        <br>
+                        <Dropdown :options="customerReferences" v-model="selectedReference" placeholder="Selecciona una dirección de envío" optionLabel="name" optionValue="id" showClear class="w-full"/>
+                        <br><br>
                         <div class="col-12 flex align-items-center justify-content-center">
-                            <Button v-if="!showShippingData && !selectedReference" @click="showShippingData=true" class="flex align-items-center justify-content-center" label="Agregar nueva dirección" icon="pi pi-fw pi-check"></Button>
+                            <Button v-if="!showShippingData && !selectedReference" @click="showShippingData=true" class="flex align-items-center justify-content-center" label="Agregar nueva dirección" icon="pi pi-fw pi-check" style="background-color: #007bff; border-color: #007bff; color: white;"/>
                         </div><br><br>
-                        <span v-if="selectedReference" class="text-900 text-2xl block font-medium mb-5">Paqueteria</span>
-                        <Dropdown v-if="selectedReference" :options="carriers" v-model="selectedCarrier" placeholder="Selecciona una paquetería" optionLabel="name" optionValue="name" showClear class="w-full" @change="changeCarrier"></Dropdown><br><br><br>
+                        <span v-if="selectedReference" class="text-900 text-2xl block font-medium mb-5" style="font-family: 'Montsemibold';">Paqueteria</span>
+                        <Dropdown v-if="selectedReference" :options="carriers" v-model="selectedCarrier" placeholder="Selecciona una paquetería" optionLabel="name" optionValue="name" showClear class="w-full" @change="changeCarrier" style="font-family: 'Montserrat'"/>
+                        <br><br><br>
                         <div v-if="selectedReference && selectedCarrier" class="grid">
                             <div class="col-12 lg:col-4">
-                                <span class="text-1500 block font-medium mb-3 font-bold">Servicio</span>
+                                <span class="text-1500 block font-medium mb-3 font-bold" style="font-family: 'Montsemibold';">Servicio</span>
                                 <ul class="py-0 pl-3 m-0 text-600 mb-3">
-                                    <li class="mb-2" v-if="!loading" v-for="(quote, i) in quotations" :key="i"> 
+                                    <li class="mb-2" v-if="!loading" v-for="(quote, i) in quotations" :key="i" style="font-family: 'Montserrat'"> 
                                         <RadioButton v-model="selectedService" :inputId="quote.key" name="dynamic" :value="quote.service_level_name" @change="serviceChange"/> 
-                                        <label for="quote.key">{{ " " + quotations[i].service_level_name }}</label>
+                                        <label for="quote.key" style="font-family: 'Montserrat';">{{ " " + quotations[i].service_level_name }}</label>
                                     </li>
                                 </ul>
                             </div>
                             <div class="col-12 lg:col-4">
-                                    <span class="text-1500 block font-medium mb-3 font-bold">Entrega</span>
-                                    <ul class="py-0 pl-3 m-0 text-600 mb-3">
-                                        <li class="mb-2" v-if="!blocked" v-for="(quote, i) in quotations" :key="i">{{ quotations[i].days }} días hábiles</li>
-                                    </ul>
+                                <span class="text-1500 block font-medium mb-3 font-bold" style="font-family: 'Montsemibold'">Entrega</span>
+                                <ul class="py-0 pl-3 m-0 text-600 mb-3">
+                                    <li class="mb-2" v-if="!blocked" v-for="(quote, i) in quotations" :key="i" style="font-family: 'Montserrat'">{{ quotations[i].days }} días hábiles</li>
+                                </ul>
                             </div>
                             <div class="col-12 lg:col-4">
-                                    <span class="text-1500 block font-medium mb-3 font-bold">Tarifa</span>
-                                    <ul class="py-0 pl-3 m-0 text-600 mb-3">
-                                        <li class="mb-2" v-if="!blocked" v-for="(quote, i) in quotations" :key="i">${{ quotations[i].total_pricing}}</li>
-                                    </ul>
+                                <span class="text-1500 block font-medium mb-3 font-bold" style="font-family: 'Montsemibold'">Tarifa</span>
+                                <ul class="py-0 pl-3 m-0 text-600 mb-3">
+                                    <li class="mb-2" v-if="!blocked" v-for="(quote, i) in quotations" :key="i" style="font-family: 'Montserrat';">${{ quotations[i].total_pricing}}</li>
+                                </ul>
                             </div>
                         </div>
                         <br></br>
-                        <!-- <div class="col-12 flex align-items-center justify-content-center">
-                            <Button v-if="!showShippingData" @click="generateShipment" class="flex align-items-center justify-content-center" label="Ver resumen envio" icon="pi pi-fw pi-check"></Button>
-                        </div> -->
                     </div>
                 </div>
                 <div class="grid formgrid">
                     <div class="col-12 field mb-4">
                         <div class="field-checkbox">
-                            <Checkbox name="checkbox-2" v-model="billable" binary inputId="checkbox-2"></Checkbox>
-                            <label for="checkbox-2" style="cursor: pointer">¿Desea facturar?</label>
+                            <Checkbox name="checkbox-2" v-model="billable" binary inputId="checkbox-2"/>
+                            <label for="checkbox-2" style="cursor: pointer; font-family: 'Montserrat';">¿Desea facturar?</label>
                         </div>
                     </div>
                     <div v-if="billable" class="grid formgrid col-12">
                         <div class="col-12 lg:col-6 field mb-4">
-                            <Dropdown :options="countries" v-model="invoice_entity.country" placeholder="País" optionLabel="name" optionValue="name" showClear class="w-full"></Dropdown>
+                            <Dropdown :options="countries" v-model="invoice_entity.country" placeholder="País" optionLabel="name" optionValue="name" showClear class="w-full"/>
                         </div>
                         <div class="col-12 lg:col-6 field mb-4">
-                            <input v-model="invoice_entity.state" id="Estado" placeholder="Estado" type="text" class="p-inputtext w-full" />
+                            <input v-model="invoice_entity.state" id="Estado" placeholder="Estado" type="text" class="p-inputtext w-full"/>
                         </div>
                         <div class="col-12 lg:col-6 field mb-4">
                             <input v-model="invoice_entity.municipality" id="Municipio" placeholder="Municipio" type="text" class="p-inputtext w-full" />
@@ -112,13 +108,13 @@
                             <input v-model="invoice_entity.rfc" id="rfc" placeholder="RFC" type="text" class="p-inputtext w-full" />
                         </div>
                         <div class="col-12 lg:col-6 field mb-4">
-                            <Dropdown :options="useCfdi" v-model="invoice_entity.customerUseCfdi" placeholder="Uso CFDI" optionLabel="Descripcion" optionValue="c_UsoCFDI" showClear class="w-full"></Dropdown>
+                            <Dropdown :options="useCfdi" v-model="invoice_entity.customerUseCfdi" placeholder="Uso CFDI" optionLabel="Descripcion" optionValue="c_UsoCFDI" showClear class="w-full"/>
                         </div>
                         <div class="col-12 lg:col-6 field mb-4">
-                            <Dropdown :options="taxRegime" v-model="invoice_entity.customerTaxRegime" placeholder="Régimen Fiscal" optionLabel="Descripcion" optionValue="c_RegimenFiscal" showClear class="w-full"></Dropdown>                        
+                            <Dropdown :options="taxRegime" v-model="invoice_entity.customerTaxRegime" placeholder="Régimen Fiscal" optionLabel="Descripcion" optionValue="c_RegimenFiscal" showClear class="w-full"/>                        
                         </div>
                         <div class="col-12 flex align-items-center justify-content-center">
-                            <Button  @click="saveShippingData" class="flex align-items-center justify-content-center" label="Guardar/Modificar Datos de facturación" icon="pi pi-fw pi-save"></Button>
+                            <Button @click="saveShippingData" class="flex align-items-center justify-content-center" label="Guardar/Modificar Datos de facturación" icon="pi pi-fw pi-save" style="background-color: #007bff; border-color: #007bff; color: white;"/>
                         </div>
                     </div>
                 </div>
@@ -126,33 +122,29 @@
             <!-- Derecha -->
             <div class="col-12 lg:col-6 px-4 py-4 md:px-6">
                 <div class="pb-3 surface-border">
-                    <span class="text-900 font-medium text-xl">Tus Productos</span>
+                    <span class="text-900 font-medium text-xl" style="font-family: 'Montserrat'">Tus Productos</span>
                 </div>
-                <OrderDataProduct @update:flattenedArray="handleUpdate" @total-value="totalValue"></OrderDataProduct>
-        <br>
-        <div>
-            <span class="text-900 block font-bold text-xl">Total del pedido ${{ total.toFixed(2) }}</span><br>
-            <span v-if="deliveryType == 2" class="text-900 block font-bold text-xl">Envío a domicilio ${{ totalShipment.toFixed(2) }}</span><br>
-            <span class="text-900 block font-bold text-xl">Total a pagar ${{ Number(total.toFixed(2)) + Number(totalShipment.toFixed(2)) }}</span>
+                <OrderDataProduct @update:flattenedArray="handleUpdate" @total-value="totalValue"/>
+                <br>
+                <div>
+                    <span class="text-900 block font-bold text-xl" style="font-family: 'Montsemibold';">Total del pedido ${{ total.toFixed(2) }}</span><br>
+                    <span v-if="deliveryType == 2" class="text-900 block font-bold text-xl" style="font-family: 'Montsemibold';">Envío a domicilio ${{ totalShipment.toFixed(2) }}</span><br>
+                    <span class="text-900 block font-bold text-xl" style="font-family: 'Montsemibold';">Total a pagar ${{ Number(total.toFixed(2)) + Number(totalShipment.toFixed(2)) }}</span>
+                </div>
+                <div class="col-12 flex flex-column lg:flex-row justify-content-center align-items-center lg:justify-content-end my-6">
+                    <Button class="mt-3 lg:mt-0 w-full lg:w-auto flex-order-2 lg:flex-order-1 lg:mr-4" severity="secondary" label="Regresar al carrito" icon="pi pi-fw pi-arrow-left" @click="router.push('/shoppingcart');" style="font-family: 'Montserrat';"/>
+                    <Button v-if="only_online == 0 && deliveryType != 2" 
+                        class="mt-3 lg:mt-0 w-full lg:w-auto flex-order-2 lg:flex-order-1 lg:mr-4" 
+                        label="Pagar en sucursal" 
+                        icon="pi pi-fw pi-wallet" 
+                        @click="() => { processPaymentStore(); }" style="font-family: 'Montserrat'; background-color: #28a745; border-color: #28a745; color: white;"/>
+                    <Button class="mt-3 lg:mt-0 w-full lg:w-auto flex-order-2 lg:flex-order-1 lg:mr-4" 
+                        label="Pagar en línea" 
+                        icon="pi pi-fw pi-credit-card" 
+                        @click="() => { processPayment(); }" style="font-family: 'Montserrat'; background-color: #007bff; border-color: #007bff; color: white;"/>
+                </div>
+            </div>
         </div>
-        <div class="col-12 flex flex-column lg:flex-row justify-content-center align-items-center lg:justify-content-end my-6">
-
-            <Button class="mt-3 lg:mt-0 w-full lg:w-auto flex-order-2 lg:flex-order-1 lg:mr-4" severity="secondary" label="Regresar al carrito" icon="pi pi-fw pi-arrow-left" @click="router.push('/shoppingcart');"></Button>
-
-            <Button v-if="only_online == 0 && deliveryType != 2" 
-            class="mt-3 lg:mt-0 w-full lg:w-auto flex-order-2 lg:flex-order-1 lg:mr-4" 
-            label="Pagar en sucursal" 
-            icon="pi pi-fw pi-wallet" 
-            @click="() => { processPaymentStore(); }"></Button>
-
-            <Button class="mt-3 lg:mt-0 w-full lg:w-auto flex-order-2 lg:flex-order-1 lg:mr-4" 
-            label="Pagar en línea" 
-            icon="pi pi-fw pi-credit-card" 
-            @click="() => { processPayment(); }"></Button>
-
-        </div>
-    </div>
-    </div>
     </div>
 </template>
 
