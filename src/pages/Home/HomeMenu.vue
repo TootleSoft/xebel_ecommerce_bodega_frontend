@@ -26,6 +26,11 @@
     </div>
   </div>
 </div>
+                            <div v-if="auth.id_usuario == undefined"
+                                class="w-full flex align-items-center justify-content-center">
+                                <Button ref="mlogin" @click="tlogin" label="Registrate para comprar" class="button"
+                                    rounded></Button>
+                            </div>
 
 
                 </div>
