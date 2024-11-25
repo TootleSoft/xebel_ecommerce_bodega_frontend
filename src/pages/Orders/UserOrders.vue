@@ -1,41 +1,46 @@
 <template>
-    <div class="card">
-        <div class="flex flex-column align-items-center mb-6">
-            <div class="text-900 text-4xl mb-4 font-bold">Tus Pedidos</div>
+    <div class="card shadow-md p-2 rounded-lg">
+        <!-- Título de la sección -->
+        <div class="flex flex-column align-items-center mb-3 pt-3">
+            <div class="text-900 text-4xl font-bold" style="font-family: 'Montsemibold'">Tus Pedidos</div>
         </div>
-        <div>
-            
-        </div>
+
+        <!-- Mensaje si no hay pedidos -->
         <div v-if="orders.length == 0" class="flex flex-column align-items-center mb-6">
-            <div class="text-900 text-2xl mb-4 font-medium">No tienes pedidos registrados</div>
+            <div class="text-900 text-2xl mb-4 font-medium" style="font-family: 'Montserrat'">No tienes pedidos registrados</div>
         </div>
-        <div v-for="(order, i) in orders" :key="i">
-            <div class=" flex border-round shadow-7">
+
+        <!-- Lista de pedidos -->
+        <div v-for="(order, i) in orders" :key="i" class="mb-4">
+            <div class="flex border-round shadow-7 bg-white p-4 mb-4">
                 <ul class="list-none p-0 m-0 col-12">
-                <li style="background: #0F7E8D;">
-                    <div class="w-full flex justify-content-between mt-3 sm:mt-0 col-12 grid formgrid p-fluid">
-                        <div style="color: #FFFFFF;" class="field col-12 sm:col-9">
-                            <span class="text-xl font-medium mb-3">Pedido: #{{ order.id }}</span>
-                            &nbsp &nbsp
-                            <span v-if="order.delivery_type == 1" class="text-xl font-medium mb-3">Sucursal: {{ order.branch }}</span>
-                            <span v-if="order.delivery_type == 2" class="text-xl font-medium mb-3">Entrega a Domicilio</span>
-                            &nbsp &nbsp
-                            <span class="text-xl font-medium mb-3">Fecha del pedido: {{ formatDate(order.created) }}</span>
-                            &nbsp &nbsp
-                            <span class="text-xl font-medium mb-3">Total: ${{ order.total.toFixed(2) }}</span>
-                            <br>
+                    <!-- Encabezado del pedido -->
+                    <li style="background: #0F7E8D;">
+                        <div class="w-full flex justify-content-between mt-3 sm:mt-0 col-12 grid formgrid p-fluid">
+                            <div style="color: #FFFFFF; font-family: 'Montserrat'" class="field col-12 sm:col-9">
+                                <span class="text-xl font-medium mb-3">Pedido: #{{ order.id }}</span>
+                                <span v-if="order.delivery_type == 1" class="text-xl font-medium mb-3">Sucursal: {{ order.branch }}</span>
+                                <span v-if="order.delivery_type == 2" class="text-xl font-medium mb-3">Entrega a Domicilio</span>
+                                <span class="text-xl font-medium mb-3">Fecha del pedido: {{ formatDate(order.created) }}</span>
+                                <span class="text-xl font-medium mb-3">Total: ${{ order.total.toFixed(2) }}</span>
+                            </div>
+                            <div class="col-12 sm:col-3 flex justify-content-center sm:justify-content-end">
+                                <Tag 
+                                    class="text-xl font-medium mb-3" 
+                                    :style="{backgroundColor: getSeverity(order.status, order.is_paid, order.delivery_type, order.payment_type)}" 
+                                    :value="getStatus(order.status, order.is_paid, order.delivery_type, order.payment_type)"
+                                />
+                            </div>
                         </div>
-                        <div class="col-12 sm:col-3">
-                            <Tag class="text-xl font-medium mb-3" :style="{backgroundColor: getSeverity(order.status, order.is_paid, order.delivery_type, order.payment_type)}" :value="getStatus(order.status, order.is_paid, order.delivery_type, order.payment_type)"></Tag>
-                        </div>
-                    </div>
-                </li>
-                <UserOrdersItems :id_order="order.id"></UserOrdersItems>
-            </ul>
+                    </li>
+
+                    <!-- Detalles del pedido (Items) -->
+                    <UserOrdersItems :id_order="order.id"></UserOrdersItems>
+                </ul>
             </div>
-            <br>
-            <br>
         </div>
+    </div>
+</template>
         <!-- <ul class="list-none p-0 m-0">
         <li v-for="(order, i) in orders" :key="i" class="flex py-6 border-top-1 border-bottom-1 surface-border">
             <ul class="list-none p-0 m-0 col-12">
@@ -75,8 +80,7 @@
                 </li>
             </ul>
         </div> -->
-    </div>
-</template>
+
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
@@ -142,3 +146,135 @@ onMounted(async () => {
 const selectedQuantity = ref({ label: '1', value: 1 });
 const selectedQuantity2 = ref({ label: '1', value: 1 });
 </script>
+<style scoped>
+/* Estilos generales */
+.card {
+    background-color: #ffffff;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    padding: 2rem;
+    margin-top: 2rem;
+}
+
+.text-900 {
+    color: #333333;
+}
+
+.text-xl {
+    font-size: 1.25rem;
+}
+
+.text-2xl {
+    font-size: 1.5rem;
+}
+
+.text-4xl {
+    font-size: 2.25rem;
+}
+
+.text-sm {
+    font-size: 0.875rem;
+}
+
+.font-medium {
+    font-weight: 500;
+}
+
+.font-bold {
+    font-weight: 700;
+}
+
+/* Estilos de los pedidos */
+.flex {
+    display: flex;
+}
+
+.flex-column {
+    flex-direction: column;
+}
+
+.align-items-center {
+    align-items: center;
+}
+
+.justify-content-between {
+    justify-content: space-between;
+}
+
+.justify-content-center {
+    justify-content: center;
+}
+
+.mb-6 {
+    margin-bottom: 1.5rem;
+}
+
+.mb-4 {
+    margin-bottom: 1rem;
+}
+
+.mt-3 {
+    margin-top: 1rem;
+}
+
+.mt-0 {
+    margin-top: 0;
+}
+
+.w-full {
+    width: 100%;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+}
+
+.col-12 {
+    width: 100%;
+}
+
+.sm\\:col-9 {
+    width: 75%;
+}
+
+.sm\\:col-3 {
+    width: 25%;
+}
+
+.bg-white {
+    background-color: #ffffff;
+}
+
+.border-round {
+    border-radius: 0.5rem;
+}
+
+/* Estilo de la etiqueta (Tag) */
+.Tag {
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+    border-radius: 1rem;
+    color: #fff;
+    display: inline-block;
+}
+
+/* Colores y estado del Tag */
+.bg-success {
+    background-color: #4caf50;
+}
+
+.bg-warning {
+    background-color: #ff9800;
+}
+
+.bg-danger {
+    background-color: #f44336;
+}
+
+/* Interactividad de botones y estados */
+button:hover {
+    background-color: #e0e0e0;
+}
+
+</style>
