@@ -50,7 +50,11 @@
                     <br>
                     <br>
                     <br>
-                    <Button icon="pi pi-user icon-large" label="Mi Cuenta" severity="contrast" class="label-button-user"  outlined @click="tuser" />
+                    <div class="label-button-user">
+                        <Button icon="pi pi-user icon-large" label="Mi cuenta" severity="contrast" 
+                            class="label-button-user" outlined @click="tuser" style="font-size: 1.7rem; font-family: Montsemibold;" />
+                            <div style="font-size: 1.5rem; font-family: 'Montsemibold';"> {{authStore.usuario}}</div>
+                    </div>
                     <TieredMenu ref="muser" class="tiered-menu-class" id="overlay_tmenu" :model="user" popup />
                 </div>
                 <div v-if="authStore.id_usuario == undefined" class="field col-2">
@@ -59,8 +63,8 @@
                     <br>
                     <br>
                     <br>
-                    <Button class="label-button-user" icon="pi pi-user icon-large" label="Ingresar" severity="contrast" outlined
-                        @click="tlogin" style="font-family: 'Montsemibold';"/>
+                    <Button class="label-button-user" icon="pi pi-user icon-large" label="Ingresar" severity="contrast"
+                        outlined @click="tlogin" style="font-family: 'Montsemibold';" />
                     <TieredMenu ref="mlogin" class="tiered-menu-class" id="overlay_tmenu" :model="login" popup />
                 </div>
                 <div class="field col-2">
@@ -70,7 +74,8 @@
                     <br>
                     <br>
                     <Button class="label-button-user" @click="shoppingCart" icon="pi pi-shopping-cart icon-large"
-                        :label="`Mi Carrito (${cartStore.cart.length})`" severity="contrast" outlined style="font-family: 'Montsemibold';" />
+                        :label="`Mi Carrito (${cartStore.cart.length})`" severity="contrast" outlined
+                        style="font-family: 'Montsemibold';" />
                 </div>
 
                 <!-- <div class="field col-12 sm:col-12 md:col-1 xl:col-1">
@@ -385,6 +390,13 @@ a.flex.cursor-pointer-nav:active {
 
 .tiered-menu-class {
   border: none;
+}
+
+.label-button-user {
+  white-space: pre-line; /* Permite saltos de línea en el texto */
+  text-align: center; /* Opcional: alinea el texto al centro */
+  line-height: 1.2; /* Ajusta el espacio entre líneas */
+  display: block; /* Asegura que se respete el tamaño del contenido */
 }
 
 
