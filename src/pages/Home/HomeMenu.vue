@@ -199,9 +199,6 @@
                         <p class="line-height-1 w-15" style="font-family: 'Montserrat';">Unidades</p>
                         <p class="line-height-1 w-15" style="font-family: 'Montserrat';">Uniformes</p>
                         <p class="line-height-1 w-15" style="font-family: 'Montserrat';">Otros</p>
-                        <a href="https://www.instagram.com/edvc.mty" target="_blank" class="social-icon">
-                            <i class="pi pi-instagram"></i>
-                        </a>
                     </div>
                 </div>
             </footer>
