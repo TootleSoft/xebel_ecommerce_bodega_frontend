@@ -161,47 +161,49 @@
             </div>
         </div>
         <footer id="finalcontacto" class="flex flex- footer justify-content-center align-items-center">
-                <div class="footer-content">
-                    <div class="footer-column">
-                        <h3 class="font-bold-800 xl:text-4xl" style="font-family: 'Montbold';">Contacto</h3>
-                        <p class="font-bold xl:text-2xl" style="font-family: 'Montsemibold';"> (81) 2948-6399</p>
-                        <p class="line-height-1 w-15" style="font-family: 'Montserrat';">Eduardo Aguirre Pequeño</p>
-                        <p class="line-height-1 w-15" style="font-family: 'Montserrat';">1302, Mitras Centro, Monterrey,</p>
-                        <p class="line-height-1 w-15" style="font-family: 'Montserrat';">Nuevo Léon, México. CP. 64460</p>
-                        <span class="social-icons">
-                            <a href="https://www.facebook.com/villadcmty" target="_blank" class="social-icon">
-                                <i class="pi pi-facebook"></i>
-                            </a>
-                            <a href="https://www.instagram.com/villadcmty" target="_blank" class="social-icon">
-                                <i class="pi pi-instagram"></i>
-                            </a>
-                        </span>
-                    </div>
-                    <div class="footer-column hidden sm:block">
-                        <h3 class="font-bold-800 xl:text-4xl" style="font-family: 'Montbold';">Villa de Cortés Monterrey</h3>
-                        <ul>
-                            <li style="font-family: 'Montserrat';">Inicio</li>
-                            <li style="font-family: 'Montserrat';">Nuestras marcas</li>
-                            <li style="font-family: 'Montserrat';">Promociones para ti</li>
-                            <li style="font-family: 'Montserrat';">¿Quiénes somos?</li>
-                            <li style="font-family: 'Montserrat';">Lo más buscado</li>
-                        </ul>
-                        <div class="flex align-items-center justify-content-center">
-                            <p style="font-family: 'Montserrat';">Equipos Dentales Villa de Cortés Monterrey 2024 © All rights reserved.</p>
-                        </div>
-                    </div>
-                    <div class="footer-column hidden sm:block">
-                        <h3 class="font-bold-800 xl:text-4xl" style="font-family: 'Montbold';">Tienda</h3>
-                        <p class="line-height-1 w-15" style="font-family: 'Montserrat';">Equipos Dentales</p>
-                        <p class="line-height-1 w-15" style="font-family: 'Montserrat';">Instrumental</p>
-                        <p class="line-height-1 w-15" style="font-family: 'Montserrat';">Laboratorio</p>
-                        <p class="line-height-1 w-15" style="font-family: 'Montserrat';">Ortodoncia</p>
-                        <p class="line-height-1 w-15" style="font-family: 'Montserrat';">Unidades</p>
-                        <p class="line-height-1 w-15" style="font-family: 'Montserrat';">Uniformes</p>
-                        <p class="line-height-1 w-15" style="font-family: 'Montserrat';">Otros</p>
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3 class="font-bold-800 xl:text-4xl" style="font-family: 'Montbold';">Contacto</h3>
+                    <p class="font-bold xl:text-2xl" style="font-family: 'Montsemibold';"> (81) 2948-6399</p>
+                    <p class="line-height-1 w-15" style="font-family: 'Montserrat';">Eduardo Aguirre Pequeño</p>
+                    <p class="line-height-1 w-15" style="font-family: 'Montserrat';">1302, Mitras Centro, Monterrey,</p>
+                    <p class="line-height-1 w-15" style="font-family: 'Montserrat';">Nuevo Léon, México. CP. 64460</p>
+                    <span class="social-icons">
+                        <a href="https://www.facebook.com/villadcmty" target="_blank" class="social-icon">
+                            <i class="pi pi-facebook"></i>
+                        </a>
+                        <a href="https://www.instagram.com/edvc.mty" target="_blank" class="social-icon">
+                            <i class="pi pi-instagram"></i>
+                        </a>
+                    </span>
+                </div>
+                <div class="footer-column hidden sm:block">
+                    <h3 class="font-bold-800 xl:text-4xl" style="font-family: 'Montbold';">Villa de Cortés Monterrey
+                    </h3>
+                    <ul>
+                        <li style="font-family: 'Montserrat';">Inicio</li>
+                        <li style="font-family: 'Montserrat';">Nuestras marcas</li>
+                        <li style="font-family: 'Montserrat';">Promociones para ti</li>
+                        <li style="font-family: 'Montserrat';">¿Quiénes somos?</li>
+                        <li style="font-family: 'Montserrat';">Lo más buscado</li>
+                    </ul>
+                    <div class="flex align-items-center justify-content-center">
+                        <p style="font-family: 'Montserrat';">Equipos Dentales Villa de Cortés Monterrey 2024 © All
+                            rights reserved.</p>
                     </div>
                 </div>
-            </footer>
+                <div class="footer-column hidden sm:block">
+                    <h3 class="font-bold-800 xl:text-4xl" style="font-family: 'Montbold';">Tienda</h3>
+                    <p class="line-height-1 w-15" style="font-family: 'Montserrat';">Equipos Dentales</p>
+                    <p class="line-height-1 w-15" style="font-family: 'Montserrat';">Instrumental</p>
+                    <p class="line-height-1 w-15" style="font-family: 'Montserrat';">Laboratorio</p>
+                    <p class="line-height-1 w-15" style="font-family: 'Montserrat';">Ortodoncia</p>
+                    <p class="line-height-1 w-15" style="font-family: 'Montserrat';">Unidades</p>
+                    <p class="line-height-1 w-15" style="font-family: 'Montserrat';">Uniformes</p>
+                    <p class="line-height-1 w-15" style="font-family: 'Montserrat';">Otros</p>
+                </div>
+            </div>
+        </footer>
     </div>
 </template>
 
