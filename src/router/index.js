@@ -68,6 +68,11 @@ const routes = [
                 name: 'Nosotros',
                 path: '/about',
                 component: () => import ('@/pages/Home/About.vue')
+            },
+            {
+                name: 'Terminos y condiciones',
+                path: '/TermsAndConditions',
+                component: () => import ('@/views/pages/TermsAndConditions.vue')
             }
         ]
     },

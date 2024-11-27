@@ -142,6 +142,7 @@
                         label="Pagar en línea" 
                         icon="pi pi-fw pi-credit-card" 
                         @click="() => { processPayment(); }" style="font-family: 'Montserrat'; background-color: #007bff; border-color: #007bff; color: white;"/>
+                    <a href="/TermsAndConditions" target="_blank" style='font-size: 14px; font-weight: 800; color: #1155cc'>Términos y condiciones</a>
                 </div>
             </div>
         </div>
