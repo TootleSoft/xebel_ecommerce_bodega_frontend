@@ -1,18 +1,11 @@
-<script setup>
-import { ref } from 'vue';
-const visibleMember = ref(null);
-
-const setVisibleMember = (member) => {
-    visibleMember.value = member;
-};
-</script>
-
 <template>
-    <div class="card px-4 py-8 md:px-6 lg:px-8">
+    <div class="card px-4 py-8 md:px-6 lg:px-8" style="position: relative;">
+        <!-- Botón "Regresar" con una flecha en la parte superior izquierda -->
+        <button @click="goBack" class="goBackButton">
+            ← Regresar
+        </button>
+
         <div class="flex flex-wrap mb-4">
-            <!-- <div class="w-full lg:w-6 pl-0 lg:pr-5">
-                <img src="/demo/images/blocks/about/about-1.png" alt="Image" class="w-full border-round" />
-            </div> -->
             <div class="w-full lg:w-6 pr-0 lg:pl-4 mt-3 lg:mt-0">
                 <div class="font-bold text-4xl mb-4 text-900">Términos y Condiciones de Equipos Dentales Villa de Cortés
                     S.A. de C.V.</div>
@@ -120,139 +113,47 @@ const setVisibleMember = (member) => {
                 </ul>
                 <div class="font-bold text-4xl mb-4 text-900">7. Métodos de Pago</div>
                 <p class="line-height-3 mt-0 mb-3 p-0">
-                    Aceptamos pagos mediante OpenPay, operado por BBVA México. La seguridad de los datos está
-                    garantizada conforme a la política de privacidad de OpenPay. Para más información, consulta su aviso
-                    de privacidad (enlace).
+                    Aceptamos pagos con tarjetas de crédito y débito (Visa, MasterCard) a través de OpenPay, así como
+                    pagos en efectivo en tiendas de conveniencia mediante un código de pago.
                 </p>
-
-                <div class="font-bold text-4xl mb-4 text-900">8. Protección de Datos</div>
-                <p class="line-height-3 mt-0 mb-3 p-0">
-                    El cliente acepta que cualquier contenido cargado en el sitio web es de su propiedad o cuenta con
-                    las licencias necesarias. Nos reservamos el derecho de suspender el acceso al sitio por violaciones
-                    a estos términos.
-                </p>
-                <p class="line-height-3 mt-0 mb-3 p-0">
-                    El cliente puede solicitar la cancelación de su cuenta en cualquier momento. Asimismo, puede optar
-                    por no recibir materiales promocionales notificándonos por escrito.
-                </p>
-                    <div class="font-bold text-4xl mb-4 text-900">9. Modificaciones a los Términos</div>
-                    <p class="line-height-3 mt-0 mb-3 p-0">
-                        Nos reservamos el derecho de modificar estos Términos en cualquier momento. Los cambios serán
-                        notificados de manera oportuna. El uso continuado del sitio tras dichas modificaciones
-                        constituye la aceptación de los nuevos términos.
-                    </p>
             </div>
         </div>
-        <!-- <div class="mt-3 md:mt-8">
-            <span class="block text-900 font-bold text-3xl mb-3 text-center">Our Team</span>
-            <div class="text-center text-lg line-height-3 mb-6">Faucibus ornare suspendisse sed nisi. Nisl rhoncus
-                mattis rhoncus urna neque viverra justo nec.</div>
-            <div class="grid">
-                <div class="col-12 md:col-6 lg:col-3 p-3">
-                    <div class="relative overflow-hidden" @mouseenter="setVisibleMember(0)"
-                        @mouseleave="setVisibleMember(-1)">
-                        <img src="/demo/images/blocks/team/team-1.png" class="w-full block" alt="Team 1" />
-
-                        <div v-if="visibleMember === 0"
-                            class="absolute top-0 left-0 h-full w-full border-round fadein animation-duration-300 select-none"
-                            :style="{ backgroundColor: 'rgba(0,0,0,0.7)' }">
-                            <div class="flex flex-column p-5 h-full">
-                                <span class="block font-medium text-white text-xl mb-3">Jeff Davies</span>
-                                <span class="font-medium text-400">Software Developer</span>
-                                <div class="mt-auto">
-                                    <a tabindex="0" class="cursor-pointer text-white">
-                                        <i class="pi pi-twitter text-600 text-xl mr-3"></i>
-                                    </a>
-                                    <a tabindex="0" class="cursor-pointer text-white">
-                                        <i class="pi pi-github text-600 text-xl mr-3"></i>
-                                    </a>
-                                    <a tabindex="0" class="cursor-pointer text-white">
-                                        <i class="pi pi-facebook text-600 text-xl"></i>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-12 md:col-6 lg:col-3 p-3">
-                    <div class="relative overflow-hidden" @mouseenter="setVisibleMember(1)"
-                        @mouseleave="setVisibleMember(-1)">
-                        <img src="/demo/images/blocks/team/team-2.png" class="w-full block" alt="Team 2" />
-
-                        <div v-if="visibleMember === 1"
-                            class="absolute top-0 left-0 h-full w-full border-round fadein animation-duration-300 select-none"
-                            :style="{ backgroundColor: 'rgba(0,0,0,0.7)' }">
-                            <div class="flex flex-column p-5 h-full">
-                                <span class="block font-medium text-white text-xl mb-3">Kristin Watson</span>
-                                <span class="font-medium text-400">UI/UX Designer</span>
-                                <div class="mt-auto">
-                                    <a tabindex="0" class="cursor-pointer text-white">
-                                        <i class="pi pi-twitter text-600 text-xl mr-3"></i>
-                                    </a>
-                                    <a tabindex="0" class="cursor-pointer text-white">
-                                        <i class="pi pi-github text-600 text-xl mr-3"></i>
-                                    </a>
-                                    <a tabindex="0" class="cursor-pointer text-white">
-                                        <i class="pi pi-facebook text-600 text-xl"></i>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-12 md:col-6 lg:col-3 p-3">
-                    <div class="relative overflow-hidden" @mouseenter="setVisibleMember(2)"
-                        @mouseleave="setVisibleMember(-1)">
-                        <img src="/demo/images/blocks/team/team-3.png" class="w-full block" alt="Team 3" />
-
-                        <div v-if="visibleMember === 2"
-                            class="absolute top-0 left-0 h-full w-full border-round fadein animation-duration-300 select-none"
-                            :style="{ backgroundColor: 'rgba(0,0,0,0.7)' }">
-                            <div class="flex flex-column p-5 h-full">
-                                <span class="block font-medium text-white text-xl mb-3">Jenna Williams</span>
-                                <span class="font-medium text-400">Marketing Specialist</span>
-                                <div class="mt-auto">
-                                    <a tabindex="0" class="cursor-pointer text-white">
-                                        <i class="pi pi-twitter text-600 text-xl mr-3"></i>
-                                    </a>
-                                    <a tabindex="0" class="cursor-pointer text-white">
-                                        <i class="pi pi-github text-600 text-xl mr-3"></i>
-                                    </a>
-                                    <a tabindex="0" class="cursor-pointer text-white">
-                                        <i class="pi pi-facebook text-600 text-xl"></i>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-12 md:col-6 lg:col-3 p-3">
-                    <div class="relative overflow-hidden" @mouseenter="setVisibleMember(3)"
-                        @mouseleave="setVisibleMember(-1)">
-                        <img src="/demo/images/blocks/team/team-4.png" class="w-full block" alt="Team 4" />
-
-                        <div v-if="visibleMember === 3"
-                            class="absolute top-0 left-0 h-full w-full border-round fadein animation-duration-300 select-none"
-                            :style="{ backgroundColor: 'rgba(0,0,0,0.7)' }">
-                            <div class="flex flex-column p-5 h-full">
-                                <span class="block font-medium text-white text-xl mb-3">Joe Clifford</span>
-                                <span class="font-medium text-400">Customer Relations</span>
-                                <div class="mt-auto">
-                                    <a tabindex="0" class="cursor-pointer text-white">
-                                        <i class="pi pi-twitter text-600 text-xl mr-3"></i>
-                                    </a>
-                                    <a tabindex="0" class="cursor-pointer text-white">
-                                        <i class="pi pi-github text-600 text-xl mr-3"></i>
-                                    </a>
-                                    <a tabindex="0" class="cursor-pointer text-white">
-                                        <i class="pi pi-facebook text-600 text-xl"></i>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div> -->
     </div>
 </template>
+
+<script>
+export default {
+    methods: {
+        goBack() {
+            window.history.back();
+        }
+    }
+};
+</script>
+
+<style scoped>
+.goBackButton {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    padding: 8px 16px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease;
+}
+
+.goBackButton:hover {
+    background-color: #2980b9;
+}
+
+.goBackButton:focus {
+    outline: none;
+}
+</style>

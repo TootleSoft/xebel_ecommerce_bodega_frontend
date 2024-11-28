@@ -120,31 +120,40 @@
                 </div>
             </div>
             <!-- Derecha -->
-            <div class="col-12 lg:col-6 px-4 py-4 md:px-6">
-                <div class="pb-3 surface-border">
-                    <span class="text-900 font-medium text-xl" style="font-family: 'Montserrat'">Tus Productos</span>
-                </div>
-                <OrderDataProduct @update:flattenedArray="handleUpdate" @total-value="totalValue"/>
-                <br>
-                <div>
-                    <span class="text-900 block font-bold text-xl" style="font-family: 'Montsemibold';">Total del pedido ${{ total.toFixed(2) }}</span><br>
-                    <span v-if="deliveryType == 2" class="text-900 block font-bold text-xl" style="font-family: 'Montsemibold';">Envío a domicilio ${{ totalShipment.toFixed(2) }}</span><br>
-                    <span class="text-900 block font-bold text-xl" style="font-family: 'Montsemibold';">Total a pagar ${{ Number(total.toFixed(2)) + Number(totalShipment.toFixed(2)) }}</span>
-                </div>
-                <div class="col-12 flex flex-column lg:flex-row justify-content-center align-items-center lg:justify-content-end my-6">
-                    <Button class="mt-3 lg:mt-0 w-full lg:w-auto flex-order-2 lg:flex-order-1 lg:mr-4" severity="secondary" label="Regresar al carrito" icon="pi pi-fw pi-arrow-left" @click="router.push('/shoppingcart');" style="font-family: 'Montserrat';"/>
-                    <Button v-if="only_online == 0 && deliveryType != 2" 
-                        class="mt-3 lg:mt-0 w-full lg:w-auto flex-order-2 lg:flex-order-1 lg:mr-4" 
-                        label="Pagar en sucursal" 
-                        icon="pi pi-fw pi-wallet" 
-                        @click="() => { processPaymentStore(); }" style="font-family: 'Montserrat'; background-color: #28a745; border-color: #28a745; color: white;"/>
-                    <Button class="mt-3 lg:mt-0 w-full lg:w-auto flex-order-2 lg:flex-order-1 lg:mr-4" 
-                        label="Pagar en línea" 
-                        icon="pi pi-fw pi-credit-card" 
-                        @click="() => { processPayment(); }" style="font-family: 'Montserrat'; background-color: #007bff; border-color: #007bff; color: white;"/>
-                    <a href="/TermsAndConditions" target="_blank" style='font-size: 14px; font-weight: 800; color: #1155cc'>Términos y condiciones</a>
-                </div>
-            </div>
+            <div class="col-12 lg:col-6 px-4 py-4 md:px-6" style="display: flex; flex-direction: column; align-items: flex-end;">
+    <div class="mb-6 surface-border">
+      <span class="text-900 font-medium text-xl" style="font-family: 'Montserrat';">Tus Productos</span>
+    </div>
+    <OrderDataProduct @update:flattenedArray="handleUpdate" @total-value="totalValue"/>
+    <br>
+    <div style="width: 100%; text-align: right;">
+      <span class="text-900 block font-bold text-xl" style="font-family: 'Montsemibold';">Total del pedido ${{ total.toFixed(2) }}</span><br>
+      <span v-if="deliveryType == 2" class="text-900 block font-bold text-xl" style="font-family: 'Montsemibold';">Envío a domicilio ${{ totalShipment.toFixed(2) }}</span><br>
+      <span class="text-900 block font-bold text-xl" style="font-family: 'Montsemibold';">Total a pagar ${{ (Number(total.toFixed(2)) + Number(totalShipment.toFixed(2))).toFixed(2) }}</span>
+    </div>
+    <div class="col-12 flex flex-column lg:flex-row justify-content-center align-items-center lg:justify-content-end mt-7" style="align-items: flex-end; padding-right: 0">
+      <Button class="mt-3 lg:mt-0 w-full lg:w-auto flex-order-2 lg:flex-order-1 lg:mr-4" severity="secondary" label="Regresar al carrito" icon="pi pi-fw pi-arrow-left" @click="router.push('/shoppingcart');" style="font-family: 'Montserrat';"/>
+      <Button v-if="only_online == 0 && deliveryType != 2" 
+        class="mt-3 lg:mt-0 w-full lg:w-auto flex-order-2 lg:flex-order-1 lg:mr-4" 
+        label="Pagar en sucursal" 
+        icon="pi pi-fw pi-wallet" 
+        @click="() => { processPaymentStore(); }" style="font-family: 'Montserrat'; background-color: #28a745; border-color: #28a745; color: white;"/>
+      <Button class="mt-3 lg:mt-0 w-full lg:w-auto flex-order-2 lg:flex-order-1 lg:mr-0" 
+        label="Pagar en línea" 
+        icon="pi pi-fw pi-credit-card" 
+        @click="() => { processPayment(); }" 
+        :disabled="!acceptTerms" 
+        style="font-family: 'Montserrat'; background-color: #007bff; border-color: #007bff; color: white;"/>
+    </div>
+    <!-- Checkbox con los Términos y Condiciones-->
+    <div class="flex align-items-center mt-3 lg:mt-0" style="align-items: flex-end;">
+      <input type="checkbox" id="termsCheckbox" v-model="acceptTerms" class="mr-1" />
+      <label for="termsCheckbox" style="font-size: 14px; font-weight: 800; color: #1155cc;">
+        Acepto los <span @click="router.push('/TermsAndConditions')" style="cursor: pointer; color: #1155cc;"> términos y condiciones</span>
+      </label>
+      <i class="pi pi-info-circle" @click="router.push('/TermsAndConditions')" style="cursor: pointer; margin-left: 6px;"></i>
+    </div>
+  </div>
         </div>
     </div>
 </template>
@@ -167,6 +176,7 @@ import Dropdown from 'primevue/dropdown';
 import { aW } from '@fullcalendar/core/internal-common';
 import { isParameter } from 'typescript';
 import Dialog from 'primevue/dialog';
+
 
 const countryService = new CountryService();
 const countries = ref([]);
@@ -193,7 +203,7 @@ const pickup = ref<number>(0);
 const delivery = ref<number>(0);
 const only_online = ref<number>(0);
 const parcels = ref<Parcel[]>([]); // Array parcels dinámico aqui se guardan las dimensiones del envio
-
+const acceptTerms = ref(false);
 const carriers = ref<carriers[]>([]);
 const quotations = ref<any[]>([]);
 const shippingCost = ref<any[]>([]);
@@ -201,6 +211,7 @@ const prices = ref<any[]>([]);
 const dialogVisible = ref<boolean>(false);
 const optionBilling = ref<boolean>(true);
 const processPaymentType = ref<Number>(0);
+
 
 export interface carriers {
     id?: string;
@@ -518,7 +529,7 @@ const processPaymentStore = async () => {
         if(billable.value == true){
             if(inn == false){
                 throw "Favor de llenar todos los datos de facturación"
-            }
+            } 
         }
         loading.value = true;
         let order = await createOrder(1); //se crea el pedido y se guarda en la tabla 'ecommerce_order' y 'ecommerce_order_item'
