@@ -494,15 +494,20 @@ function confirmBilling() { //Esto ya está
     dialogVisible.value = false;
 }
 function continueWithoutBilling() {
-    dialogVisible.value = false;
-    optionBilling.value = false;
-
+    try {
+        dialogVisible.value = false;
+        optionBilling.value = false;
     if (processPaymentType.value == 1 )
     {
         processPaymentStore();
 
     } else if (processPaymentType.value == 2) {
         processPayment();
+    }
+    }
+    catch (error)
+    {
+        console.error("Error: " + error);
     }
 }
 function verifyBillableCheckbox() {
@@ -519,31 +524,45 @@ function verifyBillableCheckbox() {
 
 const processPaymentStore = async () => {
     try {
-        processPaymentType.value = 1;
-        const response = verifyBillableCheckbox();
-        if(response == false && optionBilling.value == true)
-        {
-            return false;
-        }
-        let inn = invoiceNotNull();
-        if(billable.value == true){
-            if(inn == false){
-                throw "Favor de llenar todos los datos de facturación"
-            } 
-        }
+        
         loading.value = true;
-        let order = await createOrder(1); //se crea el pedido y se guarda en la tabla 'ecommerce_order' y 'ecommerce_order_item'
-        cartStore.saveOrder(order.id); //almacena temporalmente el id del pedido y el estatus
-        await entity.newOrderStore();
-        router.push('/confirmation')
+        blocked.value = true;
+        // Actualizamos el tipo de pago a 1 (para indicar pago en sucursal)
+        processPaymentType.value = 1;
+
+        // Verificamos la opción de facturación
+        const response = verifyBillableCheckbox();
+        if(response == false && optionBilling.value == true) {
+            return false; // Si no se puede proceder, salir del método
+        }
+
+        // Verificamos si la factura tiene los datos completos
+        let inn = invoiceNotNull();
+        if(billable.value == true) {
+            if(inn == false) {
+                throw "Favor de llenar todos los datos de facturación"; // Lanzamos un error si los datos no están completos
+            }
+        }
+
+        // Creamos la orden de compra
+        let order = await createOrder(1);  // se crea el pedido
+        cartStore.saveOrder(order.id);  // almacenamos temporalmente el id del pedido y el estatus
+        await entity.newOrderStore();  // guardamos la orden en el sistema
+
+        // Redirigimos a la página de confirmación
+        router.push('/confirmation');
     } catch (error) {
+        // Manejo de errores de tipo Axios o errores generales
         if (axios.isAxiosError(error)) {
             toast.add({ severity: 'error', summary: 'Error procesando el pago:', detail: error.response?.data, life: 7000 });
         } else {
             toast.add({ severity: 'error', summary: 'Error procesando el pago:', detail: error, life: 7000 });
         }
-    } finally{
+    } finally {
+        // Ocultamos el spinner al finalizar el proceso
+        
         loading.value = false;
+        blocked.value = false;
     }
 };
 
@@ -823,3 +842,23 @@ onMounted(async () => {
 });
 
 </script>
+<style>
+.loading-overlay {
+    position: fixed;         
+    top: 0;                 
+    left: 0;                 
+    width: 100%;            
+    height: 100%;            
+    background-color: rgba(0, 0, 0, 0.5); 
+    display: flex;           
+    justify-content: center; 
+    align-items: center;     
+    z-index: 1000;           
+}
+.p-progress-spinner {
+    width: 50px;             
+    height: 50px;            
+    border-width: 6px;       
+    border-color: #ffffff;   
+}
+</style>
