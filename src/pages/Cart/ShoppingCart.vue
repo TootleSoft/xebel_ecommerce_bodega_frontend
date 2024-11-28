@@ -7,7 +7,24 @@
     </div>
 
     <!-- Botón de Pagar -->
-    <Button label="Pagar" @click="router.push('/orderdata')" 
+    <Button v-if="total != 0.00" label="Pagar" @click="router.push('/orderdata')" 
+        style="font-family: 'Montbold';
+               background: linear-gradient(to right, #193a62, #1099af);
+               color: white;
+               border-radius: 40px;
+               padding: 12px 24px;
+               box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+               font-weight: 600;
+               border: none; 
+               width: 100%; /* Hacer que el botón ocupe el 100% del contenedor */
+               max-width: 320px; /* Limitar el ancho máximo del botón para evitar que se estire demasiado en pantallas grandes */
+               display: flex;
+               align-items: center;
+               justify-content: center;
+    ">
+    </Button>
+    <!-- Boton ver tienda -->
+    <Button v-if="total == 0.00" label="Ir a la tienda" @click="router.push('/')" 
         style="font-family: 'Montbold';
                background: linear-gradient(to right, #193a62, #1099af);
                color: white;
@@ -53,7 +70,7 @@
 
         <!-- Botón de Pagar -->
         <li class="flex justify-content-end">
-            <Button label="Pagar" @click="router.push('/orderdata')" 
+            <Button v-if="total != 0.00" label="Pagar" @click="router.push('/orderdata')" 
                 style="font-family: 'Montserrat'; 
                     background: linear-gradient(to right, #193a62, #1099af);
                     color: white;
