@@ -21,9 +21,6 @@
             <span class="cyan-text-inicio text-center md:text-sm xl:text-2xl w-full">tiene para ti.</span>
         </div>
         <br>
-    <div class="w-full flex justify-center items-center">
-        <Button ref="mlogin" @click="tlogin" label="Registrate para comprar" class="button" rounded></Button>
-    </div>
   </div>
 </div>
                             <div v-if="auth.id_usuario == undefined"
