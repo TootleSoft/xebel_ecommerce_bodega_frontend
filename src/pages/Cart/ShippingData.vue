@@ -18,16 +18,10 @@
         <input v-model="entity.address" id="Direccion" placeholder="Dirección" type="text" class="p-inputtext w-full" />
     </div>
     <div class="col-12 lg:col-6 field mb-4">
-        <input v-model="entity.phone" id="phone" placeholder="Telefono" type="text" class="p-inputtext w-full" />
-    </div>
-    <div class="col-12 lg:col-6 field mb-4">
         <input v-model="entity.email" id="email" placeholder="Correo" type="text" class="p-inputtext w-full" />
     </div>
     <div class="col-12 lg:col-6 field mb-4">
         <input v-model="entity.phone" id="phone" placeholder="Telefono" type="text" class="p-inputtext w-full" />
-    </div>
-    <div class="col-12 lg:col-6 field mb-4">
-        <input v-model="entity.email" id="email" placeholder="Correo" type="text" class="p-inputtext w-full" />
     </div>
     <div class="col-12 lg:col-6 field mb-4">
         <input v-model="entity.postal_code" id="pc" placeholder="Código Postal" type="number" class="p-inputtext w-full" />
@@ -157,12 +151,12 @@ const emit = defineEmits(['saveShippingData','close'])
 
 const save = async () => {
     try{
-        if((entity.value.postal_code == null || entity.value.postal_code == "") || (entity.value.country == null || entity.value.country == "" ) 
-        || (entity.value.state == null || entity.value.state == "") || (entity.value.municipality == null || entity.value.municipality == "") 
-        || (entity.value.suburb == null || entity.value.suburb == "") || (entity.value.address == null || entity.value.address == "")
-         || (entity.value.phone == null || entity.value.phone == "") || (entity.value.email == null || entity.value.email == "")
-        || (entity.value.reference == null || entity.value.reference == ""))
-            throw "Favor de llenar todos los campos obligatorios"
+        // if((entity.value.postal_code == null || entity.value.postal_code == "") || (entity.value.country == null || entity.value.country == "" ) 
+        // || (entity.value.state == null || entity.value.state == "") || (entity.value.municipality == null || entity.value.municipality == "") 
+        // || (entity.value.suburb == null || entity.value.suburb == "") || (entity.value.address == null || entity.value.address == "")
+        //  || (entity.value.phone == null || entity.value.phone == "") || (entity.value.email == null || entity.value.email == "")
+        // || (entity.value.reference == null || entity.value.reference == ""))
+        //     throw "Favor de llenar todos los campos obligatorios"
         console.log(JSON.stringify(entity.value))
         entity.value.postal_code = entity.value.postal_code.toString();
         let response = await axios.post('Comercial/EComerceUser/SaveShippingData',entity.value)
