@@ -10,7 +10,7 @@
                         <div class="full-width-sm-index">
                             <div class="p-3 flex justify-content-center align-items-center flex-wrap">
                                 <div class="justify-content-center align-items-center flex">
-                                    <span class="text-8xl font-bold" style="font-family: 'Montbold'">
+                                    <span class="text-8xl" style="font-family: 'MontExtraBold'">
                                         {{ pagetitle.toUpperCase() }}
                                     </span>
                                 </div>

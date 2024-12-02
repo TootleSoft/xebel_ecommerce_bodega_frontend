@@ -22,8 +22,8 @@
                 <img :src="imgRoute(product.id)" class="w-full h-auto shadow-8" :alt="String(i)" @click="router.push('/bundle/'+ product.id)" />
             </div>
             <div class="flex flex-column align-items-center">
-                <span class="text-l text-900 font-bold mb-3">{{ product.name }}</span>
-                <span class="text-l text-900 mb-3">{{ "$" + product.total.toFixed(2)}}</span>
+                <span class="text-l mb-3" style="font-family: 'MontExtraBold'; font-size: 2rem;">{{ product.name }}</span>
+                <span class="text-l mb-3" style="font-family: 'Montsemibold'; font-size: 1.8rem; color: #11BACC">{{ "$" + product.total.toFixed(2)}}</span>
             </div>
             <br>
         </div>

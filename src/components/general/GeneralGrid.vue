@@ -2,10 +2,10 @@
     <div class="grid -mt-3 -ml-3 -mr-3">
             <div v-for="(object, i) in props.objects.slice(first/10*pagesize,first/10*pagesize+pagesize)" :key="i" class="col-12 md:col-5 lg:col-2 mb-5 lg:mb-3">
                 <div class="mb-3 relative">
-                    <img :src="imgroute(object.id)" class="w-full h-10rem shadow-8" :alt="String(i)" @click="router.push(object.path)"/>
+                    <img :src="imgroute(object.id)" class="w-full h-10rem" :alt="String(i)" @click="router.push(object.path)"/>
                 </div>
                 <div class="flex flex-column align-items-center">
-                    <span class="text-l text-900 font-bold mb-3">{{object.name}}</span>
+                    <span class="text-l text-900 font-bold mb-3" style="color: #11BACC !important; font-family: 'Montserrat';">{{object.name}}</span>
                 </div>
             </div>
             <br></br>

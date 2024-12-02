@@ -29,7 +29,7 @@
                     <label v-if="stock != undefined && stock <= 0" class="w-full text-lg text-red-500" style="font-size: 1.6rem !important">{{ stock }}
                         Disponible</label>
                 </div>
-                <div class="font-bold text-900 mb-2 ml-5" style="font-family: 'Montbold'; font-size: 1.4rem">CANTIDAD</div>
+                <div class="font-bold text-900 mb-2 ml-6" style="font-family: 'Montbold'; font-size: 1.2rem">CANTIDAD</div>
 
                 <div class="flex flex-column sm:flex-row sm:align-items-center sm:justify-content-between">
                     <InputNumber showButtons buttonLayout="horizontal" :min="0"
@@ -39,7 +39,7 @@
                         incrementButtonClass="p-button-text text-600 hover:text-primary py-1 px-1"
                         incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus"
                         style="font-family: 'Montsemibold';
-                        height: 60px;
+                        height: 50px;
                         border-radius: 60px !important"
                         ></InputNumber>
 
@@ -50,7 +50,7 @@
                         color: white; 
                         padding: 10px 20px; 
                         box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-                        height: 60px;
+                        height: 50px;
                         display: flex;
                         align-items: center;
                         justify-content: center;"></Button>
@@ -69,7 +69,7 @@
                     display: flex;
                     align-items: center;
                     justify-content: center;
-                    height: 60px;"
+                    height: 50px;"
                     ></Button>
                 </div>
             </div>
