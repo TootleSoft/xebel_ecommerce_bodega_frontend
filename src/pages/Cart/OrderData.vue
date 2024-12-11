@@ -428,6 +428,13 @@ const changeCarrier = async () => {
     const separateAddress = address.split(", ") //Se separan los datos de la dirección para obtener el código postal de destino.
     const info = await entity.getDimensionsByArticle(flattenedArray.value); //Se obtienen los parámetros de las dimensiones del paquete para poder cotizar el envío.
     console.log("dimensiones", info);
+    if(info == undefined){
+        toast.add({severity:'error', summary: 'Dimensiones', detail: 'No hay dimensiones configuradas para este o varios articulos.', life: 7000});
+        //Recarga la pagina despues de mostrar el toast
+        setTimeout(() => {
+            window.location.reload();
+        },3000);
+    }
     for(let i = 0; i < info.length; i++){
         shippingCost.value = [];
         const parameters = JSON.stringify({
@@ -606,8 +613,10 @@ const processPayment = async () => {
                 let status = response.data.status;
                 let update = await axios.post('Comercial/ECommerceOrder/updateOrder/' + response.data.order_id + '/' + response.data.id + '/' + status); //guarda el id_tracking del pedido y actualiza el estatus a pagado o no pagado
                 window.location.href = response.data.payment_method.url; //redirige al cliente a la URL de confirmación
-                let createshipment = await generateShipment();
                 cartStore.saveOrder(order.id); //almacena temporalmente el id del pedido y el estatus
+                if(deliveryType.value == 2){
+                    let createshipment = await generateShipment();
+                }
             }
         }
     } catch (error) {
