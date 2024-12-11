@@ -3,7 +3,7 @@
         <span class="text-900 text-2xl block font-medium mb-5" style="font-family: 'Montsemibold'">Agregar dirección</span>
     </div>
     <div class="col-12 lg:col-6 field mb-4">
-        <Dropdown :options="props.countries" v-model="entity.country" placeholder="Pais" optionLabel="name" optionValue="code" showClear class="w-full"></Dropdown>
+        <Dropdown :options="props.countries" v-model="entity.country" placeholder="Pais" optionLabel="name" optionValue="code" showClear class="w-full" filter></Dropdown>
     </div>
     <div class="col-12 lg:col-6 field mb-4">
         <input v-model="entity.state" id="Estado" placeholder="Estado" type="text" class="p-inputtext w-full" />
@@ -151,12 +151,11 @@ const emit = defineEmits(['saveShippingData','close'])
 
 const save = async () => {
     try{
-        // if((entity.value.postal_code == null || entity.value.postal_code == "") || (entity.value.country == null || entity.value.country == "" ) 
-        // || (entity.value.state == null || entity.value.state == "") || (entity.value.municipality == null || entity.value.municipality == "") 
-        // || (entity.value.suburb == null || entity.value.suburb == "") || (entity.value.address == null || entity.value.address == "")
-        //  || (entity.value.phone == null || entity.value.phone == "") || (entity.value.email == null || entity.value.email == "")
-        // || (entity.value.reference == null || entity.value.reference == ""))
-        //     throw "Favor de llenar todos los campos obligatorios"
+        if((entity.value.postal_code == null || entity.value.postal_code == "") || (entity.value.country == null || entity.value.country == "" ) 
+        || (entity.value.state == null || entity.value.state == "") || (entity.value.municipality == null || entity.value.municipality == "") 
+        || (entity.value.suburb == null || entity.value.suburb == "") || (entity.value.address == null || entity.value.address == "")
+         || (entity.value.phone == null || entity.value.phone == "") || (entity.value.email == null || entity.value.email == ""))
+            throw "Favor de llenar todos los campos obligatorios"
         console.log(JSON.stringify(entity.value))
         entity.value.postal_code = entity.value.postal_code.toString();
         let response = await axios.post('Comercial/EComerceUser/SaveShippingData',entity.value)
