@@ -71,6 +71,26 @@ export class OrderData {
         }
     }
 
+    getPaymentForStore = async (params) => {
+        try {
+            let query = "?";
+            if (params) {
+                Object.keys(params).forEach(prop => {
+                    if (params[prop] != null) {
+                        query = query + prop + "=" + params[prop] + "&";
+                    }
+                });
+                query = query.substring(0, query.length - 1);
+            } else {
+                query = "";
+            }
+            const response = await axios.get('Comercial/EcommerceOrder/getPaymentForStore/' + this.authStore.id_usuario + '/' + query);
+            return response.data;
+        } catch (error) {
+
+        }
+    }
+
     newOrder = async () => {
         try {
             let order = await this.getOpenPayOrder();
