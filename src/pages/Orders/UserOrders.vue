@@ -23,6 +23,7 @@
                                 <span v-if="order.delivery_type == 2" class="text-xl font-medium mb-3">Entrega a Domicilio</span>
                                 <span class="text-xl font-medium mb-3">Fecha del pedido: {{ formatDate(order.created) }}</span>
                                 <span class="text-xl font-medium mb-3">Total: ${{ order.total.toFixed(2) }}</span>
+                                <span v-if="order.barcode_url != undefined" class="text-xl font-medium mb-3">Referencia pago en tienda: {{ order.barcode_url }}</span>
                             </div>
                             <div class="col-12 sm:col-3 flex justify-content-center sm:justify-content-end">
                                 <Tag 
