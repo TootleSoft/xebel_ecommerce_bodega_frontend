@@ -134,14 +134,20 @@
     <div class="col-12 flex flex-column lg:flex-row justify-content-center align-items-center lg:justify-content-end mt-7" style="align-items: flex-end; padding-right: 0">
       <Button class="mt-3 lg:mt-0 w-full lg:w-auto flex-order-2 lg:flex-order-1 lg:mr-4" severity="secondary" label="Regresar al carrito" icon="pi pi-fw pi-arrow-left" @click="router.push('/shoppingcart');" style="font-family: 'Montserrat';"/>
       <Button v-if="only_online == 0 && deliveryType != 2" 
-        class="mt-3 lg:mt-0 w-full lg:w-auto flex-order-2 lg:flex-order-1 lg:mr-4" 
+        class="mt-3 lg:mt-0 w-full lg:w-auto flex-order-2 lg:flex-order-1 lg:mr-2" 
         label="Pagar en sucursal" 
         icon="pi pi-fw pi-wallet" 
         @click="() => { processPaymentStore(); }" style="font-family: 'Montserrat'; background-color: #28a745; border-color: #28a745; color: white;"/>
-      <Button class="mt-3 lg:mt-0 w-full lg:w-auto flex-order-2 lg:flex-order-1 lg:mr-0" 
+      <Button class="mt-3 lg:mt-0 w-full lg:w-auto flex-order-2 lg:flex-order-1 lg:mr-2" 
         label="Pagar en línea" 
         icon="pi pi-fw pi-credit-card" 
         @click="() => { processPayment(); }" 
+        :disabled="!acceptTerms" 
+        style="font-family: 'Montserrat'; background-color: #007bff; border-color: #007bff; color: white;"/>
+        <Button class="mt-3 lg:mt-0 w-full lg:w-auto flex-order-2 lg:flex-order-1 lg:mr-2" 
+        label="Pagar en Efectivo" 
+        icon="pi pi-fw pi-money-bill" 
+        @click="() => { processPaymentForStore(); }" 
         :disabled="!acceptTerms" 
         style="font-family: 'Montserrat'; background-color: #007bff; border-color: #007bff; color: white;"/>
     </div>
@@ -330,7 +336,7 @@ const saveShippingData = async () =>{
     }
 }
 
-const invoiceNotNull = ()=>{
+const invoiceNotNull = async ()=>{
     console.log(JSON.stringify(invoice_entity.value))
     for (const key in invoice_entity.value){
         if (invoice_entity.value[key as keyof invoice_data] === null || invoice_entity.value[key as keyof invoice_data] === "") {
@@ -544,7 +550,7 @@ const processPaymentStore = async () => {
         }
 
         // Verificamos si la factura tiene los datos completos
-        let inn = invoiceNotNull();
+        let inn = await invoiceNotNull();
         if(billable.value == true) {
             if(inn == false) {
                 throw "Favor de llenar todos los datos de facturación"; // Lanzamos un error si los datos no están completos
@@ -584,7 +590,7 @@ const processPayment = async () => {
         }
         if(deliveryType.value == 2 && selectedReference.value == null)
             throw "Pedido con envio, favor de seleccionar/crear una direccion de envio"
-        let inn = invoiceNotNull();
+        let inn = await invoiceNotNull();
         if(billable.value == true){
             if(inn == false){
                 throw "Favor de llenar todos los datos de facturacion"
@@ -640,6 +646,159 @@ const processPayment = async () => {
         blocked.value = false;
     }
 };
+
+const testToken = async () => {
+    try {
+        // Obtén la información de la tarjeta
+        let getCard = await axios.get('Comercial/ECommerceOrder/getInfoCard/' + authStore.id_usuario);
+        let cardData = getCard.data;
+
+        console.log('Card Data:', JSON.stringify(cardData, null, 2));
+
+        // Asegúrate de acceder al primer elemento del array
+        if (Array.isArray(cardData) && cardData.length > 0) {
+            const card = cardData[0]; // Obtén el primer elemento del arreglo
+            const address = card.address || {}; // Obtén la dirección o un objeto vacío por defecto
+
+            console.log('Card:', card);
+            console.log('Address:', address);
+
+            // Crea el payload con los datos necesarios
+            const payload = {
+                card_number: card.card_number,
+                holder_name: card.holder_name,
+                expiration_year: card.expiration_year,
+                expiration_month: card.expiration_month,
+                cvv2: card.cvv2,
+                address: {
+                    city: address.city || "",
+                    country_code: address.country_code || "",
+                    postal_code: address.postal_code || "",
+                    line1: address.line1 || "",
+                    line2: address.line2 || "",
+                    line3: address.line3 || "",
+                    state: address.state || ""
+                }
+            };
+            console.log('Payload:', JSON.stringify(payload, null, 2));
+            // Envía la solicitud a OpenPay
+            let response = await entity.openpayAxios.post('tokens/', payload);
+            console.log('Respuesta del token:', response.data);
+            console.log(`ID token;`,response.data.id);
+            // let token = await entity.openpayAxios.get('tokens/kyag6lfte6ollsb2pie8/');
+            // console.log(`objeto token:`,token);
+
+        } else {
+            console.error('La informacion de la tarjeta esta vacio o en formato incorrecto.');
+        }
+
+
+
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            console.error('Error en la solicitud:', error.response?.data);
+        } else {
+            console.error('Error desconocido:', error);
+        }
+    }
+};
+
+const createCharge = async () => {
+    try {
+        // Configura el cliente Axios con las credenciales y encabezados necesarios
+        const openpayAxios = axios.create({
+            baseURL: import.meta.env.VITE_OPENPAY_BASE_URL,
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Basic ${btoa(`${import.meta.env.VITE_OPENPAY_PRIVATE_API_KEY}:`)}`, // Encode credentials
+            }
+        });
+
+        // Define el payload de la petición
+        const payload = {
+            method: "card",
+            amount: 6000.00, // Monto de la transacción
+            description: "Cargo 3D Secure", // Descripción del cargo
+            order_id: "000000004", // ID del pedido
+            source_id: "khf99xdrhkaerhjxzves", // ID del token (generado previamente)
+            redirect_url: import.meta.env.VITE_INDEX_ROUTE, // URL de redirección
+            use_3d_secure: "true" // Activar el uso de 3D Secure
+        };
+        console.log(`payload:`,payload)
+        // Realiza la petición POST a OpenPay
+        const response = await openpayAxios.post('charges/', payload);
+
+        // Manejo de la respuesta
+        console.log('Respuesta de OpenPay:', response.data);
+    } catch (error) {
+        // Manejo de errores
+        if (axios.isAxiosError(error)) {
+            console.error('Error en la petición:', error.response?.data || error.message);
+        } else {
+            console.error('Error desconocido:', error);
+        }
+    }
+};
+
+const processPaymentForStore = async () => {
+    try {
+        loading.value = true;
+        blocked.value = true;
+
+        // Crear pedido y calcular el total a pagar
+        const order = await createOrder(2); // Se crea el pedido y se guarda en la base de datos
+        const totalPay = total.value + totalShipment.value;
+        const paymentInfo = await entity.getPaymentForStore({ id_order: order.id, total: totalPay }); // Obtener información de pago
+        console.log(`paymentInfo:`, JSON.stringify(paymentInfo, null, 2));
+
+        // Enviar información de pago a OpenPay
+        const response = await entity.openpayAxios.post('charges/', paymentInfo[0]);
+        console.log(`postOpenPay:`, JSON.stringify(response, null, 2));
+
+        // Actualizar estado del pedido en la base de datos
+        const { status, order_id, id } = response.data;
+        const barcode_url = response.data.payment_method.reference;
+        console.log(`barcode`,barcode_url);
+        await axios.post(`Comercial/ECommerceOrder/updateOrder/${order_id}/${id}/${status}/${barcode_url}`);
+
+        // Guardar el pedido en el store y redirigir a la página de confirmación
+        cartStore.saveOrder(order.id);
+        router.push('/confirmation');
+    } catch (error) {
+        // Manejo de errores: intentamos obtener más información de OpenPay si es posible
+        try {
+            const fallbackResponse = await entity.openpayAxios.get('/charges/tr5q8qvndmbfhdjtvvqy/');
+            console.log('Respuesta de OpenPay (fallback):', fallbackResponse.data);
+        } catch (fallbackError) {
+            if (axios.isAxiosError(fallbackError)) {
+                console.error('Error procesando el pago (fallback):', fallbackError.response?.data);
+            } else {
+                console.error('Error desconocido (fallback):', fallbackError);
+            }
+        }
+
+        // Mostrar error principal al usuario
+        if (axios.isAxiosError(error)) {
+            toast.add({
+                severity: 'error',
+                summary: 'Error procesando el pago:',
+                detail: error.response?.data,
+                life: 7000,
+            });
+        } else {
+            toast.add({
+                severity: 'error',
+                summary: 'Error procesando el pago:',
+                detail: error,
+                life: 7000,
+            });
+        }
+    } finally {
+        loading.value = false;
+        blocked.value = false;
+    }
+};
+
 
 const createOrder = async (payment_type) => {
     try{
