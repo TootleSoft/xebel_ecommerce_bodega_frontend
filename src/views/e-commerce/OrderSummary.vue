@@ -1,104 +1,115 @@
-<script setup>
-import { ref } from 'vue';
+<script setup lang="ts">
+import { ref, computed, onMounted } from 'vue';
+import UserOrdersItems from '../../pages/Orders/UserOrdersItems.vue';
+import { useRouter } from 'vue-router';
+import { useAuthStore } from '../../stores/auth';
+import { useCartStore } from '../../stores/cart';
+import axios from 'axios';
 
-const products = ref([
-    {
-        name: 'Cotton Sweatshirt',
-        size: 'Medium',
-        color: 'White',
-        price: '$12',
-        quantity: '1',
-        image: '/demo/images/ecommerce/ordersummary/order-summary-1-1.png'
-    },
-    {
-        name: 'Regular Jeans',
-        size: 'Large',
-        color: 'Black',
-        price: '$24',
-        quantity: '1',
-        image: '/demo/images/ecommerce/ordersummary/order-summary-1-2.png'
+const router = useRouter();
+const auth = useAuthStore();
+const cartStore = useCartStore();
+
+const orders = ref<any[]>([])
+
+const refresh = async () => {
+    try {
+        const response = await axios.get(`Comercial/ECommerceOrder/GetUserOrders/${auth.id_usuario}`); //Trae los pedidos del usuario logeado
+        orders.value = response.data; // Guarda los datos obtenidos en este array para mostrarlos
+        console.log(JSON.stringify(orders.value));
+    } catch (error) {
+        console.error('Error al obtener los datos de la orden:', error);
     }
-]);
+};
+
+const openPdf = async () => {
+      let path = import.meta.env.VITE_DASHBOARD_PATH
+      let merchan_id = import.meta.env.VITE_OPENPAY_MERCHANT_ID
+      const response = await axios.get(`Comercial/ECommerceOrder/GetUserOrders/${auth.id_usuario}`);
+      console.log(`order`,response.data[0].barcode_url);
+      const url: string =  path + '/paynet-pdf' + '/' + merchan_id + '/' +  response.data[0].barcode_url
+      window.open(url, '_blank'); // Abre la URL en una nueva pestaña
+    };
+
+onMounted(async () => {
+    await refresh();
+});
 </script>
 
 <template>
     <div class="card">
-        <span class="text-700 text-xl">Thanks!</span>
-        <div class="text-900 font-bold text-4xl my-2">Successful Order 🚀</div>
-        <p class="text-700 text-xl mt-0 mb-4 p-0">Your order is on the way. It&lsquo;ll be shipped today. We&lsquo;ll inform you.</p>
-        <div :style="{ height: '3px', background: 'linear-gradient(90deg, var(--primary-color) 0%, rgba(33, 150, 243, 0) 50%)' }"></div>
-
-        <div class="flex flex-column sm:flex-row sm:align-items-center sm:justify-content-between py-5">
-            <div class="mb-3 sm:mb-0">
-                <span class="font-medium text-xl text-900 mr-2">Order number:</span>
-                <span class="font-medium text-xl text-blue-500">451234</span>
-            </div>
-            <div>
-                <Button label="Details" icon="pi pi-list" class="mr-2" outlined></Button>
-                <Button label="Print" icon="pi pi-print" outlined></Button>
-            </div>
+        <span class="text-700 text-xl">Gracias por su compra!</span>
+        <div class="text-900 font-bold text-4xl my-2">Pedido registrado con éxito 🚀</div>
+        <p class="text-700 text-xl mt-0 mb-4 p-0">
+            Tu pedido está siendo procesado por el comercio, estate atento a
+            instrucciones.
+        </p>
+        <div
+            :style="{ height: '4px', background: 'linear-gradient(90deg, rgba(12, 157, 198) 0%, rgba(133, 240, 255) 100%)' }">
         </div>
+        <br>
+        <div>
+            <Button label="Ir a inicio" icon="pi pi-home" class="mr-2" outlined @click="router.push('/')"></Button>
+            <Button label="PDF pedido" icon="pi pi-print" outlined @click="openPdf"></Button>
+        </div>
+        <br>
         <div class="border-round surface-border border-1">
-            <ul class="list-none p-0 m-0">
-                <li v-for="(product, i) in products" :key="i" class="p-3 surface-border flex align-items-start sm:align-items-center" :class="{ 'border-bottom-1': i !== products.length - 1 }">
-                    <img :src="product.image" class="w-3rem sm:w-8rem flex-shrink-0 mr-3 shadow-2" :alt="product.name" />
-                    <div class="flex flex-column">
-                        <span class="text-900 font-semibold text-xl mb-2">{{ product.name }}</span>
-                        <span class="text-700 font-medium mb-3"> {{ product.color }} | {{ product.size }} </span>
-                        <span class="text-900 font-medium">Quantity: {{ product.quantity }}</span>
-                    </div>
-                    <span class="text-900 font-medium text-lg ml-auto">{{ product.price }}</span>
-                </li>
-            </ul>
-        </div>
-        <div class="flex flex-wrap mt-5 pb-3">
-            <div class="w-full lg:w-6 pl-3">
-                <span class="font-medium text-900">Shipping Address</span>
-                <div class="flex flex-column text-900 mt-3 mb-5">
-                    <span class="mb-1">Celeste Slater</span>
-                    <span class="mb-1">606-3727 Ullamcorper. Roseville NH 11523</span>
-                    <span>(786) 713-8616</span>
+            <div v-if="orders.length > 0" v-for="(order, i) in [orders[0]]" :key="i"
+                class="p-3 surface-border flex flex-column">
+                <div class="mb-3">
+                    <span class="font-medium text-xl text-900 mr-2">Número Pedido:</span>
+                    <span class="font-medium text-xl text-blue-500"> {{ order.id }}</span>
                 </div>
-
-                <span class="font-medium text-900">Payment</span>
-                <div class="flex align-items-center mt-3">
-                    <img src="/demo/images/ecommerce/ordersummary/visa.png" class="w-4rem mr-3" alt="visa" />
-                    <div class="flex flex-column">
-                        <span class="text-900 mb-1">Visa Debit Card</span>
-                        <span class="text-900 font-medium">**** **** **** 1234</span>
+                <div v-if="orders.length > 0" class="border-round surface-border border-1">
+                    <UserOrdersItems :id_order="orders[0].id"></UserOrdersItems>
+                </div>
+                <div class="mt-5">
+                    <span class="font-medium text-900">Pago</span>
+                    <div class="flex align-items-center mt-3">
+                        <div class="flex flex-column">
+                            <span v-if="order.id_tracking === undefined && order.barcode_url !== undefined"
+                                class="text-900 mb-1">
+                                En tienda con referencia
+                            </span>
+                            <div v-else>
+                                <span class="text-900 mb-3">
+                                    Visa Debit Card
+                                </span>
+                                <img src="/demo/images/ecommerce/ordersummary/visa.png" class="w-5rem mr-5" alt="visa" />
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="w-full lg:w-6 pl-3 lg:pl-0 lg:pr-3 flex align-items-end mt-5 lg:mt-0">
-                <ul class="list-none p-0 m-0 w-full">
-                    <li class="mb-3">
-                        <span class="font-medium text-900">Summary</span>
-                    </li>
-                    <li class="flex justify-content-between mb-3">
-                        <span class="text-900">Subtotal</span>
-                        <span class="text-900 font-medium text-lg">$36.00</span>
-                    </li>
-                    <li class="flex justify-content-between mb-3">
-                        <span class="text-900">Shipping</span>
-                        <span class="text-900 font-medium text-lg">$5.00</span>
-                    </li>
-                    <li class="flex justify-content-between mb-3">
-                        <span class="text-900">Tax</span>
-                        <span class="text-900 font-medium text-lg">$4.00</span>
-                    </li>
-                    <li class="flex justify-content-between border-top-1 surface-border py-3">
-                        <span class="text-900 font-medium">Total</span>
-                        <span class="text-900 font-bold text-lg">$41.00</span>
-                    </li>
-                </ul>
+                <div class="w-full mt-5">
+                    <span class="font-medium text-900">Resumen</span>
+                    <ul class="list-none p-0 m-0 mt-3">
+                        <li class="flex justify-content-between mb-3">
+                            <span class="text-900">Subtotal</span>
+                            <span class="text-900 font-medium text-lg">${{ order.subtotal.toFixed(2) }}</span>
+                        </li>
+                        <li class="flex justify-content-between mb-3">
+                            <span class="text-900">Envío</span>
+                            <span class="text-900 font-medium text-lg">$0.00</span>
+                        </li>
+                        <li class="flex justify-content-between mb-3">
+                            <span class="text-900">IVA</span>
+                            <span class="text-900 font-medium text-lg">${{ order.iva.toFixed(2) }}</span>
+                        </li>
+                        <li class="flex justify-content-between border-top-1 surface-border py-3">
+                            <span class="text-900 font-medium">Total</span>
+                            <span class="text-900 font-bold text-lg">${{ order.total.toFixed(2) }}</span>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
 
-    <div class="card">
-        <div class="flex flex-column sm:flex-row sm:justify-content-between sm:align-items-center">
-            <span class="text-2xl font-medium text-900">Thanks for your order!</span>
-            <div class="flex mt-3 sm:mt-0">
+
+    <!-- <div class="card">
+    <div class="flex flex-column sm:flex-row sm:justify-content-between sm:align-items-center">
+        <span class="text-2xl font-medium text-900">Thanks for your order!</span>
+        <div class="flex mt-3 sm:mt-0">
                 <div class="flex flex-column align-items-center">
                     <span class="text-900 font-medium mb-2">Order ID</span>
                     <span class="text-700">451234</span>
@@ -110,7 +121,8 @@ const products = ref([
             </div>
         </div>
         <div class="flex flex-column md:flex-row md:align-items-center border-bottom-1 surface-border py-5">
-            <img src="/demo/images/ecommerce/ordersummary/order-summary-2-1.png" class="w-15rem flex-shrink-0 md:mr-6" alt="summary-1-2" />
+            <img src="/demo/images/ecommerce/ordersummary/order-summary-2-1.png" class="w-15rem flex-shrink-0 md:mr-6"
+                alt="summary-1-2" />
             <div class="flex-auto mt-3 md:mt-0">
                 <span class="text-xl text-900">Product Name</span>
                 <div class="font-medium text-2xl text-900 mt-3 mb-5">Order Processing</div>
@@ -149,5 +161,5 @@ const products = ref([
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 </template>

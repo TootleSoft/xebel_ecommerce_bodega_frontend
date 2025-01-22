@@ -41,7 +41,7 @@
                     </div>
                 </div>
                 <div v-if="deliveryType == 2" class="grid formgrid">
-                    <ShippingData v-if="showShippingData" @saveShippingData="refreshReferences" @close="showShippingData=false" :countries="countries"></ShippingData>
+                    <ShippingData v-if="showShippingData" @saveShippingData="refreshReferences" @close="showShippingData=false" :countries="countries" :states="states"></ShippingData>
                     <div v-if="!showShippingData" class="col-12 field mb-4">
                         <span class="text-900 text-2xl block font-medium mb-5">Dirección de entrega</span>
                         <Dropdown :options="customerReferences" v-model="selectedReference" placeholder="Selecciona una dirección de envío" optionLabel="name" optionValue="id" showClear class="w-full"/>
@@ -154,10 +154,17 @@
     <!-- Checkbox con los Términos y Condiciones-->
     <div class="flex align-items-center mt-3 lg:mt-0" style="align-items: flex-end;">
       <input type="checkbox" id="termsCheckbox" v-model="acceptTerms" class="mr-1" />
-      <label for="termsCheckbox" style="font-size: 14px; font-weight: 800; color: #1155cc;">
+      <label for="termsCheckbox" style="font-size: 16px; font-weight: 800; color: #1155cc;">
         Acepto los <span @click="router.push('/TermsAndConditions')" style="cursor: pointer; color: #1155cc;"> términos y condiciones</span>
       </label>
       <i class="pi pi-info-circle" @click="router.push('/TermsAndConditions')" style="cursor: pointer; margin-left: 6px;"></i>
+    </div>
+    <div class="flex align-items-center mt-3 lg:mt-0" style="align-items: flex-end;">
+      <input type="checkbox" id="termsCheckbox" v-model="acceptTerms" class="mr-1" />
+      <label for="termsCheckbox" style="font-size: 16px; font-weight: 800; color: #1155cc;">
+        Acepto <span @click="router.push('/PrivacyPolicy')" style="cursor: pointer; color: #1155cc;"> Aviso de privacidad</span>
+      </label>
+      <i class="pi pi-info-circle" @click="router.push('/PrivacyPolicy')" style="cursor: pointer; margin-left: 6px;"></i>
     </div>
   </div>
         </div>
@@ -166,6 +173,7 @@
 
 <script setup lang="ts">
 import { CountryService } from '../../service/CountryService';
+import { StateService } from '../../service/StateService';
 import { ref, onMounted, watch, computed } from 'vue';
 import ShippingData from './ShippingData.vue';
 import axios from 'axios';
@@ -185,7 +193,9 @@ import Dialog from 'primevue/dialog';
 
 
 const countryService = new CountryService();
+const stateService = new StateService();
 const countries = ref([]);
+const states = ref([]);
 const loading = ref<boolean>(false);
 const toast = useToast();
 const entity = new OrderData();
@@ -375,6 +385,12 @@ const refresh = async () => {
             return {
                 ...x,
                 name: x.name.toUpperCase()
+            }
+        })
+        states.value = states.value.map(x => {
+            return {
+                ...x,
+                name: x.Descripcion.toUpperCase()
             }
         })
         await getCarriers();
@@ -623,6 +639,7 @@ const processPayment = async () => {
                 if(deliveryType.value == 2){
                     let createshipment = await generateShipment();
                 }
+                router.push('/OrderSummary');
             }
         }
     } catch (error) {
@@ -670,7 +687,7 @@ const processPaymentForStore = async () => {
 
         // Guardar el pedido en el store y redirigir a la página de confirmación
         cartStore.saveOrder(order.id);
-        router.push('/confirmation');
+        router.push('/OrderSummary');
     } catch (error) {
         // Manejo de errores: intentamos obtener más información de OpenPay si es posible
         try {
@@ -913,6 +930,7 @@ const createLabel = async (id: number) => {
 
 onMounted(async () => {
     countryService.getCountries().then((data) => (countries.value = data));
+    stateService.getServices().then((data) => (states.value = data));
     await refresh();
 });
 

@@ -9,6 +9,9 @@
         <input v-model="entity.state" id="Estado" placeholder="Estado" type="text" class="p-inputtext w-full" />
     </div>
     <div class="col-12 lg:col-6 field mb-4">
+        <Dropdown :options="props.state" v-model="entity.state" placeholder="Estado" optionLabel="Descripcion" optionValue="code" showClear class="w-full" filter></Dropdown>
+    </div>
+    <div class="col-12 lg:col-6 field mb-4">
         <input v-model="entity.municipality" id="Municipio" placeholder="Municipio" type="text" class="p-inputtext w-full" />
     </div>
     <div class="col-12 lg:col-6 field mb-4">
@@ -37,6 +40,7 @@
 import { ref, onMounted } from 'vue';
 import { CountryService } from '../../service/CountryService';
 import { useAuthStore } from '../../stores/auth';
+import { satCatalogo } from '../../../src/utilities/General';
 const authStore = useAuthStore();
 import axios from 'axios';
 import { useToast } from "primevue/usetoast";
@@ -121,10 +125,12 @@ interface Shipment {
 
 interface Props {
     countries?: any[];
+    state?: any[];
 }
 
 const props = withDefaults(defineProps<Props>(), {
     countries: () => [],
+    state: () => [],
 })
 
 const entity = ref<customer_reference>({

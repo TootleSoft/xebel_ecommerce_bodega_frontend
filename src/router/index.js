@@ -73,6 +73,11 @@ const routes = [
                 name: 'Terminos y condiciones',
                 path: '/TermsAndConditions',
                 component: () => import ('@/views/pages/TermsAndConditions.vue')
+            },
+            {
+                name: 'Aviso de privacidad',
+                path: '/PrivacyPolicy',
+                component: () => import ('@/views/pages/PrivacyPolicy.vue')
             }
         ]
     },
@@ -95,6 +100,11 @@ const routes = [
         path: '/confirmation',
         name: 'confirmorder',
         component: () => import('@/pages/Cart/ConfirmOrder.vue')
+    },
+    {
+        path: '/OrderSummary',
+        name: 'ordersummary',
+        component: () => import('@/views/e-commerce/OrderSummary.vue')
     },
     {
         path: '/landing',
