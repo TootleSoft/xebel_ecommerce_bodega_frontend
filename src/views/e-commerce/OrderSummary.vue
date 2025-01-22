@@ -64,21 +64,6 @@ onMounted(async () => {
                     <UserOrdersItems :id_order="orders[0].id"></UserOrdersItems>
                 </div>
                 <div class="mt-5">
-                    <span class="font-medium text-900">Pago</span>
-                    <div class="flex align-items-center mt-3">
-                        <div class="flex flex-column">
-                            <span v-if="order.id_tracking === undefined && order.barcode_url !== undefined"
-                                class="text-900 mb-1">
-                                En tienda con referencia
-                            </span>
-                            <div v-else>
-                                <span class="text-900 mb-3">
-                                    Visa Debit Card
-                                </span>
-                                <img src="/demo/images/ecommerce/ordersummary/visa.png" class="w-5rem mr-5" alt="visa" />
-                            </div>
-                        </div>
-                    </div>
                 </div>
                 <div class="w-full mt-5">
                     <span class="font-medium text-900">Resumen</span>
