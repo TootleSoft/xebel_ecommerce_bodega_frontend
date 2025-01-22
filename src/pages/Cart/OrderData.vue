@@ -639,7 +639,6 @@ const processPayment = async () => {
                 if(deliveryType.value == 2){
                     let createshipment = await generateShipment();
                 }
-                router.push('/OrderSummary');
             }
         }
     } catch (error) {
