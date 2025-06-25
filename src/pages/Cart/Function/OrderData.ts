@@ -67,7 +67,7 @@ export class OrderData {
             const response = await axios.get('Comercial/EcommerceOrder/getPaymentInfo/' + this.authStore.id_usuario + '/' + query);
             return response.data;
         } catch (error) {
-
+            console.error(error);
         }
     }
 
@@ -87,7 +87,7 @@ export class OrderData {
             const response = await axios.get('Comercial/EcommerceOrder/getPaymentForStore/' + this.authStore.id_usuario + '/' + query);
             return response.data;
         } catch (error) {
-
+            console.error(error);
         }
     }
 
@@ -112,7 +112,7 @@ export class OrderData {
                 });
             }
         } catch (error) {
-
+            console.error(error);
         }
     }
 

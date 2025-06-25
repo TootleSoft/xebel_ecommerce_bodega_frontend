@@ -576,6 +576,7 @@ const processPaymentStore = async () => {
         // Creamos la orden de compra
         let order = await createOrder(1);  // se crea el pedido
         cartStore.saveOrder(order.id);  // almacenamos temporalmente el id del pedido y el estatus
+        cartStore.clearCart();  // limpiamos el carrito
         await entity.newOrderStore();  // guardamos la orden en el sistema
 
         // Redirigimos a la página de confirmación
@@ -627,15 +628,26 @@ const processPayment = async () => {
             }else{
                 let payment_info = []
                 let order = await createOrder(2); //se crea el pedido y se guarda en la tabla 'ecommerce_order' y 'ecommerce_order_item'
-                let url = import.meta.env.VITE_INDEX_ROUTE
+                //let url = import.meta.env.VITE_INDEX_ROUTE
+                const url = `${window.location.origin}/OrderSummary`;
+
                 let totalPay = total.value + totalShipment.value;
-                payment_info = await entity.getPaymentInfo({id_order: order.id, total: totalPay , url: url}); //se obtiene la información del cliente y del pedido
+
+                payment_info = await entity.getPaymentInfo(
+                { //se obtiene la información del cliente y del pedido
+                    id_order: order.id, 
+                    total: totalPay, 
+                    url: url
+                }); 
+
                 console.log(`payment`,JSON.stringify(payment_info, null, 2))
                 let response = await entity.openpayAxios.post('charges/', payment_info[0]) //se envía al api de open pay la información obtenida
                 let status = response.data.status;
                 let update = await axios.post('Comercial/ECommerceOrder/updateOrder/' + response.data.order_id + '/' + response.data.id + '/' + status); //guarda el id_tracking del pedido y actualiza el estatus a pagado o no pagado
+                console.log('url a donde me dirige: ', response.data.payment_method.url);
                 window.location.href = response.data.payment_method.url; //redirige al cliente a la URL de confirmación
                 cartStore.saveOrder(order.id); //almacena temporalmente el id del pedido y el estatus
+                cartStore.clearCart(); //limpia el carrito de compras
                 if(deliveryType.value == 2){
                     let createshipment = await generateShipment();
                 }
@@ -676,16 +688,17 @@ const processPaymentForStore = async () => {
 
         // Enviar información de pago a OpenPay
         const response = await entity.openpayAxios.post('charges/', paymentInfo[0]);
-        console.log(`postOpenPay:`, JSON.stringify(response, null, 2));
+        console.log(`postOpenPay: `, JSON.stringify(response, null, 2));
 
         // Actualizar estado del pedido en la base de datos
         const { status, order_id, id } = response.data;
         const barcode_url = response.data.payment_method.reference;
-        console.log(`barcode`,barcode_url);
+        console.log(`barcode: `, barcode_url);
         await axios.post(`Comercial/ECommerceOrder/updateOrder/${order_id}/${id}/${status}/${barcode_url}`);
 
         // Guardar el pedido en el store y redirigir a la página de confirmación
         cartStore.saveOrder(order.id);
+        cartStore.clearCart();
         router.push('/OrderSummary');
     } catch (error) {
         // Manejo de errores: intentamos obtener más información de OpenPay si es posible

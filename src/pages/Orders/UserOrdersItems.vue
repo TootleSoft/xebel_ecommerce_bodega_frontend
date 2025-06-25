@@ -21,7 +21,7 @@
         </div>
     </li>
 
-    <!-- Botón de "Ver más" / "Ver menos" -->
+    <!-- Botón de "Ver más" / "Ver menos" --> 
     <div v-if="allproducts.length > 3" class="flex align-items-center justify-content-center mt-4">
         <br>
         <Button v-if="!ViewMoreLess && allproducts.length > 3" label="Ver Más" link @click="viewmore" class="p-button-outlined p-button-rounded p-button-text text-700 hover:text-900" />

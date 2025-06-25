@@ -11122,8 +11122,8 @@
   color: #015098;
   background: rgba(15, 139, 253, 0.12);
 }
-.label-button-user {
-  font-weight: 700;
-  font-size: 150%;
+/* .label-button-user {
+  font-weight: 400;
+  font-size: 200% !important;
   color: #00bcd4;
-}
+} */

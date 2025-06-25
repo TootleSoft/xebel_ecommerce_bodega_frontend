@@ -1,124 +1,79 @@
-
 <template>
-    <div class="full-width">
-        <div class="p-3 flex justify-content-between lg:justify-content-center align-items-center flex-wrap">
-            <div class="align-items-center hidden lg:flex">
-                <span class="line-height-4" style="font-family: 'Montbold';">
-                    <i class="pi pi-box"></i>
-                    Recuerda que tenemos envíos a todo México
-                </span>
-            </div>
+    <!-- Header principal -->
+    <div class="header-wrapper">
+        <div v-if="isSearchFocused" class="search-overlay" @click="isSearchFocused = false"></div>
+      <!-- Logo -->
+      <div class="header-logo" @click="router.push('/')">
+        <img :src="'/src/images/logo/logo-test.png'" alt="Logo" />
+      </div>
+  
+      <!-- Buscador -->
+      <div class="header-search">
+        <FloatLabel>
+          <AutoComplete
+            v-model="serch"
+            @item-select="selectSuggestion"
+            @complete="search"
+            class="text-lg custom-border"
+            v-on:keyup.enter="router.push('/products/s/'+serch)"
+            inputId="serch"
+            optionLabel="name"
+            :suggestions="filteredArticles"
+            @focus="isSearchFocused = true"
+            @blur="isSearchFocused = false"
+          />
+          <label class="placeholder" for="serch">Buscar en Bodega de Remate</label>
+          <i class="pi pi-search search-icon"></i>
+        </FloatLabel>
+      </div>
+  
+      <!-- Usuario y Carrito -->
+      <div class="header-actions">
+        <div v-if="authStore.id_usuario" class="user-section">
+          <Button icon="pi pi-user icon-large" :label="userName" outlined @click="tuser" class="label-button-user" />
+          <TieredMenu ref="muser" :model="user" popup class="tiered-menu-class" />
         </div>
-    </div>
-    <div class="p-grid crud-demo MegaMenuBackground">
-        <div class="col-12">
-            <div class="grid formgrid p-fluid">
-                <div class="field col-12 sm:col-5 md:col-3 xl:col-2 flex align-items-center justify-content-center" style="cursor: pointer;">
-                    <img :src="'/src/images/logo/appname-' + (layoutConfig.colorScheme.value === 'light' ? 'dark' : 'light') + '.png'"
-                        class="app-logo-small h-10rem" @click="router.push('/');"/>
-                </div>
-                
-                    
-                <div class="field col-12 sm:col-12 md:col-4 xl:col-6">
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <FloatLabel>
-                        <AutoComplete
-                            v-model="serch"
-                            @item-select="selectSuggestion"
-                            inputId="serch"
-                            optionLabel="name"
-                            :suggestions="filteredArticles"
-                            @complete="search"
-                            class="text-lg custom-border"
-                            v-on:keyup.enter="router.push('/products/s/'+serch)"
-                        />
-                        <label class="placeholder" for="serch" style="font-weight: 200 !important; font-family: 'MontItalic' !important;">
-                            Buscador de productos...
-                        </label>
-                        <i class="pi pi-search search-icon"></i> <!-- Ícono de búsqueda -->
-                    </FloatLabel>
-                </div>
-                <!-- <div class="field col-12 sm:col-12 md:col-1 xl:col-1">
-                </div> -->
-                <div v-if="authStore.id_usuario != undefined" class="field col-2">
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <div class="label-button-user">
-                        <Button icon="pi pi-user icon-large" label="Mi cuenta" severity="contrast" 
-                            class="label-button-user" outlined @click="tuser" style="font-size: 1.7rem; font-family: Montsemibold;" />
-                            <div style="font-size: 1.5rem; font-family: 'Montsemibold';"> {{authStore.usuario}}</div>
-                    </div>
-                    <TieredMenu ref="muser" class="tiered-menu-class" id="overlay_tmenu" :model="user" popup />
-                </div>
-                <div v-if="authStore.id_usuario == undefined" class="field col-2">
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <Button class="label-button-user" icon="pi pi-user icon-large" label="Ingresar" severity="contrast"
-                        outlined @click="tlogin" style="font-family: 'Montsemibold';" />
-                    <TieredMenu ref="mlogin" class="tiered-menu-class" id="overlay_tmenu" :model="login" popup />
-                </div>
-                <div class="field col-2">
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <Button class="label-button-user" @click="shoppingCart" icon="pi pi-shopping-cart icon-large"
-                        :label="`Mi Carrito (${cartStore.cart.length})`" severity="contrast" outlined
-                        style="font-family: 'Montsemibold';" />
-                </div>
-
-                <!-- <div class="field col-12 sm:col-12 md:col-1 xl:col-1">
-                        <Button icon="pi pi-bell" label='Alertas' severity="contrast" outlined/>
-                    </div> -->
-                <div class="field-nav col-12 sm:col-12 md:col-12 xl:col-12">
-                    <Menubar :model="items" class="MegaMenuBar">
-
-                        <template #item="{item}">
-
-                            <a v-if="item.to == '#finalcontacto'" 
-                                class="flex align-items-center px-3 py-2 overflow-hidden relative font-semibold text-lg uppercase"
-                                @click="scrollToFinalContacto()">
-                                <span class="MegaMenuText" style="font-family: 'Montbold';">{{ item.label }}</span>
-                            </a>
-
-                            <a v-else-if="item.root && item.items_type == 0"
-                                class="flex align-items-center px-3 py-2 overflow-hidden relative font-semibold text-lg uppercase"
-                                @click="navigateToExternal(item.to)">
-                                <span class="MegaMenuText" style="font-family: 'Montbold'">{{ item.label }}</span>
-                            </a>
-
-                            <a v-else-if="item.root"
-                                class="flex align-items-center px-3 py-2 overflow-hidden relative font-semibold text-lg uppercase"
-                                @click="router.push(item.to)">
-                                <span class="MegaMenuText" style="font-family: 'Montbold';">{{ item.label }}</span>
-                            </a>
-
-                            <a v-else class="flex align-items-center p-3 cursor-pointer mb-2 gap-3"
-                                @click="router.push(item.to)">
-                                <span class="text-submenu" style="font-family: 'Montserrat';">{{ item.label }}</span>
-                            </a>
-
-                        </template>
-                    </Menubar>
-                </div>
-            </div>
+        <div v-else class="user-section">
+          <Button icon="pi pi-user icon-large" label="Ingresar" outlined @click="tlogin" class="label-button-user" />
+          <TieredMenu ref="mlogin" :model="login" popup class="tiered-menu-class" />
         </div>
+  
+        <div class="cart-button-wrapper" @click="shoppingCart">
+            <Button
+                icon="pi pi-shopping-cart icon-large"
+                label="Carrito"
+                outlined
+                class="label-button-user"
+            />
+            <span v-if="totalItemsInCart > 0" class="cart-badge">{{ totalItemsInCart }}</span>
+        </div>
+      </div>
     </div>
-</template>
+  
+    <!-- Barra de navegación -->
+    <div class="field-nav">
+      <Menubar :model="items" class="MegaMenuBar">
+        <template #item="{ item }">
+          <a v-if="item.to == '#finalcontacto'" @click="scrollToFinalContacto()" class="menu-link">
+            {{ item.label }}
+          </a>
+          <a v-else-if="item.root && item.items_type == 0" @click="navigateToExternal(item.to)" class="menu-link">
+            {{ item.label }}
+          </a>
+          <a v-else-if="item.root" @click="router.push(item.to)" class="menu-link">
+            {{ item.label }}
+          </a>
+          <a v-else @click="router.push(item.to)" class="submenu-link">
+            {{ item.label }}
+          </a>
+        </template>
+      </Menubar>
+    </div>
+  </template>
+  
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '../stores/auth';
 const authStore = useAuthStore();
@@ -131,6 +86,12 @@ import axios from 'axios';
 import { LoginStructure, UserStructure, ItemsStructure } from './StructureMenus/Structure';
 import { useCartStore } from '../stores/cart';
 
+//computed 
+const totalItemsInCart = computed(() => {
+    return cartStore.cart.reduce((total, item) => total + (item.quantity || 1), 0);
+});
+
+
 // variables y constantes
 const { layoutConfig } = useLayout();
 const router = useRouter();
@@ -140,9 +101,21 @@ const serch = ref();
 const article_names = ref<any[]>([]);
 const filteredArticles = ref<any[]>([]);
 const items = ref<any[]>([]);
-
+const userName = ref('');
+userName.value = '¡Hola, ' + capitalizeFullName(authStore.usuario) + '!';
+const isSearchFocused = ref(false);
 
 //funciones
+function capitalizeFullName(name) {
+  if (!name) return '';
+  return name
+    .toLowerCase()
+    .split(' ')
+    .map(part => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(' ');
+}
+
+
 const tlogin = (event) => {
     mlogin.value.toggle(event);
 };
@@ -182,7 +155,7 @@ const refresh = async () => {
 }
 
 const selectSuggestion = (payload) =>{
-    console.log(JSON.stringify(payload))
+    //console.log(JSON.stringify(payload))
     serch.value = payload.value.name;
 }
 
@@ -197,7 +170,7 @@ const scrollToFinalContacto = () => {
 }
 
 const search = (event) => {
-    console.log(JSON.stringify(article_names.value))
+    //console.log(JSON.stringify(article_names.value))
     filteredArticles.value =  article_names.value.filter(x => { return (x.name || '').toLowerCase().includes((event.query || '').toLowerCase())})
 }
 
@@ -223,7 +196,7 @@ const user = ref<any[]>([
         label: 'Mis Pedidos',
         icon: 'pi pi-inbox',
         command: () => {
-            router.push('/userorders');
+            router.push('/UserOrders');
             setTimeout((): void =>{
                 window.location.reload();
             }, 200)
@@ -250,153 +223,162 @@ const user = ref<any[]>([
     },
 ]);
 </script>
-<style scoped>
-.MegaMenuBar a:not(.cursor-pointer) {
-  background-color: #fefeff !important;
+<style>
+/* ---------- ESTRUCTURA GENERAL ---------- */
+.header-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  gap: 1rem;
+  padding: 1rem 2rem;
+  background-color: rgb(6, 6, 6);
+}
+
+.header-logo {
+  flex: 0 0 auto;
+  height: 50px;
+  width: auto;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+.header-logo img {
+  width: 10rem;
   cursor: pointer;
 }
-a {
-    background-color: transparent !important;
+.search-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.4); /* tono oscuro */
+  z-index: 99; /* debajo del buscador pero encima del resto */
 }
-a:hover {
-    background-color: #fefeff !important;
-}
-a:active {
-    background-color: #fefeff !important;
-}
-.text-submenu {
-    font-weight: bold;
-    padding: 0px;
-}
-.text-submenu:active {
-    color: #0eabbd !important;
-}
-.text-submenu:hover {
-    color: #fefeff;
-}
-a.flex.cursor-pointer:hover {
-    color: #fefeff;
-    background-color: #0eabbd !important;
-    padding: 0px;
-}
-a.flex.cursor-pointer-nav:active {
-    color: #fefeff;
-    background-color: #fefeff !important;
-    padding: 0px;
+.header-search {
+  position: relative;
+  z-index: 100;
+  flex: 1 1 auto;
+  max-width: 700px;
+  min-width: 200px;
+  margin: 0 1rem;
+  background-color: #f0f0f0;
+  border-radius: 6px;
 }
 
-.field-nav {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-.MegaMenuBar {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    max-width: 1200px;
-}
-.MegaMenuBar .p-menubar-list {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-}
-.MegaMenuText {
-    font-weight: 800;
-}
-.MegaMenuText:hover {
-    color: #11BACC;
-}
-.placeholder {
-    color: #aaaaaf;
-    font-weight: bold;
-    font-size: 1.3rem;
-    padding-left: 10px;
+/* Campo de búsqueda */
+.custom-border {
+  width: 100%;
 }
 .custom-border .p-inputtext {
-    background-color: #ffffff !important;
-    font-size: 1.4rem;
-    padding-left: 15px;
-    padding-right: 40px;
-    height: 50px;
-    border-radius: 8px;
-    border: 1px solid #ddd;
-    font-style: 'MontItalic' !important;
+  width: 100%;
+  padding-right: 2.5rem; /* espacio para la lupa */
 }
 
-.custom-border .p-inputtext:hover {
-    border-color: #ccc; /* Color de borde en hover */
-    background-color: #fff !important; /* Fondo blanco en hover */
-}
-
+/* Puedes añadir borde iluminado al input cuando está enfocado */
 .custom-border .p-inputtext:focus {
-    border-color: #007bff;
-    background-color: #fff !important;
-    box-shadow: 0 0 8px rgba(0, 123, 255, 0.25);
-}
-@media (max-width: 760px) {
-    .custom-border .p-inputtext {
-        width: 80%; /* Hace que la barra de búsqueda ocupe el 80% del contenedor */
-        max-width: 350px; /* Limita el ancho máximo para que no ocupe toda la pantalla */
-        margin: 0 auto; /* Centra la barra de búsqueda en la pantalla */
-        font-size: 1.2rem; /* Ajusta el tamaño de la fuente para pantallas pequeñas */
-        padding-left: 10px; /* Reduce el padding izquierdo para mejorar la estética */
-        padding-right: 30px; /* Reduce el padding derecho */
-        height: 45px; /* Ajusta la altura del input */
-    }
-    .field.col-12.sm\:col-12.md\:col-6.xl\:col-6 {
-        text-align: center; /* Centra la barra de búsqueda dentro del contenedor */
-    }
-} 
-.custom-border .p-float-label {
-    font-size: 1rem;
-    color: #666;
-}
-
-/* Agregar un fondo blanco específico cuando el campo no tiene foco */
-.custom-border .p-inputtext:not(:focus) {
-    background-color: #fff !important; /* Asegura que el fondo siempre sea blanco */
-}
-.icon-large {
-    font-size: 1.5rem;
+  border-color: #fc7a2f !important;
+  box-shadow: 0 0 10px rgba(241, 166, 14, 0.879);
+  background-color: #f0f0f0;
 }
 .search-icon {
-    position: absolute;
-    right: 15px; /* Ubica el ícono hacia la derecha */
-    top: 50%;
-    transform: translateY(-50%);
-    color: #11bacc; /* Color azul del ícono */
-    pointer-events: none; /* No permite hacer clic en el ícono */
-    font-size: 1.4rem; /* Tamaño del ícono */
-}
-/* Ajusta el tamaño del label (texto de ayuda) */
-.custom-border .p-float-label {
-    font-size: 1rem; /* Tamaño de la etiqueta flotante */
-    color: #666; /* Color del texto de la etiqueta */
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #11bacc;
+  font-size: 1.4rem;
+  pointer-events: none;
+  z-index: 1;
 }
 
-/* Cambia el color al pasar el mouse sobre el campo de búsqueda */
-.custom-border .p-inputtext:hover {
-    border-color: white; /* Color más oscuro cuando el campo está en hover */
-    
+/* ---------- ACCIONES (USUARIO Y CARRITO) ---------- */
+.header-actions {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 0.90rem;
+  white-space: nowrap;
 }
 
-/* Cuando el campo está enfocado */
-/* .custom-border .p-inputtext:focus {
-    border-color: #007bff;  Color de borde cuando se hace foco 
-    box-shadow: 0 0 8px rgba(0, 123, 255, 0.25); 
-} */
-
-.tiered-menu-class {
-  border: none;
+.user-name {
+  font-size: 1rem;
+  font-family: 'Montsemibold';
+  text-align: center;
+  margin-top: 0.2rem;
 }
 
-.label-button-user {
-  white-space: pre-line; /* Permite saltos de línea en el texto */
-  text-align: center; /* Opcional: alinea el texto al centro */
-  line-height: 1.2; /* Ajusta el espacio entre líneas */
-  display: block; /* Asegura que se respete el tamaño del contenido */
+/* ---------- CARRITO ---------- */
+.cart-button-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.cart-badge {
+  position: absolute;
+  left: 84px;
+  bottom: 25px;  
+  background-color: red;
+  color: white;
+  font-size: 1rem;
+  font-weight: bold;
+  padding: 3px 7px;
+  border-radius: 50%;
+  line-height: 1;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* ---------- MENÚ PRINCIPAL ---------- */
+.field-nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0rem 0;
+  background-color: #fed39a;
+}
+
+.menu-link {
+  font-family: 'Montbold';
+  font-size: 1rem;
+  text-transform: uppercase;
+  padding: 0.5rem 1rem;
+  display: inline-block;
+}
+
+.submenu-link {
+  font-family: 'Montserrat';
+  font-size: 0.9rem;
+  padding: 0.3rem 0.8rem;
+}
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width: 768px) {
+  .header-wrapper {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1.2rem;
+  }
+
+  .header-search {
+    position: relative;
+    z-index: 100;
+    width: 100%;
+    max-width: 90%;
+    margin: 0;
+  }
+
+  .header-actions {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .field-nav {
+    flex-direction: column;
+    padding: 0.5rem;
+  }
 }
 
 

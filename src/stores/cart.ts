@@ -58,6 +58,15 @@ export const useCartStore = defineStore({
         order: storage.getStorageSync<Order[]>('order') ?? [],
     }),
     actions: {
+        clearCart() {
+            this.cart = [];
+            this.id_numberItem = 0;
+            this.id_numberBundle = 0;
+            storage.setStorageSync('cart', this.cart);
+            storage.setStorageSync('id_numberItem', this.id_numberItem);
+            storage.setStorageSync('id_numberBundle', this.id_numberBundle);
+        },
+        
         addCart(product: CartState, quantity: number, id_branch: number, is_bundle: boolean){
             if(this.order.length == 1){
                 let deleted = axios.delete('Comercial/ECommerceOrder/deleteOrder/' + this.order[0].id);
@@ -148,6 +157,7 @@ export const useCartStore = defineStore({
             entity.value.status = 1;
             this.order.push(entity.value);
             storage.setStorageSync('order', this.order);
-        }
+        },
+        
     }
 })

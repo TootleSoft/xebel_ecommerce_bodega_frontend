@@ -1,4 +1,5 @@
 <template>
+    <!-- LOGIN -->
     <div :class="'login-body flex min-h-screen bg-gray-50'">
         <Toast />
         <div class="w-full pt-3 m-3" style="background: var(--surface-ground)">
@@ -14,8 +15,8 @@
                     <div class="border-1 border-round border-gray-300 shadow-lg" style="width: 100%; max-width: 400px;">
                         <div class="pt-5 px-6">
                             <div class="form-container text-left " style="max-width: 400px; min-width: 270px">
-                                <h4 class="text-2xl font-semibold mb-2" style="font-family: 'Montsemibold';">Iniciar Sesión</h4>
-                                <span class="block text-lg font-medium text-gray-600 mb-5" style="font-family: 'Montserrat';">Ingresa tus credenciales</span>
+                                <h4 class="text-2xl font-semibold mb-2 text-center" style="font-family: 'Montsemibold';">Iniciar Sesión</h4>
+                                <span class="block text-lg font-medium text-gray-600 mb-5 text-center" style="font-family: 'Montserrat';">Ingresa tus credenciales</span>
 
                                 <!-- Campos de texto -->
                                 <IconField iconPosition="left">
@@ -30,11 +31,12 @@
                             </div>
 
                             <!-- Botones de acción -->
-                            <div class="button-container mt-6">
+                            <div class="button-container mt-4">
                                 <div class="buttons flex flex-col gap-3">
                                     <Button type="button" @click="goHome" class="block w-full py-3 font-medium text-white bg-red-500 border-0 rounded-md hover:bg-red-600 transition duration-300 ease-in-out" style="font-family: 'Montserrat'">Cancelar</Button>
                                     <Button type="button" @click="submit" class="block w-full py-3 font-medium text-white bg-blue-600 border-0 rounded-md hover:bg-blue-700 transition duration-300 ease-in-out" style="font-family: 'Montserrat'">Enviar</Button>
                                 </div>
+
 
                                 <!-- Enlaces de registro y recuperación de contraseña -->
                                 <div class="mt-4 text-center">
@@ -51,8 +53,10 @@
 
                 <!-- Footer -->
                 <div class="login-footer flex justify-center items-center mt-8">
-                    <span class="text-sm text-gray-500" style="font-family: 'Montserrat';">Copyright 2024</span>
+                    <span class="text-sm text-gray-500" style="font-family: 'Montserrat';">Copyright {{ currentYear }}</span>
                 </div>
+                <AppLoading v-if="loading" />
+
             </div>
         </div>
     </div>
@@ -66,9 +70,13 @@ import axios from 'axios';
 import Password from 'primevue/password';
 import { useToast } from "primevue/usetoast";
 import { useAuthStore } from '../../stores/auth';
+import AppLoading from '../../components/reusables/AppLoading.vue';
+
+
 const authStore = useAuthStore();
 const toast = useToast();
-
+const currentYear = new Date().getFullYear();
+const loading = ref(false);
 
 export interface ecomerce_user {
     id?: number | null;
@@ -111,6 +119,7 @@ const goHome = () => {
 
 const submit = async () => {
     try{
+        loading.value = true
         if(entity.value.email == null || entity.value.password == null)
             throw "Favor de llenar todos los campos"
         let response = await axios.get('Comercial/EComerceUser/GetSession/'+entity.value.email+'/'+entity.value.password)
@@ -127,6 +136,9 @@ const submit = async () => {
         }catch{
             toast.add({ severity: 'error', summary: 'Error al crear usuario', detail: error, life: 7500 });
         }
+    }
+    finally {
+        loading.value = false
     }
     
 };
@@ -176,4 +188,5 @@ button {
     padding: 10px;
     font-size: 1rem;
 }
+
 </style>

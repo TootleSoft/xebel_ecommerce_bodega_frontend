@@ -18,7 +18,7 @@ const refresh = async () => {
         orders.value = response.data; // Guarda los datos obtenidos en este array para mostrarlos
         console.log(JSON.stringify(orders.value));
     } catch (error) {
-        console.error('Error al obtener los datos de la orden:', error);
+        console.error('Error al obtener los datos de la orden: ', error);
     }
 };
 
@@ -33,6 +33,7 @@ const openPdf = async () => {
 
 onMounted(async () => {
     await refresh();
+    cartStore.clearCart();
 });
 </script>
 
@@ -89,7 +90,7 @@ onMounted(async () => {
             </div>
         </div>
     </div>
-
+</template>
 
     <!-- <div class="card">
     <div class="flex flex-column sm:flex-row sm:justify-content-between sm:align-items-center">
@@ -147,4 +148,4 @@ onMounted(async () => {
             </div>
         </div>
     </div> -->
-</template>
+
