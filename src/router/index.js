@@ -150,6 +150,11 @@ const routes = [
         path: '/:pathMatch(.*)*',
         name: 'notfound',
         component: () => import('@/views/pages/NotFound.vue')
+    },
+    {
+        path: '/ConfirmationPage',
+        name: 'ConfirmationPage',
+        component: () => import('@/views/e-commerce/ConfirmationPage.vue')
     }
 ];
 

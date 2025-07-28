@@ -6,12 +6,15 @@
         <div class="col-12">
             <div class="grid formgrid p-fluid">
                 <!-- Título en pantallas grandes -->
-                <div class="field col-12 hidden md:block">
+                <div class="field col-12 hidden md:block" style="background-color: #0c3e66;">
                     <div class="field w-full">
                         <div class="full-width-sm-index">
-                            <div class="p-3 flex justify-content-center align-items-center flex-wrap">
+                            <div class="p-1 flex justify-content-center align-items-center flex-wrap"
+                            >
                                 <div class="justify-content-center align-items-center flex">
-                                    <span class="text-8xl font-bold" style="font-family: 'Montbold'">
+                                    <span class="text-8xl font-bold" style="
+                                    font-family: 'Montbold';
+                                    ">
                                         {{ pagetitle.toUpperCase() }}
                                     </span>
                                 </div>
@@ -21,24 +24,24 @@
                 </div>
 
                 <!-- Filtro en pantallas grandes -->
-                <div class="field hidden sm:block col-2" >
-                    <span class="text-900 font-medium text-xs mb-4" style="font-family: 'Montbold';">{{ products.length }} Productos Relacionados</span>
+                <div class="field hidden sm:block col-2 mt-3" >
+                    <span class="text-900 text-blue-900 font-medium text-xs mb-4" style="font-family: 'Montbold';">{{ products.length }} Productos Relacionados</span>
                     <BasicFilterSelection @v-model="getfilterprices" :key="componentKey" :allcategories="priceorder" filtername="Filtro por Precios" pickone :selected="filterpriceselection"/>
                 </div>
 
                 <!-- Filtro en pantallas pequeñas (Sidebar) -->
                 <div class="field block sm:hidden col-12">
                     <Sidebar v-model:visible="visible">
-                        <span class="text-900 font-medium text-4xl mb-4" style="font-family: 'Montbold'">{{ pagetitle }}</span>
-                        <span class="text-900 font-medium text-xs mb-4">{{ products.length }} Productos Relacionados</span>
+                        <span class="text-900 text-blue-900 font-medium text-4xl mb-4" style="font-family: 'Montbold'">{{ pagetitle }}</span>
+                        <span class="text-900 text-blue-900 font-medium text-xs mb-4">{{ products. length }} Productos Relacionados</span>
                         <BasicFilterSelection @v-model="getfilterprices" :key="componentKey" :allcategories="priceorder" filtername="Filtro por Precios" pickone :selected="filterpriceselection"/>
                     </Sidebar>
                     <Button icon="pi pi-filter" class="filtter-menu-button border-transparent border-1 shadow-3" @click="visible = true" />
                 </div>
 
                 <!-- Contenedor de productos -->
-                <div class="field col-12 sm:col-10">
-                    <div class="card p-4 shadow-2 border-round mb-6">
+                <div class="field col-12 sm:col-10 mt-4">
+                    <div class="card p-4 mb-2">
                         <BasicOffersGrid :allproducts="products" :pagesize="40" :pagetitle="pagetitle" :key="productsKey"/>
                     </div>
                 </div>
@@ -113,10 +116,9 @@ const getfilterprices = (model) =>{
 <style scoped>
 /* Fondo de encabezado */
 .full-width-sm-index {
-    background-image: url('/public/demo/images/pages/fondo dental-01.jpg');
     background-size: cover;
     background-position: center;
-    padding: 60px 20px; /* Ajuste en padding para mejor apariencia */
+    padding: 5px 20px; /* Ajuste en padding para mejor apariencia */
     color: rgb(255, 255, 255);
     display: flex;
     flex-direction: column;
@@ -126,7 +128,7 @@ const getfilterprices = (model) =>{
 
 /* Estilo para el título */
 .text-8xl {
-    font-size: 3rem;
+    font-size: 2rem;
     font-family: 'Montbold', sans-serif;
     font-weight: bold;
     color: #ffffff;
@@ -134,10 +136,10 @@ const getfilterprices = (model) =>{
 
 /* Estilo general de la tarjeta */
 .card {
-    border-radius: 8px;
+    border-radius: 0px;
     background-color: #ffffff;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
 }
 
 /* Estilo para el filtro de precios */
@@ -199,6 +201,7 @@ const getfilterprices = (model) =>{
 .product-card {
     padding: 15px;
     margin-bottom: 20px;
+    
 }
 
 /* Estilos del filtro de precios */
@@ -214,14 +217,14 @@ const getfilterprices = (model) =>{
 
 /* Estilo general de la columna de filtros */
 .field {
-    margin-bottom: 15px;
+    margin-bottom: 0px;
 }
 
 /* Estilo de las imágenes de los productos */
 .product-image {
     max-height: 350px;
     object-fit: cover;
-    border-radius: 8px;
+    border-radius: 4px;
 }
 
 /* Fondo de sidebar */

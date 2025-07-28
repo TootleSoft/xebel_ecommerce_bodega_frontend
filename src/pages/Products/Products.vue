@@ -25,14 +25,10 @@
                     <!-- Definitivamente hacerlo componente -->
                     <span v-if="is_search==true" class="text-900 font-medium text-4xl mb-4" style="font-family: 'MontExtraBold';">{{ pagetitle }}</span>
                         <br>
-                    <span class="text-900 font-medium text-md mb-4" 
+                    <span class="text-900 text-blue-900 font-medium text-md mb-2" 
                     style="font-family: 'Montbold';
-                    color: #11BACC !important;
-                    padding-left: 20px !important;
                     "
                     >{{ products.length }} Productos Relacionados</span>
-                        <br>
-                        <br>
                         
                     <BasicFilterSelection @v-model="getcategories" :key="componentKey" :allcategories="subgroups"
                         filtername="Filtro por Grupos" :selected="categoryselection"/>
@@ -43,7 +39,7 @@
                     <Sidebar v-model:visible="visible">
                         <span class="text-900 font-medium text-4xl mb-4" style="font-family: 'MontExtraBold';">{{ pagetitle }}</span>
                         <br>
-                        <span class="text-900 font-medium text-xs mb-4">{{ products.length }} Productos Relacionados</span>
+                        <span class="text-900 font-medium text-blue-900 text-xs mb-4">{{  products.length }} Productos Relacionados</span>
                         <br>
                         <br>
                         <BasicFilterSelection @v-model="getcategories" :key="componentKey" :allcategories="subgroups"
@@ -51,7 +47,7 @@
                         <BasicFilterSelection @v-model="getfilterprices" :key="componentKey" :allcategories="priceorder"
                             filtername="Filtro por Precios" pickone :selected="filterpriceselection"/>
                     </Sidebar>
-                    <Button icon="pi pi-filter" class="filtter-menu-button border-transparent border-1 shadow-3" @click="visible = true" />
+                    <Button icon="pi pi-filter" class="filtter-menu-button border-transparent border-1 shadow-3" @click="visible = true"></Button>
                 </div>
                 <div class="field col-12 sm:col-10">
                     <div class="card">

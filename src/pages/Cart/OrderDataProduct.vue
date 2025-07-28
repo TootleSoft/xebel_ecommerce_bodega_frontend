@@ -1,6 +1,6 @@
 <template>
     <li v-if="!loading" v-for="(product, i) in cartStore.cart" :key="i"
-        class="flex flex-column md:flex-row py-6 border-top-1 border-bottom-1 surface-border md:align-items-center">
+        class="flex flex-column md:flex-row py-1 border-top-1 border-bottom-1 surface-border md:align-items-center">
         <img v-if="!product.is_bundle || product.is_bundle == undefined"
             :src="imgroute(product.id, product.barcode, product.id_brand)"
             class="w-12rem h-12rem flex-shrink-0 mx-auto md:mx-0" alt="shopping-cart-2-1" />
@@ -10,10 +10,10 @@
             <div
                 class="flex flex-wrap align-items-start sm:align-items-center sm:flex-row sm:justify-content-between surface-border pb-6">
                 <div class="w-full sm:w-6 flex flex-column">
-                    <span class="text-900 text-xl font-medium mb-3">{{ product.name }}</span>
-                    <span class="text-900 text-md font-medium mb-3">{{ product.key_name }}</span>
+                    <span class="text-900 text-xl font-medium mb-3 text-blue-800">{{ product.name }}</span>
+                    <span class="text-900 text-sm font-medium mb-3">DESCRIPCIÓN: {{ product.key_name }}</span>
                     <span v-if="!product.is_bundle || product.is_bundle == undefined"
-                        class="text-700 text-sm">{{ product.barcode }}</span>
+                        class="text-700 text-sm">SKU: {{ product.barcode }}</span>
                     <div  class="grid">
                         <div class="col-12 lg:col-1">
                             <ul v-if="product.is_bundle" class="py-0 pl-3 m-0 text-600 mb-3">
@@ -29,15 +29,15 @@
                 </div>
                 <div class="w-full sm:w-6 flex align-items-start justify-content-between mt-3 sm:mt-0">
                     <div>
-                        <span class="text-450 text-mb font-medium mb-2 sm:mb-3">Cantidad</span> 
+                        <span class="text-450 text-mb font-medium mb-2 sm:mb-3 mr-1">Cantidad</span> 
                         <InputNumber :disabled=true buttonLayout="horizontal" :min="1"
-                            inputClass="w-2rem text-center py-2 px-1 border-transparent outline-none shadow-none"
+                            inputClass="w-3rem text-center py-2 px-1 border-transparent outline-none shadow-none"
                             v-model="product.quantity" class="border-1 surface-border border-round"
                         />
                     </div>
                     <div class="flex flex-column sm:align-items-end">
                         <span v-if="!product.original_price" class="text-900 text-xl font-medium mb-2 sm:mb-3"><label
-                                class="text-900 font-bold">P.U. + IVA</label>&nbsp&nbsp&nbsp${{ product.price_tax.toFixed(2) }}</span>
+                                class="text-900 font-bold text-sm">P.U. + IVA</label>&nbsp&nbsp&nbsp${{ product.price_tax.toFixed(2) }}</span>
                         <span v-if="product.original_price"
                             class="text-900 text-xl font-medium mb-2 sm:mb-3 line-through"><label
                                 class="text-900 font-bold">P.U. + IVA</label>&nbsp&nbsp&nbsp${{ product.original_price.toFixed(2) }}</span>
@@ -45,7 +45,7 @@
                             class="text-900 text-xl font-medium mb-2 sm:mb-3 text-red-500"><label
                                 class="text-red-500 text-900 font-bold">P.U. + IVA</label>&nbsp&nbsp&nbsp${{ product.price_tax.toFixed(2) }}</span>
                         <span class="text-900 text-xl font-medium mb-2 sm:mb-3"><label
-                                class="text-900 font-bold">TOTAL</label>&nbsp&nbsp&nbsp${{ product.quantity * Number(product.price_tax.toFixed(2)) }}</span>
+                                class="text-900 font-bold text-2xl">TOTAL</label>&nbsp&nbsp&nbsp${{ product.quantity * Number(product.price_tax.toFixed(2)) }}</span>
                         <!-- <a v-if="!product.is_bundle || product.is_bundle == undefined" @click="removeProduct(product.id, product.subarticle, product.id_branch, product.id_numberItem)"
                             class="cursor-pointer text-pink-500 font-medium text-sm hover:text-pink-600 transition-colors transition-duration-300"
                             tabindex="0"> Remove </a>

@@ -98,7 +98,7 @@
                 <p class="line-height-3 mt-0 mb-3 p-0">
                     <strong>Inventario:</strong> La disponibilidad de los productos está sujeta al stock en tienda o en
                     nuestras bodegas.
-                </p>
+                </p> 
                 <div class="font-bold text-4xl mb-4 text-900">4. Envíos y Entregas</div>
                 <p class="line-height-3 mt-0 mb-3 p-0">
                     Realizamos envíos a toda la República Mexicana, sujetos a las limitaciones de nuestra plataforma

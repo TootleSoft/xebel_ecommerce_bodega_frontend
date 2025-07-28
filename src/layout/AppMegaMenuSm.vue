@@ -14,8 +14,8 @@
         <div class="col-12">
             <div class="grid formgrid p-fluid">
                 <div class="col-12 flex justify-content-center align-items-center">
-                    <img :src="'/src/images/logo/appname-' + (layoutConfig.colorScheme.value === 'light' ? 'dark' : 'light') + '.png'"
-                        class="app-logo-small h-5rem flex" @click="router.push('/');"/>
+                    <img :src="'/src/images/logo/logo-bdr.svg'"
+                        class="app-logo-small h-2rem flex" @click="router.push('/');"/>
                 </div>
             </div>
         </div>
@@ -29,8 +29,8 @@
                             <div class="col-12">
                                 <div class="grid formgrid p-fluid">
                                     <div class="field col-12 flex justify-content-center align-items-center">
-                                        <img :src="'/src/images/logo/appname-' + (layoutConfig.colorScheme.value === 'light' ? 'dark' : 'light') + '.png'"
-                                            class="app-logo-small h-5rem flex" @click="router.push('/');"/>
+                                        <img :src="'/src/images/logo/logo-bdr.svg'"
+                                            class="app-logo-small h-2rem flex" @click="router.push('/');"/>
                                     </div>
                                 </div>
                             </div>
@@ -64,14 +64,14 @@
                             </template>
                         </PanelMenu>
                     </Sidebar>
-                    <Button icon="pi pi-align-justify" class="col-1 custom-border-siderbar" @click="visible = true" />
-                    <div class="col-9">
+                    <Button icon="pi pi-align-justify" class="col-2 custom-border-siderbar" @click="visible = true"></Button>
+                    <div class="col-8">
                         <FloatLabel>
                             <AutoComplete v-model="serch" @item-select="selectSuggestion" inputId="serch" optionLabel="name"
                                 :suggestions="filteredArticles" @complete="search" class="custom-border-sm h-2rem"
                                 v-on:keyup.enter="router.push('/products/s/'+serch)" />
-                            <label class="text-900" for="serch">
-                                <i class="pi pi-search"></i> Buscador por productos...
+                            <label class="text-400" for="serch">
+                                <i class="pi pi-search"></i> Buscar en bodegaderemate.com
                             </label>
                         </FloatLabel>
                     </div>
@@ -237,7 +237,7 @@ const user = ref<any[]>([
 </script>
 <style>
 .custom-border .p-inputtext {
-  border-color:  #11BACC; /* Cambia #ff0000 por el color de tu preferencia */
+  border-color:  #161b61; /* Cambia #ff0000 por el color de tu preferencia */
 }
 
 .label-button-user-sm {
@@ -247,17 +247,16 @@ const user = ref<any[]>([
 }
 
 .mega-menu-sm-background {
-  background: #11BACC;
+  background: #08126b;
 }
 
 .custom-border-sm .p-inputtext {
-  border-color:  #ffffff; /* Cambia #ff0000 por el color de tu preferencia */
   background-color: #ffffff;
 }
 
 .custom-border-siderbar{
-  border-color: #11BACC; /* Cambia #ff0000 por el color de tu preferencia */
-  background-color: #11BACC;
+  border: none; /* Cambia #ff0000 por el color de tu preferencia */
+  background: #08126b;
 }
 
 .tiered-menu-class {
@@ -267,8 +266,6 @@ const user = ref<any[]>([
 .panel-menu-text-class {
     font-weight: 800;
   font-size: 100%;
-  color: #11BACC;
+  color: #15136d;
 }
-
-
 </style>

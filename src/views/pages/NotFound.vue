@@ -22,10 +22,10 @@ const navigateToDashboard = () => {
                 <p class="text-3xl" style="max-width: 320px">The page that you are looking for does not exist</p>
                 <Button type="button" label="Go back to home" style="margin-top: 50px" @click="navigateToDashboard"></Button>
             </div>
-            <div class="exception-footer absolute align-items-center flex" style="bottom: 60px">
+            <!-- <div class="exception-footer absolute align-items-center flex" style="bottom: 60px">
                 <img :src="'/layout/images/logo/logo-' + (layoutConfig.colorScheme.value === 'light' ? 'dark' : 'light') + '.png'" class="exception-logo" style="width: 34px" />
                 <img :src="'/layout/images/logo/appname-' + (layoutConfig.colorScheme.value === 'light' ? 'dark' : 'light') + '.png'" class="exception-appname ml-3" style="width: 72px" />
-            </div>
+            </div> -->
         </div>
     </div>
 </template>

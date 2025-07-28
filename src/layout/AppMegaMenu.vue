@@ -1,34 +1,58 @@
 <template>
     <!-- Header principal -->
     <div class="header-wrapper">
-        <div v-if="isSearchFocused" class="search-overlay" @click="isSearchFocused = false"></div>
+      <div v-if="isSearchFocused" class="search-overlay" @click="isSearchFocused = false"></div>
       <!-- Logo -->
       <div class="header-logo" @click="router.push('/')">
-        <img :src="'/src/images/logo/logo-test.png'" alt="Logo" />
+        <img :src="'/src/images/logo/logo-bdr.svg'" alt="Logo" style="width: 240px; margin-left: 2rem"/>
       </div>
   
       <!-- Buscador -->
       <div class="header-search">
         <FloatLabel>
           <AutoComplete
+            ref="autoCompleteRef"
             v-model="serch"
             @item-select="selectSuggestion"
             @complete="search"
             class="text-lg custom-border"
-            v-on:keyup.enter="router.push('/products/s/'+serch)"
+            @keyup.enter="handleSearchEnter"
             inputId="serch"
             optionLabel="name"
             :suggestions="filteredArticles"
             @focus="isSearchFocused = true"
             @blur="isSearchFocused = false"
           />
-          <label class="placeholder" for="serch">Buscar en Bodega de Remate</label>
+          <label class="placeholder" style="margin-left: 1rem" for="serch">Buscar en Bodega de Remate</label>
           <i class="pi pi-search search-icon"></i>
         </FloatLabel>
       </div>
   
+      <!-- Sección de contáctanos -->
+      <div class="contact-block" style="display: flex; align-items: center; gap: 0.75rem;">
+        <!-- Ícono -->
+        <img
+          :src="'/src/images/icons/support-icon.png'"
+          alt="Ícono de soporte"
+          style="width: 32px; height: 32px;"
+        />
+
+        <!-- Texto -->
+        <div class="header-contacts">
+          <div class="contact-item">
+            <div class="contact-info">
+              <span class="contact-label">Contáctanos: +52(123) 123 4567</span>
+            </div>
+            <div class="contact-info">
+              <span class="contact-label">Email: contacto@bodegaderemate.com</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      
       <!-- Usuario y Carrito -->
-      <div class="header-actions">
+      <!-- <div class="header-actions">
         <div v-if="authStore.id_usuario" class="user-section">
           <Button icon="pi pi-user icon-large" :label="userName" outlined @click="tuser" class="label-button-user" />
           <TieredMenu ref="muser" :model="user" popup class="tiered-menu-class" />
@@ -47,10 +71,40 @@
             />
             <span v-if="totalItemsInCart > 0" class="cart-badge">{{ totalItemsInCart }}</span>
         </div>
-      </div>
+      </div> -->
+      
     </div>
-  
-    <!-- Barra de navegación -->
+    <NavBar></NavBar>
+    <!-- <div class="navigation-bar">
+      <Menubar :model="menuItems" class="MegaMenuBar">
+        
+        <template #start>
+          <div class="start-section">
+            <div class="postal-code">
+              <label for="postal-code-input">Ingresa tu código postal:</label>
+              <input id="postal-code-input" type="text" placeholder="Código Postal" class="postal-input" />
+            </div>
+          </div>
+        </template>
+        
+        <template #end>
+          <div class="end-section">
+            <div class="cart-section" @click="shoppingCart">
+              <Button 
+                icon="pi pi-shopping-cart icon-large"
+                label="Carrito"
+                outlined
+                class="label-button-user">
+              </Button>
+              <span v-if="totalItemsInCart > 0" class="cart-badge">{{ totalItemsInCart }}</span>
+            </div>
+          </div> 
+        </template>
+      </Menubar>
+    </div> -->
+
+
+    <!-- Barra de navegación
     <div class="field-nav">
       <Menubar :model="items" class="MegaMenuBar">
         <template #item="{ item }">
@@ -68,7 +122,7 @@
           </a>
         </template>
       </Menubar>
-    </div>
+    </div> -->
   </template>
   
 
@@ -76,28 +130,44 @@
 import { ref, onMounted, watch, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '../stores/auth';
+import { useCartStore } from '../stores/cart';
+import NavBar from './StructureMenus/NavBar.vue';
+import Footer from '../components/general/Footer.vue';
 const authStore = useAuthStore();
 const cartStore = useCartStore();
-
+const router = useRouter();
 
 import { useLayout } from '../layout/composables/layout.js';
 //import { useLayout } from '@/layout/composables/layout';
 import axios from 'axios';
 import { LoginStructure, UserStructure, ItemsStructure } from './StructureMenus/Structure';
-import { useCartStore } from '../stores/cart';
 
 //computed 
 const totalItemsInCart = computed(() => {
     return cartStore.cart.reduce((total, item) => total + (item.quantity || 1), 0);
 });
-
-
+const menuItems = [
+  { label: 'Categorías', command: () => router.push('/categories') },
+  { label: 'Ofertas', command: () => router.push('/offers') },
+  { label: 'Cupones', command: () => router.push('/coupons') },
+  { label: 'Crea tu cuenta', command: () => router.push('/auth/login') },
+  { label: 'Ingresa', command: () => router.push('/auth/login') },
+  { label: 'Carrito', 
+    command: () => {
+      if(authStore.id_usuario) {
+        router.push('/UserOrders');
+      } else {
+        router.push('/auth/login');
+      }
+    }
+  }
+]
 // variables y constantes
 const { layoutConfig } = useLayout();
-const router = useRouter();
 const mlogin = ref();
 const muser = ref();
 const serch = ref();
+const autoCompleteRef = ref(null);
 const article_names = ref<any[]>([]);
 const filteredArticles = ref<any[]>([]);
 const items = ref<any[]>([]);
@@ -154,11 +224,23 @@ const refresh = async () => {
     }
 }
 
-const selectSuggestion = (payload) =>{
-    //console.log(JSON.stringify(payload))
-    serch.value = payload.value.name;
-}
 
+const removeAutoCompleteFocus = () => {
+  const input = autoCompleteRef.value?.$el?.querySelector('input');
+  if (input) input.blur();
+};
+const selectSuggestion = (payload) => {
+  serch.value = payload.value.name;
+  router.push('/products/s/' + encodeURIComponent(payload.value.name));
+  // Quitar el foco al input:
+  removeAutoCompleteFocus();
+};
+const handleSearchEnter = () => {
+  if (serch.value?.trim()) {
+    router.push('/products/s/' + encodeURIComponent(serch.value));
+    removeAutoCompleteFocus();
+  }
+};
 const scrollToFinalContacto = () => {
     router.push('/');
     setTimeout((): void =>{
@@ -196,7 +278,7 @@ const user = ref<any[]>([
         label: 'Mis Pedidos',
         icon: 'pi pi-inbox',
         command: () => {
-            router.push('/UserOrders');
+            router.push('/userorders');
             setTimeout((): void =>{
                 window.location.reload();
             }, 200)
@@ -225,6 +307,59 @@ const user = ref<any[]>([
 </script>
 <style>
 /* ---------- ESTRUCTURA GENERAL ---------- */
+.navigation-bar {
+  display: flex;
+  justify-content: space-between; /*Separar elementos de izquiera y derecha */
+  align-items: center;
+  background-color: #ebebeb;
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid #ddd;
+}
+/*Sección izquierda */
+.start-section {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.MegaMenuBar {
+  background-color: transparent;
+  border: none;
+}
+/*Código postal */
+.postal-code {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.postal-input {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 150px;
+}
+.end-section {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.cart-section {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.cart-badge {
+  position: absolute;
+  top: -5px;
+  right: -10px;
+  background-color: red;
+  color: white;
+  font-size: 0.8rem;
+  font-weight: bold;
+  padding: 3px 7px;
+  border-radius: 50%;
+  line-height: 1;
+}
 .header-wrapper {
   display: flex;
   align-items: center;
@@ -232,19 +367,19 @@ const user = ref<any[]>([
   flex-wrap: nowrap;
   gap: 1rem;
   padding: 1rem 2rem;
-  background-color: rgb(6, 6, 6);
+  background-color: rgb(255, 255, 255);
 }
 
 .header-logo {
   flex: 0 0 auto;
-  height: 50px;
+  height: 40px;
   width: auto;
   overflow: hidden;
   display: flex;
   align-items: center;
 }
 .header-logo img {
-  width: 10rem;
+  width: 8rem;
   cursor: pointer;
 }
 .search-overlay {
@@ -264,7 +399,7 @@ const user = ref<any[]>([
   min-width: 200px;
   margin: 0 1rem;
   background-color: #f0f0f0;
-  border-radius: 6px;
+  border-radius: 4px;
 }
 
 /* Campo de búsqueda */
@@ -272,7 +407,10 @@ const user = ref<any[]>([
   width: 100%;
 }
 .custom-border .p-inputtext {
+  border: none !important;
+  border-radius: 4px;
   width: 100%;
+  height: 3rem;
   padding-right: 2.5rem; /* espacio para la lupa */
 }
 
@@ -287,10 +425,12 @@ const user = ref<any[]>([
   right: 15px;
   top: 50%;
   transform: translateY(-50%);
-  color: #11bacc;
+  color: #b1b3b4;
   font-size: 1.4rem;
   pointer-events: none;
   z-index: 1;
+  border-left: 1px solid #b1b3b4;
+  padding-left: 0.7rem;
 }
 
 /* ---------- ACCIONES (USUARIO Y CARRITO) ---------- */
@@ -336,7 +476,7 @@ const user = ref<any[]>([
   justify-content: center;
   align-items: center;
   padding: 0rem 0;
-  background-color: #fed39a;
+  background-color: #ebebeb;
 }
 
 .menu-link {

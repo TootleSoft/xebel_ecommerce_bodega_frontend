@@ -1,9 +1,9 @@
 <template>
     <li v-if="!loading" v-for="(product, i) in products" :key="i"
         class="flex flex-column md:flex-row border-top-1 border-bottom-1 surface-border md:align-items-center pl-4 pr-2 py-4">
-        <!-- Imagen del producto -->
+        <!-- Imagen del producto --> 
         <img v-if="!product.is_bundle || product.is_bundle == undefined"
-            :src="imgroute(product.id, product.barcode, product.id_brand)"
+            :src="imgroute(product.id_article, product.barcode, product.id_brand)"
             class="w-12rem h-12rem flex-shrink-0 mx-auto md:mx-0 rounded-md shadow-md" alt="shopping-cart-2-1" />
 
         <!-- Contenido del producto -->
@@ -29,7 +29,7 @@
     </div>
 </template>
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import axios from 'axios';
 import {OrderData} from '../Cart/Function/OrderData';
 import { useCartStore } from '../../stores/cart';
@@ -62,6 +62,7 @@ const refresh = async () => {
         if(cartStore.order.length == 1)
             await entity.newOrder();
         let response = await axios.get('Comercial/ECommerceOrder/OrderDetail/' + props.id_order)
+        
         allproducts.value = response.data;
         products.value = response.data;
         console.log(products.value.length > 3)
@@ -87,7 +88,29 @@ const viewless = () => {
 
 onMounted(async () => {
     await refresh();
+    console.log('Mounted')
+    products.value.forEach((product, i) => {
+        console.log(`Product ${i}: ${product.name}`, {
+            name: product.name,
+            is_bundle: product.is_bundle,
+            barcode: product.barcode,
+            imgURL: imgroute(product.id, product.barcode, product.id_brand),
+        });
+    });
 });
+
+watch(products, (newProducts) => {
+    newProducts.forEach((product, i) => {
+        console.log('watch');
+        console.log(`Producto #${i}:`, {
+            name: product.name,
+            is_bundle: product.is_bundle,
+            barcode: product.barcode,
+            imgURL: imgroute(product.id, product.barcode, product.id_brand),
+        });
+    });
+});
+
 </script>
 <style scoped>
 /* Estilos adicionales para mejorar la presentación */

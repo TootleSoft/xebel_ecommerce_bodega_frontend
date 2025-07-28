@@ -1,5 +1,5 @@
 <template>
-    <div class="card shadow-md p-2 rounded-lg">
+    <div class="card p-2">
         <!-- Título de la sección -->
         <div class="flex flex-column align-items-center mb-3 pt-3">
             <div class="text-900 text-4xl font-bold" style="font-family: 'Montsemibold'">Tus Pedidos</div>
@@ -12,10 +12,10 @@
 
         <!-- Lista de pedidos -->
         <div v-for="(order, i) in orders" :key="i" class="mb-4">
-            <div class="flex border-round shadow-7 bg-white p-4 mb-4">
+            <div class="flex bg-white p-4 mb-4">
                 <ul class="list-none p-0 m-0 col-12">
                     <!-- Encabezado del pedido -->
-                    <li style="background: #0F7E8D;">
+                    <li style="background: #00365f;">
                         <div class="w-full flex justify-content-between mt-3 sm:mt-0 col-12 grid formgrid p-fluid">
                             <div style="color: #FFFFFF; font-family: 'Montserrat'" class="field col-12 sm:col-9">
                                 <span class="text-xl font-medium mb-3">Pedido: #{{ order.id }}</span>
@@ -107,7 +107,7 @@ const refresh = async () => {
         if(cartStore.order.length == 1)
             await entity.newOrder();
     }catch(error){
-        console.log("Hubo un error:", error)
+        console.log("Hubo un error: ", error)
     }
 };
 

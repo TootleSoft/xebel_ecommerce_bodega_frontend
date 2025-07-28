@@ -62,7 +62,7 @@ onMounted(()=>{
 <style scoped>
 .card {
     background-color: #fff;
-    border-radius: 8px;
+    border-radius: 2px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
     padding: 20px;
     margin: 20px;
@@ -77,7 +77,7 @@ h1.text-900 {
 label {
     font-size: 1rem;
     margin-left: 8px;
-    color: #11bacc;
+    color: rgb(19, 51, 73);
     font-family: 'Montsemibold';
 }
 

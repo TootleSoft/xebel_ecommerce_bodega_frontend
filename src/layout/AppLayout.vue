@@ -8,6 +8,7 @@ import AppBreadCrumb from './AppBreadcrumb.vue';
 import { useLayout } from '@/layout/composables/layout';
 import AppMegaMenu from './AppMegaMenu.vue';
 import AppMegaMenuSm from './AppMegaMenuSm.vue';
+import Footer from '../components/general/Footer.vue';
 // import { useRouter } from 'vue-router';
 // import {OrderData} from '../pages/Cart/Function/OrderData';
 
@@ -94,7 +95,9 @@ const isOutsideClicked = (event) => {
 </script>
 <template>
     <div class="layout-container" :class="containerClass">
-        <div class="layout-content-wrapper">
+        <!-- Menús y encabezados -->
+        <div class="layout-content-wrapper flex-grow">
+            <!-- Menús responsivos -->
             <div class="hidden sm:block">
                 <AppMegaMenu></AppMegaMenu>
             </div>
@@ -106,16 +109,14 @@ const isOutsideClicked = (event) => {
             <div class="content-breadcrumb">
                 <AppBreadCrumb />
             </div> -->
-
-            <div class="layout-content">
+            <!-- Contenido principal -->
                 <router-view></router-view>
-            </div>
-
-            <div class="layout-mask"></div>
+                <!-- Footer fijo al fondo -->
+                 <Footer></Footer>
         </div>
+
         <AppProfileMenu />
         <AppConfig />
-
         <Toast></Toast>
     </div>
 </template>

@@ -4,10 +4,10 @@
             <div class="grid formgrid p-fluid">
                 <div class="field col-12 sm:col-12 md:col-8 xl:col-8"></div>
                 <div class="field col-12 sm:col-12 md:col-4 xl:col-4">
-                    <FloatLabel>
+                    <FloatLabel style="border: 1px solid #ccc; border-radius: 8px !important">
                         <AutoComplete v-model="filterproductname" @item-select="selectSuggestion" inputId="filter"
                             optionLabel="name" :suggestions="suggest" @complete="search"
-                            v-on:keyup.enter="filteredsearch(filterproductname)">
+                            v-on:keyup.enter="filteredsearch(filterproductname)" >
                         </AutoComplete>
                         <label for="filter" style="font-family: 'Montserrat';">
                             <i class="pi pi-filter"></i> Búsqueda Filtrada en {{ pagetitle }}
@@ -17,33 +17,44 @@
             </div>
         </div>
         <div v-for="(product, i) in products.slice(first / 10 * pagesize, first / 10 * pagesize + pagesize)" :key="i"
-            class="col-12 md:col-5 lg:col-3 mb-5 lg:mb-4">
-            <div class="mb-4 relative" style="height: 360px;">
+            class="col-12 md:col-5 lg:col-3 mb-1 lg:mb-1">
+            <div class="mb-0 relative" style="max-height: 250px; border-top: 1px solid #ccc; border-left: 1px solid #ccc; border-right: 1px solid #ccc; border-radius: 4px 4px 0 0;">
                 <img :src="imgroute(product.id, product.barcode, product.id_brand)" class="w-full h-auto shadow-8" :alt="String(i)" @click="router.push('/product/'+product.id+'/'+product.id_subarticle)"/>
-                
             </div>
-            <div class="flex flex-column align-items-center justify-content-center" >
+            <!-- Columna para Botón "Agregar al carrito" -->
+            <div>
+                        <Button 
+                        type="button"
+                        class="py-2 px-6 flex justify-center items-center"
+                        :style="{ width: '100%', borderRadius: '0' }"
+                        :disabled="(dissableNoStock == 1 && product.stock <= 0) || product.existence == 'SOLO DE VENTA EN TIENDA'"
+                        @click="addCart(product.id, product.id_subarticle, product.quantity, i)"
+                        style="border-radius: 0 0 4px 4px;"
+                        >
+                        <span class="text-align-center w-full" style="font-family: Montserrat; text-align: center;">Agregar al carrito</span>
+                        </Button>
+            </div>
+            <div class="flex flex-column align-items-center justify-content-center">
 
-                <span class="text-l text-900 font-bold mb-3" 
-                style="color: #0eabbd !important; 
-                        font-family: 'MontExtraBold'; 
-                        font-size: 1.6rem !important; 
+                <span class="text-l text-900 font-bold mb-1" 
+                style="color: #0c3e66 !important; 
+                        font-family: 'MontSemiBold'; 
+                        font-size: 1rem !important; 
                         text-align: center;
                         line-height: 1.5; /* Espacio entre líneas */
                         display: block; /* Asegura que el span sea un bloque */
-                        min-height: 6rem; /* Asegura que ocupe al menos 3 líneas de altura */
+                        max-height: 2rem; /* Asegura que ocupe al menos 3 líneas de altura */
                         overflow: hidden;">{{ product.name }}</span>
 
-                <span class="text-l text-900 mb-3 line-through" style="color: red !important; font-family: 'Montserrat';">{{ "$" + product.unit_price.toFixed(2)}}</span>
+                <span class="text-l text-900 mb-1 line-through" style="color: red !important; font-family: 'Montserrat';">{{ "$" + product.unit_price.toFixed(2)}}</span>
 
-                <span class="text-l text-900 mb-3 text-red-500" style="color: green !important; font-family: 'Montbold'; font-size: 1.6rem !important;">{{ "$" + product.ecomerce_offer_price.toFixed(2)}}</span>
+                <span class="text-l text-900 mb-0" style="color: #0c3e66 !important; font-family: 'Montbold'; font-size: 1.4rem !important;">{{ "$" + product.ecomerce_offer_price.toFixed(2)}}</span>
 
-                <span class="text-l text-900 mb-3 font-medium" style="font-family: 'Montserrat' !important;">{{ product.barcode }}</span>
+                <!-- <span class="text-l text-900 mb-3 font-medium" style="font-family: 'Montserrat' !important;">{{ product.barcode }}</span> -->
                 
                 <div class="col-12 flex justify-center items-center">
-                    <div class="flex flex-wrap md:w-10/12 p-fluid">
                     
-                    <!-- Columna para InputNumber -->
+                    <!-- Columna para InputNumber
                     <div class="col-6 md:w-6/12">
                         <InputNumber 
                         showButtons 
@@ -57,23 +68,7 @@
                         incrementButtonIcon="pi pi-plus" 
                         decrementButtonIcon="pi pi-minus"
                         />
-                    </div>
-                    
-                    <!-- Columna para Botón "Agregar al carrito" -->
-                    <div class="col-6 md:w-6/12">
-                        <Button 
-                        type="button"
-                        class="carrito-btn border-1 border-white border-round py-3 px-4 w-full flex items-center justify-center"
-                        :style="{ width: '100%' }"
-                        :disabled="(dissableNoStock == 1 && product.stock <= 0) || product.existence == 'SOLO DE VENTA EN TIENDA'"
-                        @click="addCart(product.id, product.id_subarticle, product.quantity, i)"
-                        >
-                        <i class="pi pi-shopping-cart mr-3 text-base"></i>
-                        <span class="text-base" style="font-family: Montserrat;">Agregar al carrito</span>
-                        </Button>
-                    </div>
-                    
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>
@@ -162,14 +157,13 @@ const imgroute = (id, sku, brand) => {
 
 /* Estilos para el botón de "Agregar al carrito" */
 .carrito-btn {
-    background: linear-gradient(140deg, #193a62, #1099af) !important; /* Degradado verde oscuro a verde claro */
-    border-radius: 50px !important; /* Bordes más redondeados */
-    height: 52px;
-    transition: background 0.3s ease, transform 0.2s ease;
+    background-color: #008cf0; /* Degradado verde oscuro a verde claro */
+    height: 40px;
+    border: 4px solid red !important;
 }
 
 .carrito-btn:hover {
-    background: linear-gradient(145deg, #193a62, #1099af) !important; /* Degradado con tonos más oscuros para el hover */
+    background: #008cf0 !important; /* Degradado con tonos más oscuros para el hover */
     transform: translateY(-2px); /* Leve movimiento de elevación al hacer hover */
     cursor: pointer;
 }

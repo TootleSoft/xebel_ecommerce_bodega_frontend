@@ -23,7 +23,7 @@ export class OrderData {
             'Content-Type': 'application/json',
             'Authorization': `Basic ${Buffer.from(`${import.meta.env.VITE_OPENPAY_PRIVATE_API_KEY}:`).toString('base64')}`
         }
-    });
+    }); 
 
     getOrder = async (params) => {
         try {
@@ -38,7 +38,7 @@ export class OrderData {
             } else {
                 query = "";
             }
-            const response = await axios.get('Comercial/EcommerceOrder/getOrder/' + query);
+            const response = await axios.get('Comercial/EcommerceOrderController/getOrder/' + query);
             return response.data;
         } catch (error) {
             console.log(error)
@@ -46,11 +46,31 @@ export class OrderData {
     }
 
     getOpenPayOrder = async () => {
+        console.log('Entró a getOpenPayOrder')
         let order_info = await this.getOrder({ id_order: this.cartStore.order[0].id }); //se obtiene la información del pedido
         let response = await this.openpayAxios.get('/charges/' + order_info[0].id_tracking);
+       
         return response.data;
     }
-
+    getPaymentTransfer = async (params) => {
+        try {
+            let query = "?";
+            if (params) {
+                Object.keys(params).forEach(prop => {
+                    if (params[prop] != null) {
+                        query = query + prop + "=" + params[prop] + "&";   
+                    }
+                });
+                query = query.substring(0, query.length - 1);
+            } else {
+                query = "";
+            }
+            const response = await axios.get('Comercial/EcommerceOrder/getPaymentTransfer/' + this.authStore.id_usuario + '/' + query);
+            return response.data;
+        } catch (error) {
+            console.error(error);
+        }
+    }
     getPaymentInfo = async (params) => {
         try {
             let query = "?";

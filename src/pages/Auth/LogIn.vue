@@ -10,7 +10,7 @@
                 <div class="flex flex-column">
                     <div class="align-items-center mb-6 logo-container">
                         <!-- Logo -->
-                        <img :src="'/src/images/logo/appname-' + (layoutConfig.colorScheme.value === 'light' ? 'dark' : 'light') + '.png'" class="login-appname" style="max-width: 250px;" />
+                        <img :src="'/src/images/logo/logo-bdr.svg'" class="login-appname" style="max-width: 360px;" />
                     </div>
                     <div class="border-1 border-round border-gray-300 shadow-lg" style="width: 100%; max-width: 400px;">
                         <div class="pt-5 px-6">
@@ -124,12 +124,13 @@ const submit = async () => {
             throw "Favor de llenar todos los campos"
         let response = await axios.get('Comercial/EComerceUser/GetSession/'+entity.value.email+'/'+entity.value.password)
         toast.add({ severity: 'success', summary: 'Inicio de session', detail: "Credenciales Validadas", life: 7500 });
-        console.log(JSON.stringify(response.data))
+        //console.log(JSON.stringify(response.data))
         authStore.setSession(response.data.id_user,response.data.id_customer,response.data.user, response.data.company, response.data.branch, response.data.branch_name, response.data.zip_code);
-        router.push('/');
+        
         setTimeout((): void =>{
             window.location.reload();
         }, 200)
+        await router.push('/');
     }catch(error){
         try{
             toast.add({ severity: 'error', summary: 'Error al crear usuario', detail: error.response.data, life: 7500 });

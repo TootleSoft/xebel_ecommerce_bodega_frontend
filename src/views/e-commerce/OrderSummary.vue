@@ -16,7 +16,7 @@ const refresh = async () => {
     try {
         const response = await axios.get(`Comercial/ECommerceOrder/GetUserOrders/${auth.id_usuario}`); //Trae los pedidos del usuario logeado
         orders.value = response.data; // Guarda los datos obtenidos en este array para mostrarlos
-        console.log(JSON.stringify(orders.value));
+        console.log('La orden: ', orders.value);
     } catch (error) {
         console.error('Error al obtener los datos de la orden: ', error);
     }
@@ -30,7 +30,7 @@ const openPdf = async () => {
       const url: string =  path + '/paynet-pdf' + '/' + merchan_id + '/' +  response.data[0].barcode_url
       window.open(url, '_blank'); // Abre la URL en una nueva pestaña
     };
-
+ 
 onMounted(async () => {
     await refresh();
     cartStore.clearCart();
@@ -38,59 +38,58 @@ onMounted(async () => {
 </script>
 
 <template>
-    <div class="card">
-        <span class="text-700 text-xl">Gracias por su compra!</span>
-        <div class="text-900 font-bold text-4xl my-2">Pedido registrado con éxito 🚀</div>
-        <p class="text-700 text-xl mt-0 mb-4 p-0">
-            Tu pedido está siendo procesado por el comercio, estate atento a
-            instrucciones.
+    <div class="confirmation-container">
+      <div class="confirmation-card">
+        <span class="text-700 text-lg text-center">¡Gracias por tu compra!</span>
+        <div class="text-900 font-bold text-3xl my-2 text-center">Pedido registrado con éxito ✅</div>
+        <p class="text-700 text-base mt-0 mb-4 text-center">
+          Tu pedido está siendo procesado por el comercio. Te contactaremos con instrucciones.
         </p>
-        <div
-            :style="{ height: '4px', background: 'linear-gradient(90deg, rgba(12, 157, 198) 0%, rgba(133, 240, 255) 100%)' }">
+  
+        <div class="progress-bar mb-4"></div>
+  
+        <div class="flex align-center gap-3 mb-5 flex-wrap">
+          <Button label="Ir a inicio" icon="pi pi-home" class="btn-custom" outlined @click="router.push('/')"></Button>
+          <Button label="PDF pedido" icon="pi pi-print" class="btn-custom" outlined @click="openPdf"></Button>
         </div>
-        <br>
-        <div>
-            <Button label="Ir a inicio" icon="pi pi-home" class="mr-2" outlined @click="router.push('/')"></Button>
-            <Button label="PDF pedido" icon="pi pi-print" outlined @click="openPdf"></Button>
-        </div>
-        <br>
-        <div class="border-round surface-border border-1">
-            <div v-if="orders.length > 0" v-for="(order, i) in [orders[0]]" :key="i"
-                class="p-3 surface-border flex flex-column">
-                <div class="mb-3">
-                    <span class="font-medium text-xl text-900 mr-2">Número Pedido:</span>
-                    <span class="font-medium text-xl text-blue-500"> {{ order.id }}</span>
-                </div>
-                <div v-if="orders.length > 0" class="border-round surface-border border-1">
-                    <UserOrdersItems :id_order="orders[0].id"></UserOrdersItems>
-                </div>
-                <div class="mt-5">
-                </div>
-                <div class="w-full mt-5">
-                    <span class="font-medium text-900">Resumen</span>
-                    <ul class="list-none p-0 m-0 mt-3">
-                        <li class="flex justify-content-between mb-3">
-                            <span class="text-900">Subtotal</span>
-                            <span class="text-900 font-medium text-lg">${{ order.subtotal.toFixed(2) }}</span>
-                        </li>
-                        <li class="flex justify-content-between mb-3">
-                            <span class="text-900">Envío</span>
-                            <span class="text-900 font-medium text-lg">$0.00</span>
-                        </li>
-                        <li class="flex justify-content-between mb-3">
-                            <span class="text-900">IVA</span>
-                            <span class="text-900 font-medium text-lg">${{ order.iva.toFixed(2) }}</span>
-                        </li>
-                        <li class="flex justify-content-between border-top-1 surface-border py-3">
-                            <span class="text-900 font-medium">Total</span>
-                            <span class="text-900 font-bold text-lg">${{ order.total.toFixed(2) }}</span>
-                        </li>
-                    </ul>
-                </div>
+  
+        <div class="order-box">
+          <div v-if="orders.length > 0" v-for="(order, i) in [orders[0]]" :key="i">
+            <div class="mb-4 text-center">
+              <span class="font-medium text-lg text-900 mr-2">Número de pedido:</span>
+              <span class="font-bold text-xl text-blue-500">#{{ order.id }}</span>
             </div>
+  
+            <div class="mb-5">
+              <UserOrdersItems :id_order="order.id" />
+            </div>
+  
+            <div>
+              <span class="font-medium text-lg text-900 mb-2 block">Resumen</span>
+              <ul class="list-none p-0 m-0">
+                <li class="flex justify-between mb-3 text-900">
+                  <span>Subtotal: </span>
+                  <span class="font-medium">${{ order.subtotal.toFixed(2) }}</span>
+                </li>
+                <!-- <li class="flex justify-between mb-3 text-900">
+                  <span>Envío: </span>
+                  <span class="font-medium">$0.00</span>
+                </li> -->
+                <li class="flex justify-between mb-3 text-900">
+                  <span>IVA: </span>
+                  <span class="font-medium">${{ order.iva.toFixed(2) }}</span>
+                </li>
+                <li class="flex justify-between border-top-1 surface-border py-3 text-900 font-bold text-lg">
+                  <span>Total: </span>
+                  <span> ${{ order.total.toFixed(2) }}</span>
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
+      </div>
     </div>
-</template>
+  </template>
 
     <!-- <div class="card">
     <div class="flex flex-column sm:flex-row sm:justify-content-between sm:align-items-center">
@@ -149,3 +148,49 @@ onMounted(async () => {
         </div>
     </div> -->
 
+    <style scoped>
+    .confirmation-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem;
+      min-height: 100vh;
+      background-color: #f6f9fc;
+    }
+    
+    .confirmation-card {
+      width: 100%;
+      max-width: 600px;
+      background-color: white;
+      border-radius: 1rem;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .progress-bar {
+      height: 4px;
+      background: linear-gradient(90deg, rgb(15, 45, 182) 0%, rgb(250, 110, 54) 100%);
+      border-radius: 2px;
+    }
+    
+    .btn-custom {
+        border-radius: 9999px;
+        font-weight: 600;
+        width: 265px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        gap: 0.5rem; /* espacio entre ícono y texto */
+    }
+
+    
+    .order-box {
+      border: 1px solid #d1d5db;
+      border-radius: 0.75rem;
+      padding: 1.5rem;
+      background-color: #fafafa;
+    }
+    </style>

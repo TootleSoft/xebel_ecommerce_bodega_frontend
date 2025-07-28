@@ -1,207 +1,6 @@
 <template>
-    <div class="card">
-        <div class="hidden sm:block">
-            <div class="grid">
-                <div class="col-6 flex align-content-center flex-wrap" style="padding: 0px ">
-
-
-<div class="col-12 flex justify-content-center" style="padding-top: 0px;">
-  <div class="text-container">
-        <!--Los textos principales-->
-        <div class="bold-text-home text-center md:text-4xl xl:text-6xl flex-wrap justify-center">
-            <div class="w-full md:text-7xl xl:text-8xl" style="text-align: left; font-family: Montbold;">Descubre</div>
-            <div class="w-full md:text-7xl xl:text-8xl" style="text-align: left; font-family: Montbold;">nuestros</div>
-            <div class="w-full md:text-7xl xl:text-8xl" style="text-align: left; color: #11bacc !important; font-family: Montbold;">increíbles</div>
-            <div class="w-full md:text-7xl xl:text-8xl" style="text-align: left; color: #11bacc !important; font-family: Montbold;">productos.</div>
-        </div>
-        <!--La descripción adicional-->
-        <div class="container-cyan-text-inicio">
-            <span class="cyan-text-inicio text-center md:text-sm xl:text-2xl w-full">Descubre la única variedad de marcas y </span>
-            <span class="cyan-text-inicio text-center md:text-sm xl:text-2xl w-full">productos que <strong>Villa de Cortés Monterrey </strong></span>
-            <span class="cyan-text-inicio text-center md:text-sm xl:text-2xl w-full">tiene para ti.</span>
-        </div>
-        <br>
-  </div>
-</div>
-                            <div v-if="auth.id_usuario == undefined"
-                                class="w-full flex align-items-center justify-content-center">
-                                <Button ref="mlogin" @click="tlogin" label="Registrate para comprar" class="button"
-                                    rounded></Button>
-                            </div>
-
-
-                </div>
-                <div class="col-6" >
-                    <BasicImageCarusell class="image-with-shadow" />
-                </div>
-            </div>
-        </div>
-        <div class="block sm:hidden grid formgrid p-fluid">
-            <div class="col-12 flex align-items-center justify-content-center cyan-text text-sm h-2rem">
-                Bienvenido a Villa de Cortés Monterrey
-            </div>
-            <!-- <div class="col-12 flex align-items-center justify-content-center bold-text text-lg h-2rem">
-                Descubre nuestros increíbles productos
-            </div> -->
-        </div>
-        <!-- <div class="block sm:hidden full-width-sm-index">
-            <div class="p-3 flex justify-content-center align-items-center flex-wrap">
-                <div class="justify-content-center align-items-center flex">
-                    <span class="w-full text-sm">
-                        <i class="pi pi-box"></i>
-                        Recuerda que tenemos envíos a todo México
-                    </span>
-                </div>
-            </div>
-        </div> -->
-        <div class="hidden sm:block">
-            <div class="flex justify-content-center flex-wrap">
-                <div class="flex align-items-center justify-content-center w-16rem m-2 cyan-text md:text-7xl xl:text-7xl font-bold" style="font-family: Montbold;">
-                    Nuestras</div> 
-                <div class="flex align-items-center justify-content-center w-18rem m-2 md:text-7xl xl:text-7xl font-bold" style="color: #1B2955; font-family: 'Montbold'">marcas</div>
-                <!-- <div class="cyan-text xl:text-7xl flex align-items-center justify-content-center w-4rem h-4rem">Nuestras</div>
-                <div class="bold-text xl:text-7xl flex align-items-center justify-content-center w-4rem h-4rem">marcas</div> -->
-            </div>
-            <BasicProductCarusell />
-        </div>
-
-        <div class="hidden sm:block">
-            <div class="flex justify-content-center flex-wrap">
-                <div class="flex align-items-center justify-content-center w-25rem m-2 cyan-text md:text-7xl xl:text-7xl font-bold" style="font-family: 'Montbold';">
-                    Promociones</div> 
-                <div class="flex align-items-center justify-content-center w-15rem m-2 md:text-7xl xl:text-7xl font-bold" style="color: #1B2955; font-family: 'Montbold'">para ti</div>
-            </div>
-        </div>
-        <div class="block sm:hidden">
-            <div class="flex justify-content-center align-items-center flex-wrap">
-                <div class="flex align-items-center justify-content-center w-15rem m-2 cyan-text text-5xl font-bold" style="font-family: 'Montbold';">
-                    Promociones</div> 
-                <div class="flex align-items-center justify-content-center w-10rem m-2 text-5xl font-bold" style="color: #1B2955; font-family: 'Montbold'">para ti</div>
-            </div>
-        </div>
-        <div class="full-screen-container">
-            <BasicBundleCarusell />
-        </div>
-        
-
-        <div class="hidden sm:block">
-            <div class="flex justify-content-center flex-wrap">
-                <div class="flex align-items-center justify-content-center w-13rem m-2 cyan-text md:text-7xl xl:text-7xl font-bold" style="font-family: Montbold;">
-                    Ofertas </div>
-                <div class="flex align-items-center justify-content-center w-15rem m-2 md:text-6xl xl:text-7xl font-bold" style="color: #1B2955; font-family: Montbold"> para ti</div>
-            </div>
-        </div>
-        <div class="block sm:hidden">
-            <div class="flex align-items-center justify-content-center flex-wrap">
-                <div class="flex align-items-center justify-content-center w-10rem m-2 cyan-text text-5xl font-bold" style="font-family: 'Montbold'">
-                    Ofertas</div>
-                <div class="flex align-items-center justify-content-center w-10rem m-2 text-5xl font-bold" style="color: #1B2955; font-family: 'Montbold'">para ti</div>
-            </div>
-        </div>
-        <div class="col-12">
-
-            <BasicOffertsCarusell />
-        </div>
-
-        <div class="block sm:hidden">
-            <div class="flex align-items-center justify-content-center flex-wrap">
-                <div class="flex align-items-center justify-content-center w-10rem m-2 cyan-text text-5xl font-bold">
-                    Nuestras</div> 
-                <div class="flex align-items-center justify-content-center w-10rem m-2 text-5xl font-bold" style="color: #1B2955;">marcas</div>
-                <!-- <div class="cyan-text xl:text-7xl flex align-items-center justify-content-center w-4rem h-4rem">Nuestras</div>
-                <div class="bold-text xl:text-7xl flex align-items-center justify-content-center w-4rem h-4rem">marcas</div> -->
-            </div>
-            <BasicProductCarusell />
-        </div>
-
-        <div class="hidden sm:block">
-            <div class="flex justify-content-center flex-wrap">
-                <p class="flex align-items-center justify-content-center w-20rem m-2 cyan-text md:text-7xl xl:text-7xl font-bold" style="font-family: 'Montbold'">¿Quiénes</p>
-                <p class="flex align-items-center justify-content-center w-15rem m-2 md:text-7xl xl:text-7xl font-bold" style="color: #1B2955; font-family: 'Montbold'">somos?</p>
-            </div>
-        </div>
-        <!-- <div class="container">
-            <div class="left-block2">
-                <BasicImageCarusell2 />
-            </div>
-            <div class="right-block">
-                <p class="bold-text xl:text-8xl font-bold-800 text-left">Más de 30 años a tu</p>
-                <p class="cyan-text xl:text-8xl text-left">servicio.</p>
-                <p class="cyan-text3 xl:text-2xl text-left"> De <strong>Ciudad de México a Monterrey</strong>, llevamos
-                    más de 30 años brindando soluciones a los
-                    profesionistas de la industria dental. </p>
-                    <br>
-                <p class="cyan-text3 xl:text-2xl text-left">En <strong>Villa de Cortés Monterrey</strong> somos una
-                    empresa mexicana líder en venta de insumos
-                    dentales y ofreciéndote la mejor calidad y
-                    proveedores del mercado. </p>
-            </div>
-        </div> -->
-        <div class="grid">
-            <div class="col-6 hidden sm:block">
-                <BasicImageCarusell2 />
-            </div>
-            <div class="col-6 hidden sm:block">
-                <p class="bold-text xl:text-8xl font-bold-800 text-left" style="font-family: Montbold;">Más de 30 </p>
-                <p class="bold-text xl:text-8xl font-bold-800 text-left" style="font-family: Montbold;">años a tu</p>
-                
-                <p class="cyan-text xl:text-8xl text-left" style="font-family: Montbold">servicio.</p>
-                <br>
-                <p class="cyan-text4 xl:text-2xl text-left" style="font-family: Montsemibold;"> De <strong>Ciudad de México a Monterrey</strong>, llevamos
-                    más de 30 años brindando soluciones a los
-                    profesionistas de la industria dental. </p>
-                    <br>
-                <p class="cyan-text4 xl:text-2xl text-left" style="font-family: Montsemibold;">En <strong>Villa de Cortés Monterrey</strong> somos una
-                    empresa mexicana líder en venta de insumos
-                    dentales y ofreciéndote la mejor calidad y
-                    proveedores del mercado. </p>
-            </div>
-        </div>
-        <footer id="finalcontacto" class="flex flex- footer justify-content-center align-items-center">
-            <div class="footer-content">
-                <div class="footer-column">
-                    <h3 class="font-bold-800 xl:text-4xl" style="font-family: 'Montbold';">Contacto</h3>
-                    <p class="font-bold xl:text-2xl" style="font-family: 'Montsemibold';"> (81) 2948-6399</p>
-                    <p class="line-height-1 w-15" style="font-family: 'Montserrat';">Eduardo Aguirre Pequeño</p>
-                    <p class="line-height-1 w-15" style="font-family: 'Montserrat';">1302, Mitras Centro, Monterrey,</p>
-                    <p class="line-height-1 w-15" style="font-family: 'Montserrat';">Nuevo Léon, México. CP. 64460</p>
-                    <span class="social-icons">
-                        <a href="https://www.facebook.com/villadcmty" target="_blank" class="social-icon">
-                            <i class="pi pi-facebook"></i>
-                        </a>
-                        <a href="https://www.instagram.com/edvc.mty" target="_blank" class="social-icon">
-                            <i class="pi pi-instagram"></i>
-                        </a>
-                    </span>
-                </div>
-                <div class="footer-column hidden sm:block">
-                    <h3 class="font-bold-800 xl:text-4xl" style="font-family: 'Montbold';">Villa de Cortés Monterrey
-                    </h3>
-                    <ul>
-                        <li style="font-family: 'Montserrat';">Inicio</li>
-                        <li style="font-family: 'Montserrat';">Nuestras marcas</li>
-                        <li style="font-family: 'Montserrat';">Promociones para ti</li>
-                        <li style="font-family: 'Montserrat';">¿Quiénes somos?</li>
-                        <li style="font-family: 'Montserrat';">Lo más buscado</li>
-                    </ul>
-                    <div class="flex align-items-center justify-content-center">
-                        <p style="font-family: 'Montserrat';">Equipos Dentales Villa de Cortés Monterrey 2024 © All
-                            rights reserved.</p>
-                    </div>
-                </div>
-                <div class="footer-column hidden sm:block">
-                    <h3 class="font-bold-800 xl:text-4xl" style="font-family: 'Montbold';">Tienda</h3>
-                    <p class="line-height-1 w-15" style="font-family: 'Montserrat';">Equipos Dentales</p>
-                    <p class="line-height-1 w-15" style="font-family: 'Montserrat';">Instrumental</p>
-                    <p class="line-height-1 w-15" style="font-family: 'Montserrat';">Laboratorio</p>
-                    <p class="line-height-1 w-15" style="font-family: 'Montserrat';">Ortodoncia</p>
-                    <p class="line-height-1 w-15" style="font-family: 'Montserrat';">Unidades</p>
-                    <p class="line-height-1 w-15" style="font-family: 'Montserrat';">Uniformes</p>
-                    <p class="line-height-1 w-15" style="font-family: 'Montserrat';">Otros</p>
-                </div>
-            </div>
-        </footer>
-    </div>
+    <OffersCarousel :offers="offers"></OffersCarousel>
+    <RelatedProducts :productId="productId"></RelatedProducts>
 </template>
 
 <script setup lang="ts">
@@ -217,6 +16,11 @@ import {OrderData} from '../Cart/Function/OrderData';
 import { useCartStore } from '../../stores/cart';
 import { useAuthStore } from '../../stores/auth';
 import { useRouter } from 'vue-router';
+import OffersCarousel from '../../components/marketing/OffersCarousel.vue';
+import RelatedProducts from '../../components/marketing/RelatedProducts.vue';
+import Offers from '../Offers/Offers.vue';
+import AnounceProducts from '../../components/marketing/AnounceProducts.vue';
+import Footer from '../../components/general/Footer.vue';
 
 const products = ref<any[]>([]);
 const entity = new OrderData();
@@ -225,7 +29,28 @@ const mlogin = ref();
 const router = useRouter();
 const auth = useAuthStore();
 
+interface Offer {
+    title: string;
+    image: string;
+}
+const offers = ref<Offer[]>([])
+const productId = ref<number>(0)
 
+
+const loadOffers = async () => {
+    try {
+        // Simulando una llamada a la API para obtener ofertas
+        // Aquí deberías reemplazar con tu lógica real de obtención de datos
+        offers.value = [
+            { title: 'Oferta 1', image: 'src/images/banner/banner_1.png' },
+            { title: 'Oferta 2', image: 'src/images/banner/banner_2.png' },
+            { title: 'Oferta 3', image: 'src/images/banner/banner_3.png' },
+            { title: 'Oferta 4', image: 'src/images/banner/banner_1.png' }
+        ];
+    } catch (error) {
+        console.error('Error al cargar las ofertas:', error);
+    }
+};
 
 const refresh = async () => {
     try{
@@ -242,7 +67,21 @@ const refresh = async () => {
         console.log("No se cargaron los datos")
     }
 }
+const loadRelatedProducts = () => {
+    try {
+        const lastId = localStorage.getItem('lastViewedProductId');
+        if (lastId) {
+            productId.value = parseInt(lastId);
+        } else {
+            /*productId.value = 2110; // Valor por defecto si no hay ID guardado (es el id de una silla gamer en bodega_db)*/
+            productId.value = 2111;
+        }
+    } catch (error) {
+        console.error('Error al cargar productos relacionados:', error)
+    } finally {
 
+    }
+}
 const tlogin = (event) => {
     if(!auth.id_usuario){
         router.push('/auth/singin')
@@ -252,6 +91,8 @@ const tlogin = (event) => {
 
 onMounted(async () => {
     await refresh();
+    await loadOffers();
+    await loadRelatedProducts();
 });
 
 const products2 = ref([
@@ -466,7 +307,7 @@ const products2 = ref([
 	top:1px;
 }
 .footer {
-  background-image: url('/public/demo/images/pages/fondo dental-01.jpg');
+  background-color: rgb(15, 37, 70);
   background-size: cover;
   background-position: center;
   padding: 50px 20px; /* Reducir padding en pantallas pequeñas */
@@ -574,3 +415,162 @@ const products2 = ref([
 }
 
 </style>
+<!-- <div class="card">
+    <div class="hidden sm:block">
+        <div class="grid">
+            <div class="col-6 flex align-content-center flex-wrap" style="padding: 0px ">
+
+
+<div class="col-12 flex justify-content-center" style="padding-top: 0px;">
+<div class="text-container">
+    <!--Los textos principales-->
+    <!-- <div class="bold-text-home text-center md:text-4xl xl:text-6xl flex-wrap justify-center">
+        <div class="w-full md:text-7xl xl:text-8xl" style="text-align: left; font-family: Montbold;">Descubre</div>
+        <div class="w-full md:text-7xl xl:text-8xl" style="text-align: left; font-family: Montbold;">nuestros</div>
+        <div class="w-full md:text-7xl xl:text-8xl" style="text-align: left; color: #11bacc !important; font-family: Montbold;">increíbles</div>
+        <div class="w-full md:text-7xl xl:text-8xl" style="text-align: left; color: #11bacc !important; font-family: Montbold;">productos.</div>
+    </div> -->
+    <!--La descripción adicional-->
+    <!-- <div class="container-cyan-text-inicio">
+        <span class="cyan-text-inicio text-center md:text-sm xl:text-2xl w-full">Descubre la única variedad de marcas y </span>
+        <span class="cyan-text-inicio text-center md:text-sm xl:text-2xl w-full">productos que <strong>Villa de Cortés Monterrey </strong></span>
+        <span class="cyan-text-inicio text-center md:text-sm xl:text-2xl w-full">tiene para ti.</span>
+    </div>
+    <br>
+</div>
+</div>
+                        <div v-if="auth.id_usuario == undefined"
+                            class="w-full flex align-items-center justify-content-center">
+                            <Button ref="mlogin" @click="tlogin" label="Registrate para comprar" class="button"
+                                rounded></Button>
+                        </div>
+
+
+            </div>
+            <div class="col-6" >
+                <BasicImageCarusell class="image-with-shadow" />
+            </div>
+        </div>
+    </div>
+    <div class="block sm:hidden grid formgrid p-fluid">
+        <div class="col-12 flex align-items-center justify-content-center cyan-text text-sm h-2rem">
+            Bienvenido a Villa de Cortés Monterrey
+        </div> -->
+        <!-- <div class="col-12 flex align-items-center justify-content-center bold-text text-lg h-2rem">
+            Descubre nuestros increíbles productos
+        </div> 
+    </div>
+    <!-- <div class="block sm:hidden full-width-sm-index">
+        <div class="p-3 flex justify-content-center align-items-center flex-wrap">
+            <div class="justify-content-center align-items-center flex">
+                <span class="w-full text-sm">
+                    <i class="pi pi-box"></i>
+                    Recuerda que tenemos envíos a todo México
+                </span>
+            </div>
+        </div>
+    </div> 
+    <div class="hidden sm:block">
+        <div class="flex justify-content-center flex-wrap">
+            <div class="flex align-items-center justify-content-center w-16rem m-2 cyan-text md:text-7xl xl:text-7xl font-bold" style="font-family: Montbold;">
+                Nuestras</div> 
+            <div class="flex align-items-center justify-content-center w-18rem m-2 md:text-7xl xl:text-7xl font-bold" style="color: #1B2955; font-family: 'Montbold'">marcas</div>
+            <!-- <div class="cyan-text xl:text-7xl flex align-items-center justify-content-center w-4rem h-4rem">Nuestras</div>
+            <div class="bold-text xl:text-7xl flex align-items-center justify-content-center w-4rem h-4rem">marcas</div> 
+        </div>
+        <BasicProductCarusell />
+    </div>
+
+    <div class="hidden sm:block">
+        <div class="flex justify-content-center flex-wrap">
+            <div class="flex align-items-center justify-content-center w-25rem m-2 cyan-text md:text-7xl xl:text-7xl font-bold" style="font-family: 'Montbold';">
+                Promociones</div> 
+            <div class="flex align-items-center justify-content-center w-15rem m-2 md:text-7xl xl:text-7xl font-bold" style="color: #1B2955; font-family: 'Montbold'">para ti</div>
+        </div>
+    </div>
+    <div class="block sm:hidden">
+        <div class="flex justify-content-center align-items-center flex-wrap">
+            <div class="flex align-items-center justify-content-center w-15rem m-2 cyan-text text-5xl font-bold" style="font-family: 'Montbold';">
+                Promociones</div> 
+            <div class="flex align-items-center justify-content-center w-10rem m-2 text-5xl font-bold" style="color: #1B2955; font-family: 'Montbold'">para ti</div>
+        </div>
+    </div>
+    <div class="full-screen-container">
+        <BasicBundleCarusell />
+    </div>
+    
+
+    <div class="hidden sm:block">
+        <div class="flex justify-content-center flex-wrap">
+            <div class="flex align-items-center justify-content-center w-13rem m-2 cyan-text md:text-7xl xl:text-7xl font-bold" style="font-family: Montbold;">
+                Ofertas </div>
+            <div class="flex align-items-center justify-content-center w-15rem m-2 md:text-6xl xl:text-7xl font-bold" style="color: #1B2955; font-family: Montbold"> para ti</div>
+        </div>
+    </div>
+    <div class="block sm:hidden">
+        <div class="flex align-items-center justify-content-center flex-wrap">
+            <div class="flex align-items-center justify-content-center w-10rem m-2 cyan-text text-5xl font-bold" style="font-family: 'Montbold'">
+                Ofertas</div>
+            <div class="flex align-items-center justify-content-center w-10rem m-2 text-5xl font-bold" style="color: #1B2955; font-family: 'Montbold'">para ti</div>
+        </div>
+    </div>
+    <div class="col-12">
+
+        <BasicOffertsCarusell />
+    </div>
+
+    <div class="block sm:hidden">
+        <div class="flex align-items-center justify-content-center flex-wrap">
+            <div class="flex align-items-center justify-content-center w-10rem m-2 cyan-text text-5xl font-bold">
+                Nuestras</div> 
+            <div class="flex align-items-center justify-content-center w-10rem m-2 text-5xl font-bold" style="color: #1B2955;">marcas</div>
+            <!-- <div class="cyan-text xl:text-7xl flex align-items-center justify-content-center w-4rem h-4rem">Nuestras</div>
+            <div class="bold-text xl:text-7xl flex align-items-center justify-content-center w-4rem h-4rem">marcas</div> 
+        </div>
+        <BasicProductCarusell />
+    </div>
+
+    <div class="hidden sm:block">
+        <div class="flex justify-content-center flex-wrap">
+            <p class="flex align-items-center justify-content-center w-20rem m-2 cyan-text md:text-7xl xl:text-7xl font-bold" style="font-family: 'Montbold'">¿Quiénes</p>
+            <p class="flex align-items-center justify-content-center w-15rem m-2 md:text-7xl xl:text-7xl font-bold" style="color: #1B2955; font-family: 'Montbold'">somos?</p>
+        </div>
+    </div>
+    <!-- <div class="container">
+        <div class="left-block2">
+            <BasicImageCarusell2 />
+        </div>
+        <div class="right-block">
+            <p class="bold-text xl:text-8xl font-bold-800 text-left">Más de 30 años a tu</p>
+            <p class="cyan-text xl:text-8xl text-left">servicio.</p>
+            <p class="cyan-text3 xl:text-2xl text-left"> De <strong>Ciudad de México a Monterrey</strong>, llevamos
+                más de 30 años brindando soluciones a los
+                profesionistas de la industria dental. </p>
+                <br>
+            <p class="cyan-text3 xl:text-2xl text-left">En <strong>Villa de Cortés Monterrey</strong> somos una
+                empresa mexicana líder en venta de insumos
+                dentales y ofreciéndote la mejor calidad y
+                proveedores del mercado. </p>
+        </div>
+    </div> 
+    <div class="grid">
+        <div class="col-6 hidden sm:block">
+            <BasicImageCarusell2 />
+        </div>
+        <div class="col-6 hidden sm:block">
+            <p class="bold-text xl:text-8xl font-bold-800 text-left" style="font-family: Montbold;">Más de 30 </p>
+            <p class="bold-text xl:text-8xl font-bold-800 text-left" style="font-family: Montbold;">años a tu</p>
+            
+            <p class="cyan-text xl:text-8xl text-left" style="font-family: Montbold">servicio.</p>
+            <br>
+            <p class="cyan-text4 xl:text-2xl text-left" style="font-family: Montsemibold;"> De <strong>Ciudad de México a Monterrey</strong>, llevamos
+                más de 30 años brindando soluciones a los
+                profesionistas de la industria dental. </p>
+                <br>
+            <p class="cyan-text4 xl:text-2xl text-left" style="font-family: Montsemibold;">En <strong>Villa de Cortés Monterrey</strong> somos una
+                empresa mexicana líder en venta de insumos
+                dentales y ofreciéndote la mejor calidad y
+                proveedores del mercado. </p>
+        </div>
+    </div> 
+</div> -->

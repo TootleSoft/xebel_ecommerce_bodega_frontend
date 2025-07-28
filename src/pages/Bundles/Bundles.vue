@@ -21,15 +21,15 @@
                 
                 <!-- Filtro en pantallas grandes -->
                 <div class="field hidden sm:block col-2" style="font-family: 'Montbold' !important;">
-                    <span class="text-900 font-medium text-xs mb-4">{{ products.length }} Productos Relacionados</span>
+                    <span class="text-900 text-blue-900 font-medium text-xs mb-4">{{ products.length }}  Productos Relacionados</span>
                     <BasicFilterSelection @v-model="getfilterprices" :key="componentKey" :allcategories="priceorder" filtername="Filtro por Precios" pickone :selected="filterpriceselection"/>
                 </div>
 
                 <!-- Filtro en pantallas pequeñas (Sidebar) -->
                 <div class="field block sm:hidden col-12" style="font-family: 'Montbold' !important;">
                     <Sidebar v-model:visible="visible">
-                        <span class="text-900 font-medium text-4xl mb-4" style="font-family: 'Montbold'">{{ pagetitle }}</span>
-                        <span class="text-900 font-medium text-xs mb-4">{{ products.length }} Productos Relacionados</span>
+                        <span class="text-900 text-blue-900 font-medium text-4xl mb-4" style="font-family: 'Montbold'">{{ pagetitle }}</span>
+                        <span class="text-900 text-blue-900 font-medium text-xs mb-4">{{ products.length }} Productos Relacionados</span>
                         <BasicFilterSelection @v-model="getfilterprices" :key="componentKey" :allcategories="priceorder" filtername="Filtro por Precios" pickone :selected="filterpriceselection"/>
                     </Sidebar>
                     <Button icon="pi pi-filter" class="filtter-menu-button border-transparent border-1 shadow-3" @click="visible = true" />

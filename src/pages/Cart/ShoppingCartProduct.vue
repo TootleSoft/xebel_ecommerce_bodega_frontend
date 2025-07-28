@@ -1,80 +1,131 @@
 <template>
-    <li v-if="!loading" v-for="(product, i) in cartStore.cart" :key="i"
-        class="flex flex-column md:flex-row py-6 border-top-1 border-bottom-1 surface-border md:align-items-center rounded-lg mb-6 shadow-lg bg-white">
-        
-        <!-- Imagen del producto -->
-        <img v-if="!product.is_bundle || product.is_bundle == undefined"
-            :src="imgroute(product.id, product.barcode, product.id_brand)"
-            class="w-12rem h-12rem flex-shrink-0 mx-auto md:mx-0 rounded-lg shadow-md" alt="shopping-cart-2-1" />
-        <img v-if="product.is_bundle" :src="imgBundle(product.id)" class="w-12rem h-12rem flex-shrink-0 mx-auto md:mx-0 rounded-lg shadow-md"
-            alt="shopping-cart-2-1" />
-        
-        <!-- Contenido de los detalles del producto -->
-        <div class="flex-auto py-5 md:pl-5">
-            <div class="flex flex-wrap align-items-start sm:align-items-center sm:flex-row sm:justify-content-between surface-border pb-6">
-                <!-- Información básica del producto -->
-                <div class="w-full sm:w-6 flex flex-column">
-                    <span class="text-900 text-xl font-medium mb-3" 
-                    style="font-family: 'Montbold';">{{ product.name }}</span>
-                    <span class="text-900 text-md font-medium mb-3" style="font-family: 'Montserrat';">{{ product.key_name }}</span>
-                    <span v-if="!product.is_bundle || product.is_bundle == undefined"
-                        class="text-700 text-sm" style="font-family: 'Montbold'">{{ product.barcode }}</span>
+    <div v-if="cartStore.cart.length === 0" class="grid justify-center items-center h-64 w-full">
+        <img src="@/images/icons/empty-cart.svg" alt="Carrito vacío" class=" img-empty-cart w-full">
+        <span class="empty-title w-full">Tu carrito de compras est&aacute; vac&iacute;o</span>
+        <span class="go-back" @click="router.push('/')"><i class="pi pi-arrow-left mr-3"></i>Ir al inicio y empezar a comprar</span>
+    </div>
+    <li 
+        v-else 
+        v-if="!loading" 
+        v-for="(product, i) in cartStore.cart" 
+        :key="i"
+        class="py-6 px-4 border rounded-lg shadow-md bg-white flex flex-col md:flex-row gap-4" 
+        style="
+        padding: 1rem 1rem 1rem 0rem !important;
+    ">
+       <!-- CONTENEDOR PRINCIPAL -->
+       <div class="flex flex-col md:flex-row w-full gap-0 items-start">
+            <div class="w-full md:w-auto flex justify-center md:justify-start">
+                <!-- Imagen del producto -->
+                <img v-if="!product.is_bundle || product.is_bundle == undefined"
+                    :src="imgroute(product.id, product.barcode, product.id_brand)"
+                    class="w-12rem h-12rem flex-shrink-0 mx-auto md:mx-0" alt="imagen del articulo"
+                    />
+                <img
+                    v-if="product.is_bundle"
+                    :src="imgBundle(product.id)"
+                    class="w-48 h-48 md:w-40 md:h-40 flex-shrink-0 mx-auto md:mx-0 rounded-lg shadow-md"
+                    alt="shopping-cart-2-1"
+                />
+            </div>
+            <!-- CONTENEDOR DE INFORMACIÓN EN FILAS-->
+            <div class="grid grid-cols-1 gap-4 w-full border-4 border-yellow-400 p-0" style="margin: 0rem 0rem 0rem 0rem !important; padding: 0rem 0rem 0rem 1rem !important">
+                <!-- Fila 1: Nombre -->
+                 <div class="w-full">
+                    <span class="text-900 text-lg font-medium" 
+                        style="font-family: 'Montbold'; color: #0c3e66 !important">{{ product.name }}
+                    </span>
+                 </div>
+                 <!-- Fila 2: SKU -->
+                 <div class="w-full" v-if="!product.is_bundle || product.is_bundle == undefined">
+                    <span class="text-700 text-sm" 
+                    style="font-family: 'Montbold'">SKU: {{ product.barcode }}</span>
+                 </div>
 
-                    <!-- Detalles del Bundle -->
-                    <div class="grid">
-                        <div class="col-12 lg:col-1">
-                            <ul v-if="product.is_bundle" class="py-0 pl-3 m-0 text-600 mb-3">
-                                <li class="mb-2" v-for="(item, j) in products[product.id_numberBundle-1]" :key="j">{{ products[product.id_numberBundle-1][j].quantity }}</li>
-                            </ul>
-                        </div>
-                        <div class="col-12 lg:col-1">
-                            <ul v-if="product.is_bundle" class="py-0 pl-3 m-0 text-600 mb-3">
-                                <li class="mb-2" v-for="(item, j) in products[product.id_numberBundle-1]" :key="j">{{ products[product.id_numberBundle-1][j].barcode }}</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Información de cantidad, precios y total -->
-                <div class="w-full sm:w-6 flex align-items-start justify-content-between mt-3 sm:mt-0">
-                    <!-- Cantidad -->
-                    <div>
-                        <InputNumber v-if="!loading" showButtons buttonLayout="horizontal" :min="1" :max="getMax(product.id_numberItem,product.id_branch)"
+                 <!-- Fila 3: Detalles de bundle -->
+                 <div v-if="product.is_bundle" class="w-full grid grid-cols-2 gap-2 text-sm text-gray-700">
+                    <ul class="py-0 pl-3 m-0 text-600">
+                        <li v-for="(item, j) in products[product.id_numberBundle-1]" :key="j">{{ products[product.id_numberBundle-1][j].quantity }}
+                        </li>
+                    </ul>
+                    <ul class="py-0 pl-3 m-0 text-600">
+                        <li v-for="(item, j) in products[product.id_numberBundle-1]" :key="j">{{ products[product.id_numberBundle-1][j].barcode }}
+                        </li>
+                    </ul>
+                 </div>
+                 <!-- Fila 4: Cantidad + Precio -->
+                 <div class="w-full grid grid-cols-1 sm:grid-cols-2 gap-0 items-center" style="margin: 0rem 0rem 0rem 0rem !important">
+                    <div class="flex items-center gap-0 w-full">
+                        <!-- Cantidad -->
+                        <InputNumber 
+                            v-if="!loading" 
+                            showButtons 
+                            buttonLayout="horizontal" 
+                            :min="1" 
+                            :max="getMax(product.id_numberItem,product.id_branch)"
                             inputClass="w-2rem text-center py-2 px-1 border-transparent outline-none shadow-none"
-                            v-model="product.quantity" class="border-1 surface-border border-round"
+                            v-model="product.quantity" 
+                            class="border-1 surface-border border-round h-3rem w-full sm:w-auto"
                             decrementButtonClass="p-button-text text-600 hover:text-primary py-1 px-1"
                             incrementButtonClass="p-button-text text-600 hover:text-primary py-1 px-1"
-                            incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus"></InputNumber>
+                            incrementButtonIcon="pi pi-plus" 
+                            decrementButtonIcon="pi pi-minus"
+                        >
+                        </InputNumber>
                     </div>
 
                     <!-- Precios -->
-                    <div class="flex flex-column sm:align-items-end">
-                        <span v-if="!product.original_price" class="text-900 text-xl font-medium mb-2 sm:mb-3">
-                            <label class="text-900 font-bold">P.U. + IVA</label>&nbsp&nbsp&nbsp${{ product.price_tax.toFixed(2) }}
-                        </span>
-                        <span v-if="product.original_price" class="text-900 text-xl font-medium mb-2 sm:mb-3 line-through">
-                            <label class="text-900 font-bold">P.U. + IVA</label>&nbsp&nbsp&nbsp${{ product.original_price.toFixed(2) }}
-                        </span>
-                        <span v-if="product.original_price" class="text-900 text-xl font-medium mb-2 sm:mb-3 text-red-500">
-                            <label class="text-red-500 text-900 font-bold">P.U. + IVA</label>&nbsp&nbsp&nbsp${{ product.price_tax.toFixed(2) }}
-                        </span>
-                        <span class="text-900 text-xl font-medium mb-2 sm:mb-3">
-                            <label class="text-900 font-bold">TOTAL</label>&nbsp&nbsp&nbsp${{ product.quantity * Number(product.price_tax.toFixed(2)) }}
-                        </span>
-                        
-                        <!-- Botón de eliminar -->
-                        <a v-if="!product.is_bundle || product.is_bundle == undefined" 
-                            @click="removeProduct(product.id, product.subarticle, product.id_branch, product.id_numberItem)"
-                            class="cursor-pointer text-pink-500 font-medium text-sm hover:text-pink-600 transition-colors transition-duration-300 mb-3"> Remove </a>
-                        <a v-if="product.is_bundle" 
-                            @click="removeBundle(product.id, product.id_numberBundle, product.id_branch)" 
-                            class="cursor-pointer text-pink-500 font-medium text-sm hover:text-pink-600 transition-colors transition-duration-300 mb-3"> Remove </a>
+                    <div class="text-right sm:text-end w-full">
+                        <!-- Precios -->
+                        <!-- <div v-if="!product.original_price" class="text-900 text-md font-medium mb-2 sm:mb-3">
+                            ${{ product.price_tax.toFixed(2) }}
+                        </div> -->
+                        <div v-if="product.original_price" class="text-gray-500 line-through text-md">
+                            ${{ product.original_price.toFixed(2) }}
+                        </div>
+                        <div v-if="product.original_price" class="text-red-600 font-semibold text-xl">
+                            ${{ product.price_tax.toFixed(2) }}
+                        </div>
+                        <div class="font-bold text-lg">
+                            ${{ (product.quantity * product.price_tax).toFixed(2)}}
+                        </div>
+                    </div>
+                 </div>
+                 <!-- Fila 5: Botón eliminar -->
+                 <div class="w-full text-end">
+                    <!-- Botón eliminar -->
+                    <a 
+                        v-if="!product.is_bundle || product.is_bundle == undefined" 
+                        @click="removeProduct(product.id, product.subarticle, product.id_branch, product.id_numberItem)"
+                        class="cursor-pointer text-red-500 hover:text-pink-600 transition-colors transition-duration-300">
+                        <i class="pi pi-trash mr-0" style="color: red; font-size: 1.2rem"></i>
+                    </a>
+                    <a 
+                        v-if="product.is_bundle" 
+                        @click="removeBundle(product.id, product.id_numberBundle, product.id_branch)" 
+                        class="cursor-pointer text-red-500 hover:text-pink-600 transition-colors transition-duration-300">
+                        <i class="pi pi-trash mr-0" style="color: red; font-size: 1.2rem"></i>
+                    </a>
+                 </div>     
+            </div>
+        </div>
+        <!-- Contenido de los detalles del producto
+        <div class="flex-auto py-3 md:pl-1" style="border: 4px solid blue">
+            <div class="flex flex-wrap align-items-start sm:align-items-center sm:flex-row sm:justify-content-between surface-border pb-6">
+
+                Información de cantidad, precios y total 
+                <div class="w-full sm:w-6 flex align-items-start justify-content-between mt-3 sm:mt-0">
+                     Precios
+                    <div class="flex flex-column sm:align-items-end" style="border: 1px solid red">
+
+                         Botón de eliminar 
+
                     </div>
                 </div>
             </div>
 
-            <!-- Información adicional (Sucursal, existencia) -->
-            <div class="flex flex-column">
+             Información adicional (Sucursal, existencia)
+            <div class="flex flex-column" style="border: 1px solid red">
                 <div class="w-full sm:w-4 flex flex-column">
                     <span class="field text-700 mr-2" style="font-family: 'Montserrat';">Sucursal.</span>
                     <Dropdown v-if="!product.is_bundle || product.is_bundle == undefined" v-model="product.id_branch"
@@ -84,7 +135,6 @@
                         optionValue="id_branch" :optionLabel="'branch_name'" class="align-items-center mb-3" :disabled=true ></Dropdown>
                 </div>
 
-                <!-- Existencia -->
                 <span v-if="showStock == 1" class="inline-flex align-items-center mb-3">
                     <span v-if="!product.is_bundle || product.is_bundle == undefined" class="text-700 mr-2" style="font-family: 'Montserrat'">
                         Existencia: {{ getExistence(product.id_numberItem,product.id_branch) }}
@@ -96,8 +146,8 @@
                         Existencia: {{ array[(product.id_numberBundle-1)+(products.length)]}}
                     </span>
                 </span>
-            </div>
-        </div>
+            </div> 
+        </div>-->
     </li>
 </template>
 <script setup lang="ts">
@@ -105,6 +155,7 @@ import { ref, onMounted, watch, computed } from 'vue';
 import { useCartStore } from '../../stores/cart';
 import {OrderData} from '../Cart/Function/OrderData';
 import axios from 'axios';
+import { useRouter } from 'vue-router';
 const cartStore = useCartStore();
 import { useToast } from "primevue/usetoast";
 const toast = useToast();
@@ -120,7 +171,7 @@ const loading = ref<boolean>(true);
 const is_deleted = ref<boolean>(false);
 const is_deletedBundle = ref<boolean>(false);
 const showStock = ref<number>(0);
-
+const router = useRouter();
 
 const imgroute = (id, sku, brand) => {
     sku = sku.replace(/\//g, "--").replace(/ñ/g, "nnn").replace(/Ñ/g, "nnn").replace(/#/g, '----')
@@ -266,3 +317,23 @@ onMounted(async () => {
     await refresh();
 });
 </script>
+<style>
+.img-empty-cart {
+    width: 15rem;
+    height: 15rem;
+}
+.empty-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    line-height: 2rem;
+    color: #ff5202;
+    text-align: center;
+    font-family: 'Montserrat', sans-serif;
+    margin-top: 1rem;
+}
+.go-back:hover {
+    cursor: pointer;
+    color: blue;
+    text-decoration: underline;
+}
+</style>
