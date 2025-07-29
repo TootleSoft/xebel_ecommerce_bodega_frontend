@@ -608,7 +608,7 @@ function continueWithoutBilling() {
             processPaymentStore();
 
         } else if (processPaymentType.value == 2) {
-            processPayment();
+            processPaymentTransfer(2);
         }
     }
     catch (error) {
