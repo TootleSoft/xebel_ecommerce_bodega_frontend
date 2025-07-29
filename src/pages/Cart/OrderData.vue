@@ -192,7 +192,7 @@
         @click="() => { processPaymentStore(); }" style="font-family: 'Montserrat'; background-color: #28a745; border-color: #28a745; color: white;"/> -->
 
                     <Button class="mt-3 lg:mt-0 w-full lg:w-auto flex-order-2 lg:flex-order-1 lg:mr-2"
-                        label="Pago en línea" icon="pi pi-fw pi-credit-card" @click="processPayment()" style="
+                        label="Pago en línea" icon="pi pi-fw pi-credit-card" @click="processPaymentTransfer(2)" style="
                         font-family: 'Montserrat'; 
                         background-color: #007bff; 
                         border: none; 
@@ -204,7 +204,7 @@
 
                     <Button class="mt-3 lg:mt-0 w-full lg:w-auto flex-order-2 lg:flex-order-1 lg:mr-0"
                         label="Pago con transferencia" icon="pi pi-fw pi-money-bill"
-                        @click="processPaymentTransfer()" style="
+                        @click="processPaymentTransfer(3)" style="
                         font-family: 'Montserrat'; 
                         background-color: #1155cc; 
                         border: none; 
@@ -671,10 +671,10 @@ const processPaymentStore = async () => {
     }
 };
 // Método para procesar un pago por transferencia bancaria
-const processPaymentTransfer = async () => {
+const processPaymentTransfer = async (type: any) => {
     try {
         // Actualizamos el tipo de pago a 3 (para indicar pago por transferencia bancaria)
-        processPaymentType.value = 3;
+        processPaymentType.value = type;
         // Verificamos la opcion de facturacion
         const response = verifyBillableCheckbox();
         if (response == false && optionBilling.value == true) {
@@ -709,19 +709,28 @@ const processPaymentTransfer = async () => {
                 toast.add({ severity: 'error', summary: 'Error', detail: "Favor de seleccionar una paqueteria o servicio", life: 7000 });
             } else {
                 let payment_info = []
-                let order = await createOrder(3); // Se crea el pedido tipo 3 porque es un pago por transferencia bancaria, y se guarda en la tabla 'ecommerce_order' y 'ecommerce_order_item'
+                let order = await createOrder(type); // Se crea el pedido tipo 3 porque es un pago por transferencia bancaria, y se guarda en la tabla 'ecommerce_order' y 'ecommerce_order_item'
 
                 const url = `${window.location.origin}/OrderSummary`;
 
                 let totalPay = total.value + totalShipment.value;
 
                 // Pedimos el JSON con la información de la transferencia al backend paso 1
-                payment_info = await entity.getPaymentTransfer(
+                if(type == 2){
+                    payment_info = await entity.getPaymentInfo(
+                    { //se obtiene la información del cliente y del pedido
+                        id_order: order.id,
+                        total: totalPay,
+                        url: url
+                    });
+                }else if(type == 3){
+                    payment_info = await entity.getPaymentTransfer(
                     {
                         id_order: order.id,
                         total: totalPay,
                         url: url
                     });
+                }
                 // Mandamos el JSON al backend paso 3
                 const chargeJson = payment_info[0];
                 const response = await axios.post('/Comercial/EcommerceOrder/createOpenPayCharge', chargeJson);
@@ -765,93 +774,93 @@ const processPaymentTransfer = async () => {
         blocked.value = false;
     }
 }
-const processPayment = async () => {
-    try {
-        console.log('Entró a pago en linea ok?')
-        processPaymentType.value = 2;
-        const response = verifyBillableCheckbox();
-        if (response == false && optionBilling.value == true) {
-            return false;
-        }
-        if (deliveryType.value == 2 && selectedReference.value == null)
-            throw "Pedido con envio, favor de seleccionar/crear una direccion de envio"
-        let inn = await invoiceNotNull();
-        if (billable.value == true) {
-            if (inn == false) {
-                throw "Favor de llenar todos los datos de facturacion"
-            }
-        }
-        console.log(inn)
-        loading.value = true;
-        blocked.value = true;
-        if (cartStore.order.length == 1) {
-            if (cartStore.order[0].status == 1) {
-                let payment = await entity.getOpenPayOrder();
-                console.log("payment 1: ", payment);
+// const processPayment = async () => {
+//     try {
+//         console.log('Entró a pago en linea ok?')
+//         processPaymentType.value = 2;
+//         const response = verifyBillableCheckbox();
+//         if (response == false && optionBilling.value == true) {
+//             return false;
+//         }
+//         if (deliveryType.value == 2 && selectedReference.value == null)
+//             throw "Pedido con envio, favor de seleccionar/crear una direccion de envio"
+//         let inn = await invoiceNotNull();
+//         if (billable.value == true) {
+//             if (inn == false) {
+//                 throw "Favor de llenar todos los datos de facturacion"
+//             }
+//         }
+//         console.log(inn)
+//         loading.value = true;
+//         blocked.value = true;
+//         if (cartStore.order.length == 1) {
+//             if (cartStore.order[0].status == 1) {
+//                 let payment = await entity.getOpenPayOrder();
+//                 console.log("payment 1: ", payment);
 
-                // Guarda en localStorage
-                //localStorage.setItem("lastPaymentLog", JSON.stringify(payment));
+//                 // Guarda en localStorage
+//                 //localStorage.setItem("lastPaymentLog", JSON.stringify(payment));
 
-                window.location.href = payment.payment_method.url;
-                //window.open(payment.payment_method.url, '_blank');
-            }
-        } else if (cartStore.order.length == 0) {
-            if (deliveryType.value == 2 && (selectedCarrier.value == null || selectedService.value == null)) {
-                toast.add({ severity: 'error', summary: 'Error', detail: "Favor de seleccionar una paqueteria o servicio", life: 7000 });
-            } else {
-                let payment_info = []
-                let order = await createOrder(2); //se crea el pedido de tipo 2 porque es un pago en linea y se guarda en la tabla 'ecommerce_order' y 'ecommerce_order_item'
-                const url = `${window.location.origin}/OrderSummary`;
+//                 window.location.href = payment.payment_method.url;
+//                 //window.open(payment.payment_method.url, '_blank');
+//             }
+//         } else if (cartStore.order.length == 0) {
+//             if (deliveryType.value == 2 && (selectedCarrier.value == null || selectedService.value == null)) {
+//                 toast.add({ severity: 'error', summary: 'Error', detail: "Favor de seleccionar una paqueteria o servicio", life: 7000 });
+//             } else {
+//                 let payment_info = []
+//                 let order = await createOrder(2); //se crea el pedido de tipo 2 porque es un pago en linea y se guarda en la tabla 'ecommerce_order' y 'ecommerce_order_item'
+//                 const url = `${window.location.origin}/OrderSummary`;
 
-                let totalPay = total.value + totalShipment.value;
+//                 let totalPay = total.value + totalShipment.value;
 
-                payment_info = await entity.getPaymentInfo(
-                    { //se obtiene la información del cliente y del pedido
-                        id_order: order.id,
-                        total: totalPay,
-                        url: url
-                    });
+//                 payment_info = await entity.getPaymentInfo(
+//                     { //se obtiene la información del cliente y del pedido
+//                         id_order: order.id,
+//                         total: totalPay,
+//                         url: url
+//                     });
 
-                console.log(`payment xd: `, JSON.stringify(payment_info, null, 2))
-                localStorage.setItem("lastPaymentInfo", JSON.stringify(payment_info));
-                let response = await entity.openpayAxios.post('charges/', payment_info[0]) //se envía al api de open pay la información obtenida
-                let status = response.data.status;
-                let update = await axios.post('Comercial/ECommerceOrder/updateOrder/' + response.data.order_id + '/' + response.data.id + '/' + status); //guarda el id_tracking del pedido y actualiza el estatus a pagado o no pagado
-                console.log('url a donde me dirige: ', response.data.payment_method.url);
-                window.location.href = response.data.payment_method.url; //redirige al cliente a la URL de confirmación
-                cartStore.saveOrder(order.id); //almacena temporalmente el id del pedido y el estatus
-                cartStore.clearCart(); //limpia el carrito de compras
-                if (deliveryType.value == 2) {
-                    let createshipment = await generateShipment();
-                }
-            }
-        }
-    } catch (error) {
-        try {
-            let response = await entity.openpayAxios.get('/charges/trb0rdnmtp6tmdpykevw/')
-            console.log('Respuesta de OpenPay:', response.data);
-        } catch (error2) {
-            if (axios.isAxiosError(error2)) {
-                console.error('Error procesando el pago:', error2.response?.data);
-            } else {
-                console.error('Error desconocido:', error2);
-            }
-        }
-        if (axios.isAxiosError(error)) {
-            toast.add({ severity: 'error', summary: 'Error procesando el pago:', detail: error.response?.data, life: 7000 });
-        } else {
-            toast.add({ severity: 'error', summary: 'Error procesando el pago:', detail: error, life: 7000 });
-        }
-    } finally {
-        loading.value = false;
-        blocked.value = false;
+//                 console.log(`payment xd: `, JSON.stringify(payment_info, null, 2))
+//                 localStorage.setItem("lastPaymentInfo", JSON.stringify(payment_info));
+//                 let response = await entity.openpayAxios.post('charges/', payment_info[0]) //se envía al api de open pay la información obtenida
+//                 let status = response.data.status;
+//                 let update = await axios.post('Comercial/ECommerceOrder/updateOrder/' + response.data.order_id + '/' + response.data.id + '/' + status); //guarda el id_tracking del pedido y actualiza el estatus a pagado o no pagado
+//                 console.log('url a donde me dirige: ', response.data.payment_method.url);
+//                 window.location.href = response.data.payment_method.url; //redirige al cliente a la URL de confirmación
+//                 cartStore.saveOrder(order.id); //almacena temporalmente el id del pedido y el estatus
+//                 cartStore.clearCart(); //limpia el carrito de compras
+//                 if (deliveryType.value == 2) {
+//                     let createshipment = await generateShipment();
+//                 }
+//             }
+//         }
+//     } catch (error) {
+//         try {
+//             let response = await entity.openpayAxios.get('/charges/trb0rdnmtp6tmdpykevw/')
+//             console.log('Respuesta de OpenPay:', response.data);
+//         } catch (error2) {
+//             if (axios.isAxiosError(error2)) {
+//                 console.error('Error procesando el pago:', error2.response?.data);
+//             } else {
+//                 console.error('Error desconocido:', error2);
+//             }
+//         }
+//         if (axios.isAxiosError(error)) {
+//             toast.add({ severity: 'error', summary: 'Error procesando el pago:', detail: error.response?.data, life: 7000 });
+//         } else {
+//             toast.add({ severity: 'error', summary: 'Error procesando el pago:', detail: error, life: 7000 });
+//         }
+//     } finally {
+//         loading.value = false;
+//         blocked.value = false;
 
-        const lastLog = localStorage.getItem("lastPaymentInfo");
-        if (lastLog) {
-            console.log("Último log de payment:", JSON.parse(lastLog));
-        }
-    }
-};
+//         const lastLog = localStorage.getItem("lastPaymentInfo");
+//         if (lastLog) {
+//             console.log("Último log de payment:", JSON.parse(lastLog));
+//         }
+//     }
+// };
 
 const processPaymentForStore = async () => {
     try {

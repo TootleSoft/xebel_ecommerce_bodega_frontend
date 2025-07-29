@@ -76,6 +76,7 @@ export const useCartStore = defineStore({
                 article.quantity = quantity;
                 article.id_branch = id_branch;
                 article.capacitance = article.length * article.width * article.height;
+                article.is_bundle = is_bundle;
 
                 const index = this.cart.findIndex(item => item.id === article.id && item.subarticle === article.subarticle && item.id_branch === article.id_branch);
                 if (index !== -1) {
